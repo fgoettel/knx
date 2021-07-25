@@ -4,8 +4,8 @@ import argparse
 import logging
 from pathlib import Path
 
-from knxproj.gpa import GpaLoader
-from knxproj.knxproj import KnxprojLoader
+from projects.gpa import GpaLoader
+from projects.knxproj import EtsLoader
 
 
 def main():
@@ -68,7 +68,7 @@ def main():
         except KeyError:
             ga_missing = gpa_dict[key]
             logging.error(
-                f"GA in gpa but not knxproj: {ga_missing.get_ga_str()} - {ga_missing}!"
+                f"GA in gpa but not in knxproj: {ga_missing.get_ga_str()} - {ga_missing}!"
             )
 
 

@@ -1,4 +1,4 @@
-"""Test the knxproj topology."""
+"""Test the projects topology."""
 # pylint: disable=redefined-outer-name
 
 from xml.etree import ElementTree as ET

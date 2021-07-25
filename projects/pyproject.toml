@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "knxproj"
+name = "projects"
 version = "0.1.0"
-description = "Interact with knx/gpa/... project files."
+description = "Interact with ets/gpa/... project files."
 authors = ["fgoettel <fabian.goettel@gmail.com>"]
 
 [tool.poetry.dependencies]

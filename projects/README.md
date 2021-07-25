@@ -1,4 +1,4 @@
-# knxproj
+# projects
 Unzip an exported configuration and ...
 
 ## Features
@@ -14,7 +14,7 @@ Read a GPA export and ...
 0. Install python3 and poetry
 1. Clone this repository
 
-   ```$ git clone git://github.com/fgoettel/knx/knxproj```
+   ```$ git clone git://github.com/fgoettel/knx/projects```
 
 2. Install the virtual environment
 
@@ -22,7 +22,7 @@ Read a GPA export and ...
 
 3. Explore the examples, e.g.,
 
-    ```$ poetry run knxproj/examples/example_read_switches.py /Path/To/project.knxproj```
+    ```$ poetry run projects/examples/example_read_switches.py /Path/To/project.projects```
 
 ## TODOS
 

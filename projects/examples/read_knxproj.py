@@ -1,11 +1,10 @@
-"""Read a knxproj and display all switches."""
+"""Read a projects and display all group addresses and devices."""
+
 import argparse
 import logging
 from pathlib import Path
 
-from knxproj.devices import dev2vendor
-from knxproj.devices.devices import Switch
-from knxproj.knxproj import KnxprojLoader
+from projects.knxproj import KnxprojLoader
 
 
 def main():
@@ -19,18 +18,17 @@ def main():
     args = parser.parse_args()
     knxproj_path = Path(args.path)
 
-    # Generic, non-vendor specific
-    gas, devices = KnxprojLoader(knxproj_path=knxproj_path).run()
+    group_addresses, devices = KnxprojLoader(knxproj_path=knxproj_path).run()
 
-    # Get in the vendor specifics
-    devices = [dev2vendor(dev, gas) for dev in devices]
+    logging.info("Group addresses:")
+    for group_addr in group_addresses:
+        logging.info("\t%s", group_addr)
 
-    logging.info("Switches:")
+    logging.info("Devices:")
     for dev in devices:
-        if isinstance(dev, Switch):
-            dev.doc()
+        logging.info("\t%s", dev)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+    logging.basicConfig(level=logging.DEBUG)
     main()

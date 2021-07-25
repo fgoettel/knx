@@ -6,7 +6,7 @@ import logging
 from collections import OrderedDict
 from pathlib import Path
 
-from knxproj.knxproj import KnxprojLoader
+from projects.knxproj import KnxprojLoader
 
 
 def main(json_path="knx_mapping.json"):

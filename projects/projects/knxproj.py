@@ -56,7 +56,7 @@ class KnxprojLoader:
                     unzipped = zip_.extract(file_, unzip_folder)  # type: ignore
                     xml_project_path = Path(unzipped).absolute()
                     logging.debug("Project xml unzipped to %s.", xml_project_path)
-        logging.info("Knxproj xmls extracted.")
+        logging.info("knxproj xmls extracted.")
         return (xml_meta_path, xml_project_path)
 
     def _setup_finder(self, xml_meta_path: Path) -> None:

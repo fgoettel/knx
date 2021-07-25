@@ -1,10 +1,10 @@
-"""Test the knxproj."""
+"""Test the projects."""
 from pathlib import Path
 from sys import platform
 
 import pytest
 
-from ..knxproj import KnxprojLoader
+from ..projects import KnxprojLoader
 
 
 @pytest.mark.skipif(
@@ -14,7 +14,8 @@ def test_init_path():
     """Load knxproj."""
 
     # TODO: Add test/minimum knxproj
-    knx = KnxprojLoader(Path.home().joinpath("Downloads/MaxMuellner.knxproj"))
+    project_path = Path("foo")
+    knx = KnxprojLoader(project_path)
     assert isinstance(knx, KnxprojLoader)
 
 

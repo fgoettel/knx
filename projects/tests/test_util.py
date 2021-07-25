@@ -1,4 +1,4 @@
-"""Test the knxproj."""
+"""Test the projects."""
 from xml.etree import ElementTree as ET
 
 import pytest

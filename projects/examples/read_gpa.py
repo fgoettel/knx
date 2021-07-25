@@ -4,7 +4,7 @@ import argparse
 import logging
 from pathlib import Path
 
-from knxproj.gpa import GpaLoader
+from projects.gpa import GpaLoader
 
 
 def main():
