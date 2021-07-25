@@ -1,0 +1,18 @@
+{
+  "0/3/10": {
+    "dtype": "DPST-9-5",
+    "name": "Z | Wetterstation | Windgeschwindigkeit"
+  },
+  "0/3/3": {
+    "dtype": "DPST-1-1",
+    "name": "Z | Wetterstation | Dämmerung"
+  },
+  "0/3/4": {
+    "dtype": "DPST-9-1",
+    "name": "Z | Wetterstation | Außentemperatur"
+  },
+  "0/3/8": {
+    "dtype": "DPST-9-4",
+    "name": "Z | Wetterstation | Helligkeit Max"
+  }
+}

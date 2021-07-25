@@ -1,4 +1,4 @@
-.PHONY: clean help lint test coverage
+.PHONY: clean help codegen test lint test coverage
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -31,21 +31,28 @@ clean: ## remove all build, test, coverage and python artifacts
 	find . -name "*.pyc" -exec rm -f {} +
 	find . -name "*.pyo" -exec rm -f {} +
 	find . -name "*~" -exec rm -f {} +
-	find . -name "__pycache__" -exec rm -fr {} +
-	find . -name "htmlcov" -exec rm -rf {} +
-	find . -name "mypy_cache" -exec rm -rf {} +
-	find . -name "pytest_cache" -exec rm -rf {} +
+	find . -name "*__pycache__*" -exec rm -fr {} +
+	find . -name "*htmlcov*" -exec rm -rf {} +
+	find . -name "*mypy_cache*" -exec rm -rf {} +
+	find . -name "*pytest_cache*" -exec rm -rf {} +
+	find . -name "*coverage*" -exec rm -rf {} +
 
 lint: ## check style with flake8
 	poetry run isort .
 	poetry run black .
 	poetry run pydocstyle .
-	poetry run pylint .
-	poetry run mypy .
+	poetry run pylint examples logger test
+	poetry run mypy examples logger test
 
 test: ## run tests quickly with the poetry python
 	poetry run pytest
 
 coverage: ## check code coverage quickly with the default Python
-	poetry run pytest --cov=. --cov-report=html tests
+	poetry run pytest --cov=. --cov-report=html test
 	$(BROWSER) htmlcov/index.html
+
+codegen:  ## Generate new mapping and orm
+	poetry run python -m logger.codegen.gen_dtype_matcher
+	poetry run python -m logger.codegen.gen_orm
+	poetry run isort logger/dtype_matcher.py logger/orm.py
+	poetry run black logger/dtype_matcher.py logger/orm.py
