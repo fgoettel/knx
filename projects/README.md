@@ -1,31 +1,16 @@
 # projects
-Unzip an exported configuration and ...
+Unzip an exported configuration and extract its devices and communication objects
 
-## Features
+## Supported Exports
+* ETS (.knxproj)
+* GPA (.gpa)
 
-### ETS
-Read a .knxproj and ...
-
-### GPA
-Read a GPA export and ...
-
-## Intro in a nutshell
-
-0. Install python3 and poetry
-1. Clone this repository
-
-   ```$ git clone git://github.com/fgoettel/knx/projects```
-
-2. Install the virtual environment
-
-    ```$ poetry install```
-
-3. Explore the examples, e.g.,
-
-    ```$ poetry run projects/examples/example_read_switches.py /Path/To/project.projects```
+## How to use
+Explore the examples, e.g.,
+    ```$ poetry run projects/examples/example_read_switches.py /Path/To/project.knxproj```
 
 ## TODOS
-
+* GPA: Find added but unused variables
 * Check exports from ETS != 5.7
 * Check on Windows
 * MDT GT

@@ -4,5 +4,5 @@
 * Linter issues fixed
 * Documentation updated
 
-## 0.1.0 (2021-07-24)
+## 0.1.0
 * Initial upload
