@@ -40,12 +40,12 @@ lint: ## check style with flake8
 	poetry run isort .
 	poetry run black .
 	poetry run pydocstyle .
-	poetry run pylint devices examples projects tests
+	poetry run pylint examples test devices projects
 	poetry run mypy .
 
 test: ## run tests quickly with the poetry python
 	poetry run pytest
 
 coverage: ## check code coverage quickly with the default Python
-	poetry run pytest --cov=. --cov-report=html tests
+	poetry run pytest --cov=. --cov-report=html test
 	$(BROWSER) htmlcov/index.html

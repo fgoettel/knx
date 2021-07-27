@@ -13,10 +13,11 @@ isort = "^5.9.2"
 mypy = "^0.910"
 pydocstyle = "^6.1.1"
 pylint = "^2.9.5"
-pytest-asyncio = "^0.15.1"
-pytest-mock = "^3.6.1"
 pytest = "^6.2.4"
+pytest-asyncio = "^0.15.1"
 pytest-cov = "^2.12.1"
+pytest-mock = "^3.6.1"
+pytest-profiling = "^1.7.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -32,3 +33,12 @@ ignore = [
     "D213",
     "D416",
 ]
+
+[tool.coverage]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+]
+source = ["logger"]
+omit = ["logger/codegen"]
