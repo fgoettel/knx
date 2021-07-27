@@ -33,14 +33,14 @@ clean: ## remove all build, test, coverage and python artifacts
 	find . -name "*~" -exec rm -f {} +
 	find . -name "__pycache__" -exec rm -fr {} +
 	find . -name "htmlcov" -exec rm -rf {} +
-	find . -name "mypy_cache" -exec rm -rf {} +
-	find . -name "pytest_cache" -exec rm -rf {} +
+	find . -name ".mypy_cache" -exec rm -rf {} +
+	find . -name ".pytest_cache" -exec rm -rf {} +
 
 lint: ## check style with flake8
 	poetry run isort .
 	poetry run black .
 	poetry run pydocstyle .
-	poetry run pylint .
+	poetry run pylint devices examples projects tests
 	poetry run mypy .
 
 test: ## run tests quickly with the poetry python

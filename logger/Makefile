@@ -33,8 +33,8 @@ clean: ## remove all build, test, coverage and python artifacts
 	find . -name "*~" -exec rm -f {} +
 	find . -name "*__pycache__*" -exec rm -fr {} +
 	find . -name "*htmlcov*" -exec rm -rf {} +
-	find . -name "*mypy_cache*" -exec rm -rf {} +
-	find . -name "*pytest_cache*" -exec rm -rf {} +
+	find . -name ".mypy_cache" -exec rm -rf {} +
+	find . -name ".pytest_cache" -exec rm -rf {} +
 	find . -name "*coverage*" -exec rm -rf {} +
 
 lint: ## check style with flake8
