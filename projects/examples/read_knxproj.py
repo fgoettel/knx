@@ -8,16 +8,22 @@ from pathlib import Path
 from projects.knxproj import KnxprojLoader
 
 
-def main():
-    """Log all provided group addresses and devices."""
-    # Setup argument parser
-    description = "Generate documentation for a KNX project based on its ETS export."
+def setup_parser() -> argparse.ArgumentParser:
+    """Set up parser."""
+
+    description = "Read a knxproj export from the ETS and fiddle around with it."
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
         "--knxproj", required=True, type=str, help="Path to the ETS .knxproj export."
     )
+    return parser
+
+
+def main():
+    """Log all provided group addresses and devices."""
 
     # Parse arguments
+    parser = setup_parser()
     args = parser.parse_args()
     knxproj_path = Path(args.knxproj)
 

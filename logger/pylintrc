@@ -1,0 +1,21 @@
+[MASTER]
+# Add files or directories to the blacklist. They should be base names, not
+# paths.
+ignore=orm.py
+
+[MESSAGES CONTROL]
+
+disable=too-few-public-methods,
+        bad-continuation,
+        wrong-import-order,
+        fixme
+
+[DESIGN]
+
+# Maximum number of arguments for function / method.
+max-args=8
+
+[FORMAT]
+
+# Maximum number of lines in a module.
+max-module-lines=2000
