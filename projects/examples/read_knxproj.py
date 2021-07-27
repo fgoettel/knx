@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Read a projects and display all group addresses and devices."""
 
 import argparse
@@ -12,11 +13,13 @@ def main():
     # Setup argument parser
     description = "Generate documentation for a KNX project based on its ETS export."
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("path", type=str, help="Path to the ETS .knxproj export.")
+    parser.add_argument(
+        "--knxproj", required=True, type=str, help="Path to the ETS .knxproj export."
+    )
 
     # Parse arguments
     args = parser.parse_args()
-    knxproj_path = Path(args.path)
+    knxproj_path = Path(args.knxproj)
 
     group_addresses, devices = KnxprojLoader(knxproj_path=knxproj_path).run()
 

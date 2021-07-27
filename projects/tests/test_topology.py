@@ -5,8 +5,9 @@ from xml.etree import ElementTree as ET
 
 import pytest
 
-from ..topology import DEFAULT_ADDR, Area, Device, Line
-from ..util import KNXAddress
+from projects.topology import DEFAULT_ADDR, Area, Device, Line
+from projects.util import KNXAddress
+
 from .util import area  # noqa: F401  # pylint:disable=unused-import
 from .util import get_topo_factory  # noqa: F401  # pylint:disable=unused-import
 from .util import line  # noqa: F401  # pylint:disable=unused-import

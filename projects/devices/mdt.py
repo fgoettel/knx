@@ -4,6 +4,10 @@
 import logging
 import re
 from dataclasses import dataclass
+from re import Pattern
+from typing import List
+
+from projects.topology import Device
 
 from .devices import Switch
 
@@ -12,18 +16,18 @@ from .devices import Switch
 class BE4(Switch):
     """MDT Tasterschnittstelle."""
 
-    def __init__(self, project_ga_list, *args, **kwargs):
+    def __init__(self, project_ga_list: List, *args, **kwargs):
         """Create a MDT binary interface."""
         super().__init__(*args, **kwargs)
         self.project_ga_list = project_ga_list
 
     @classmethod
-    def from_device(cls, device, *args, **kwargs):
+    def from_device(cls, device: Device, *args, **kwargs):
         """Create a MDT Glastaster 2 from a generic device."""
 
         return cls(project_ga_list=kwargs["project_ga_list"], **vars(device))
 
-    def find_ga(self, id_):
+    def find_ga(self, id_: str):
         """Find the complete GA to a given id."""
         for groupaddress in self.project_ga_list:
             if groupaddress.id_str == id_:
@@ -83,7 +87,7 @@ class GT2(Switch):
         self.texts = texts
 
     @classmethod
-    def from_device(cls, device, *args, **kwargs):
+    def from_device(cls, device: Device, *args, **kwargs):
         """Create a MDT Glastaster 2 from a generic device."""
 
         return cls(texts=kwargs["texts"], **vars(device))
@@ -91,7 +95,7 @@ class GT2(Switch):
     def doc(self):
         """Show all pages from a GT2."""
 
-        def _match_line(lines: set, expr) -> str:
+        def _match_line(lines: set, expr: Pattern) -> str:
             sep = 5 * " "
             result = []
             for line in lines.copy():

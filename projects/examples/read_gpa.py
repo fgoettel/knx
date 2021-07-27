@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Read a gpa project and display GAs."""
 
 import argparse
@@ -12,11 +13,13 @@ def main():
     # Setup argument parser
     description = "Display existing knx datapoints in a gpa project."
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("path", type=str, help="Path to the gpa .gpa export.")
+    parser.add_argument(
+        "--gpa", type=str, required=True, help="Path to the gpa .gpa export."
+    )
 
     # Parse arguments
     args = parser.parse_args()
-    gpa_path = Path(args.path)
+    gpa_path = Path(args.gpa)
 
     # Run
     group_addresses = GpaLoader(gpa_path=gpa_path).run()

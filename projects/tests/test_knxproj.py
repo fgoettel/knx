@@ -4,7 +4,7 @@ from sys import platform
 
 import pytest
 
-from ..projects import KnxprojLoader
+from projects.knxproj import KnxprojLoader
 
 
 @pytest.mark.skipif(

@@ -8,12 +8,12 @@ from xml.etree import ElementTree as ET
 
 import pytest
 
-from ..groupaddresses import Factory as ga_factory
-from ..groupaddresses import GroupAddress
-from ..topology import Area
-from ..topology import Factory as topo_factory
-from ..topology import Line
-from ..util import FinderXml
+from projects.groupaddresses import Factory as ga_factory
+from projects.groupaddresses import GroupAddress
+from projects.topology import Area
+from projects.topology import Factory as topo_factory
+from projects.topology import Line
+from projects.util import FinderXml
 
 PREFIX = "FOO"
 

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Compare knx GAs from ETS and GPA export."""
 
 import argparse
@@ -5,7 +6,7 @@ import logging
 from pathlib import Path
 
 from projects.gpa import GpaLoader
-from projects.knxproj import EtsLoader
+from projects.knxproj import KnxprojLoader
 
 
 def main():
@@ -68,7 +69,9 @@ def main():
         except KeyError:
             ga_missing = gpa_dict[key]
             logging.error(
-                f"GA in gpa but not in knxproj: {ga_missing.get_ga_str()} - {ga_missing}!"
+                "GA in gpa but not in knxproj: %s - %s!",
+                ga_missing.get_ga_str(),
+                ga_missing,
             )
 
 

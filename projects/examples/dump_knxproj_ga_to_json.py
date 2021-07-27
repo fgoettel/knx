@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """Read a knxproj and dump its group addresses to a json file."""
 
 import argparse
@@ -9,7 +10,7 @@ from pathlib import Path
 from projects.knxproj import KnxprojLoader
 
 
-def main(json_path="knx_mapping.json"):
+def main(json_path: str = "knx_mapping.json"):
     """Dump a dictionary that links group_addresses to data types."""
     # Setup argument parser
     description = "Generate documentation for a KNX project based on its ETS export."

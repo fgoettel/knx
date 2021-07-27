@@ -1,7 +1,7 @@
 """Generic device types."""
 from dataclasses import dataclass
 
-from ..topology import Device
+from projects.topology import Device
 
 # pylint: disable=useless-super-delegation
 
@@ -20,7 +20,7 @@ class Switch(Device):
     border = "="
 
     @classmethod
-    def from_device(cls, device, *args, **kwargs):
+    def from_device(cls, device: Device, *args, **kwargs):
         """Create a switch from a generic device."""
 
     def doc(self):

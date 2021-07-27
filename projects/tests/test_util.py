@@ -3,7 +3,8 @@ from xml.etree import ElementTree as ET
 
 import pytest
 
-from ..util import PROJECT_NAMESPACES, FinderXml, postfix
+from projects.util import PROJECT_NAMESPACES, FinderXml, postfix
+
 from .util import (  # noqa: F401  # pylint:disable=unused-import
     get_groupaddress,
     param_bools,

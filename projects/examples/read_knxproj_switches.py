@@ -1,10 +1,12 @@
+#!/usr/bin/env python3
 """Read a projects and display all switches."""
+
 import argparse
 import logging
 from pathlib import Path
 
-from projects.devices import dev2vendor
-from projects.devices.devices import Switch
+from devices import dev2vendor
+from devices.devices import Switch
 from projects.knxproj import KnxprojLoader
 
 
@@ -13,11 +15,13 @@ def main():
     # Setup argument parser
     description = "Generate documentation for a KNX project based on its ETS export."
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("path", type=str, help="Path to the ETS .knxproj export.")
+    parser.add_argument(
+        "--knxproj", required=True, type=str, help="Path to the ETS .knxproj export."
+    )
 
     # Parse arguments
     args = parser.parse_args()
-    knxproj_path = Path(args.path)
+    knxproj_path = Path(args.knxproj)
 
     # Generic, non-vendor specific
     gas, devices = KnxprojLoader(knxproj_path=knxproj_path).run()

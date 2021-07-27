@@ -5,7 +5,8 @@ from copy import copy
 
 import pytest
 
-from ..groupaddresses import GroupAddress
+from projects.groupaddresses import GroupAddress
+
 from .util import (  # noqa: F401  # pylint:disable=unused-import
     get_groupaddress,
     get_groupaddress_factory,
