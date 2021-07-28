@@ -1,16 +1,32 @@
 # knx
+This consists of 3 parts:
+
+1. logger
+Log knx messages to a database
+
+2. projects
+Extract information from knx projects (ETS, GPA)
+
+3. x1_Nodes
+Custom made nodes for the gira X1
 
 ## How to start
+### `logger` and `projects`:
 
-0. Install python3 and poetry
-1. Clone this repository
+1. Install python3 and poetry
+2. Clone this repository
 
-   ```$ git clone git://github.com/fgoettel/knx/projects```
+   ```$ git clone git://github.com/fgoettel/knx/```
 
-2. Install the virtual environment (individual for each subfolder)
+3. Install the virtual environment (individual for each subfolder)
 
     ```$ poetry install```
 
+### `x1_nodes`
+TODO: document setup
+
 
 ## TODO
-Unify environments, reuse code etc.
+* Unify python environments
+* reuse code
+* ...

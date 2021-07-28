@@ -1,0 +1,26 @@
+# Mac stuff
+.DS_Store
+
+# Editor stuff
+**/.vscode/*
+**/.vs/*
+
+# SDK stuff
+wgt/LogicNodesSDK/*
+
+# Other stuff
+**/packages/*
+
+# Private stuff
+*.p7b
+*.p12
+
+# Created stuff
+**/bin/Debug/*
+**/bin/Release/*
+**/obj/Debug/*
+**/obj/Release/*
+wgt/Zip/*.zip
+
+# Cached stuff
+**/StyleCop.Cache

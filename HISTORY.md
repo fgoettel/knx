@@ -1,6 +1,7 @@
 #  History
 
 ## Unreleased
+* Added x1 wgt node
 
 ## v0.2.0
 * Projects Interal

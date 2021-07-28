@@ -1,0 +1,33 @@
+﻿{
+    "PackageFormatVersion": "1.0",
+    "Assembly": "Fabian_goettel_gmail_com.Logic.Wgt.dll",
+    "PackageName": {
+        "en": "WGT",
+        "de": "WGT"
+    },
+    "DependentFiles": [
+        "LogicModule.Nodes.Helpers.dll"
+    ],
+    "Version": "0.2.12",
+    "Author": "Fabian Goettel",
+    "Copyright": "Fabian Göttel",
+    "DeveloperId": "fabian_goettel_gmail_com",
+    "License": "Free",
+    "PackageId": "CB18E39C-C1A8-421F-882A-4E3B4B36A996",
+    "Nodes": [
+        {
+            "Type": "Fabian_goettel_gmail_com.Logic.Wgt.Wgt",
+            "Name": {
+                "de": "WGT"
+            },
+            "IsConverter": false,
+            "Category": "Node",
+            "DefaultIcon": "wgt.png",
+            "C": "\\Users\\fabian\\Documents\\src\\x1_nodes\\wgt\\WgtNodes\\wgt.png",
+            "HelpTooltip": {
+                "de": "Ansteuerung der Schwörer Heizungs- und Lüftungsanlage."
+            },
+            "HelpFileReference": "!https://github.com/fgoettel/x1_nodes/blob/main/wgt/README.md"
+        }
+    ]
+}

@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
+  <Import Project="..\packages\NUnit3TestAdapter.3.17.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.17.0\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8A4DFEEE-CC9F-467E-8903-ED93D272D884}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WgtTest</RootNamespace>
+    <AssemblyName>WgtTest</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LogicModule.Nodes.Helpers, Version=1.2.0.0, Culture=neutral, PublicKeyToken=61439873ec5e1159, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\LogicNodesSDK\LogicModule.Nodes.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicModule.Nodes.TestHelper, Version=1.2.0.0, Culture=neutral, PublicKeyToken=61439873ec5e1159, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\LogicNodesSDK\LogicModule.Nodes.TestHelper.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicModule.ObjectModel, Version=1.2.0.0, Culture=neutral, PublicKeyToken=61439873ec5e1159, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\LogicNodesSDK\LogicModule.ObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="WgtTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ModbusTest.cs" />
+    <Compile Include="AddressTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WgtNodes\WgtNodes.csproj">
+      <Project>{3F1FF768-FD27-46A2-961C-B6EFDF9CB3B3}</Project>
+      <Name>WgtNodes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="ModbusServer.py" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
