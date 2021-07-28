@@ -6,6 +6,7 @@ import tempfile
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
+from typing import List
 from zipfile import ZipFile
 
 from .groupaddresses import GroupAddress
@@ -61,7 +62,7 @@ class GpaLoader:
             changed,
         )
 
-    def _gas(self, ga_list):
+    def _gas(self, ga_list) -> List[GroupAddress]:
         gas = []
         for ga_xml in ga_list:
             root = ET.parse(str(ga_xml)).getroot()

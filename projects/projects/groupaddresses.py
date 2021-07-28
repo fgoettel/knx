@@ -40,6 +40,33 @@ class GroupAddress(KNXAddress):
         """Create a/b/c groupaddress out of the integer."""
         return "/".join((f"{self.main}", f"{self.middle}", f"{self.sub}"))
 
+    def almost_equal(self, other):
+        """Compare two group addresses.
+
+        Returns true if
+          * both are of same type
+          * both addresses are identical
+          * both dtypes are the same group
+          * One name is a subset of the other name
+        """
+
+        # Equal items
+        if not isinstance(other, type(self)):
+            return False
+        if self.address != other.address:
+            return False
+
+        # Dtypes don't need to be exactly equal, just the "main" type
+        if self.dtype.split("-")[:2] != other.dtype.split("-")[:2]:
+            return False
+
+        # Name is almost equal
+        return (self.name in other.name) or (self.name in other.name)
+
+    def __str__(self):
+        """Concatenate ga, name and dtype."""
+        return f"{self.get_ga_str()}: {self.name}, {self.dtype}"
+
 
 class Factory:
     """Factory to create items from xml."""

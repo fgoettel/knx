@@ -72,7 +72,7 @@ class Factory:
 
     def device(self, xml: Element, line: Line) -> Device:
         """Create a device from a xml."""
-        # TODO: clean up
+
         gas, texts = self._find_connections(xml)
 
         return Device(

@@ -1,7 +1,9 @@
 #  History
 
 ## Unreleased
-* Internal
+* Projects Interal
+  * Move ga compare function go Groupaddress
+* Common
   * Align poetry project dependencies & structure
   * Align makefiles
 
