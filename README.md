@@ -11,7 +11,7 @@
  Custom made nodes for the gira X1
 
  ## How to start
- ### `logger` and `projects`:
+ ### `logger` and `projects`
 
  1. Install python3 and poetry
  2. Clone this repository
