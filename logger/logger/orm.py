@@ -1371,7 +1371,7 @@ class TwoByteSigned(KNXMixin, Base):
 class TwoByteUnsigned(KNXMixin, Base):
     """ORM for xknx 'DPT2ByteUnsigned'.
 
-    DType: DPT-7
+    DType: DPT-7, DPT-22
     """
 
     __tablename__ = "twobyteunsigned"
@@ -1421,7 +1421,7 @@ class Value1Count(KNXMixin, Base):
 class Value1Ucount(KNXMixin, Base):
     """ORM for xknx 'DPTValue1Ucount'.
 
-    DType: DPST-2-1, DPST-5-10, DPST-21-1
+    DType: DPST-2-1, DPST-2-2, DPST-5-10, DPST-21-1
     """
 
     __tablename__ = "value1ucount"

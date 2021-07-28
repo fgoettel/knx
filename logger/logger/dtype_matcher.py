@@ -19,6 +19,7 @@ DTYPE2XKNX = {
     "DPST-1-19": dpt.DPTBinary,  # Window_Door
     "DPST-1-23": dpt.DPTBinary,  # ShutterBlinds_Mode
     "DPST-2-1": dpt.DPTValue1Ucount,  # Switch_Control TODO: xknx type
+    "DPST-2-2": dpt.DPTValue1Ucount,  # Bool_Control TODO: xknx type
     "DPT-3": dpt.DPTControlStepwise,
     "DPST-3-7": dpt.DPTControlStepwiseDimming,
     "DPST-3-8": dpt.DPTControlStepwiseBlinds,
@@ -175,6 +176,7 @@ DTYPE2XKNX = {
     "DPST-19-1": dpt.DPTDateTime,
     "DPST-20-105": dpt.DPTHVACContrMode,
     "DPST-21-1": dpt.DPTValue1Ucount,  # StatusGen TODO: xknx type
+    "DPT-22": dpt.DPT2ByteUnsigned,  # StatusGen TODO: xknx type
     "DPST-27-1": dpt.DPT4ByteUnsigned,  # CombinedInfoOnOff TODO: xknx type; info_on_off
     "DPST-238-600": dpt.DPT4ByteUnsigned,  # TODO: xknx type, just a guess now
 }

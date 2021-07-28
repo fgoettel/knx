@@ -3,6 +3,11 @@
 ## Unreleased
 * Projects Interal
   * Move ga compare function go Groupaddress
+* Logger
+  * Add support for
+    * DPST-2-2
+    * DPT-22
+  * Minor lint fixes
 * Common
   * Align poetry project dependencies & structure
   * Align makefiles
