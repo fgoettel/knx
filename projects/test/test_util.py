@@ -15,8 +15,8 @@ from .util import (  # noqa: F401  # pylint:disable=unused-import
 # pylint: disable=redefined-outer-name,protected-access
 
 
-@pytest.mark.parametrize("expected_count", [None, 0, 1, 10])
-@pytest.mark.parametrize("namespace", ["", "ets56", "ets57"])
+@pytest.mark.parametrize("expected_count", [0, 1, 10])
+@pytest.mark.parametrize("namespace", [None, "ets56", "ets57"])
 def test_finder_xml(namespace, expected_count):
     """Test the finder function with namespace variation."""
     # Setup xml
@@ -26,28 +26,19 @@ def test_finder_xml(namespace, expected_count):
     # Add keyword / value
     keyword = "Foo"
     payload = {"Bar": "Baz"}
-    if expected_count is None:
-        counts = range(1)
-    else:
-        counts = range(expected_count)
-    for _ in counts:
+    for _ in range(expected_count):
         for key, value in payload.items():
             ET.SubElement(xml, keyword).attrib[key] = value
     xml_string = ET.tostring(xml, encoding="utf-8").decode("utf-8")
 
     # Setup finder
-    finder = FinderXml(namespace=namespace)
-    assert callable(finder)
+    findall = FinderXml(namespace=namespace).findall
+    assert callable(findall)
 
     # Find
-    result = finder(
-        ET.fromstring(xml_string), keyword=keyword, expected_count=expected_count
-    )
-
-    # TODO: Fix special treatment of 1 finding
-    if expected_count == 1:
-        result = [result]
+    result = findall(ET.fromstring(xml_string), keyword=keyword)
     assert isinstance(result, list)
+    assert len(result) == expected_count
 
     for res in result:
         assert res.attrib == payload

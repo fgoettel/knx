@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from re import Pattern
 from typing import List
 
+from projects.groupaddresses import GroupAddress
 from projects.topology import Device
 
 from .devices import Switch
@@ -16,25 +17,25 @@ from .devices import Switch
 class BE4(Switch):
     """MDT Tasterschnittstelle."""
 
-    def __init__(self, project_ga_list: List, *args, **kwargs):
+    def __init__(self, project_ga_list: List[GroupAddress], *args, **kwargs):
         """Create a MDT binary interface."""
         super().__init__(*args, **kwargs)
         self.project_ga_list = project_ga_list
 
     @classmethod
-    def from_device(cls, device: Device, *args, **kwargs):
+    def from_device(cls, device: Device, *args, **kwargs) -> "BE4":
         """Create a MDT Glastaster 2 from a generic device."""
 
         return cls(project_ga_list=kwargs["project_ga_list"], **vars(device))
 
-    def find_ga(self, id_: str):
+    def find_ga(self, id_: str) -> GroupAddress:
         """Find the complete GA to a given id."""
         for groupaddress in self.project_ga_list:
             if groupaddress.id_str == id_:
                 return groupaddress
         raise ValueError("Unknown ga id_.")
 
-    def doc(self):
+    def doc(self) -> None:
         """Document connected GAs."""
         hline = self.border * self.width
         hline_small = self.hsep * self.width
@@ -81,18 +82,18 @@ class GT2(Switch):
         r"^(?P<description>Status LED)$"
     )  # Not inside ComObjectInstanceRefs, but GroupObjectTree
 
-    def __init__(self, texts, *args, **kwargs):
+    def __init__(self, texts: List[str], *args, **kwargs):
         """Create a MDT GT2."""
         super().__init__(*args, **kwargs)
         self.texts = texts
 
     @classmethod
-    def from_device(cls, device: Device, *args, **kwargs):
+    def from_device(cls, device: Device, *args, **kwargs) -> "GT2":
         """Create a MDT Glastaster 2 from a generic device."""
 
         return cls(texts=kwargs["texts"], **vars(device))
 
-    def doc(self):
+    def doc(self) -> None:
         """Show all pages from a GT2."""
 
         def _match_line(lines: set, expr: Pattern) -> str:
@@ -139,7 +140,7 @@ class GT2(Switch):
         hline_small = len(hline) * self.hsep
 
         # Count pages
-        def page_count_fcn(line_x):
+        def page_count_fcn(line_x: List[str]) -> int:
             return len([x for x in line_x if x])
 
         page_count = max(map(page_count_fcn, (line0, line1, line2)))

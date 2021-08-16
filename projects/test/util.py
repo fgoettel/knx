@@ -126,7 +126,7 @@ def get_groupaddress_factory():
 @pytest.fixture()
 def get_topo_factory():
     """Get a factory to convert xml to topology items."""
-    return topo_factory(prefix=PREFIX, finder=FinderXml())
+    return topo_factory(prefix=PREFIX, finder=FinderXml().findall)
 
 
 @pytest.fixture()

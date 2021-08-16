@@ -2,6 +2,10 @@
 
 ## Unreleased
 * Added x1 wgt node
+* Projects
+  * Annotate everything!
+  * Move devices under projects
+  * Simplify namespaced xml findall addition
 
 ## v0.2.0
 * Projects Interal

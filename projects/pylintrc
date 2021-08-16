@@ -7,3 +7,6 @@ disable=too-few-public-methods,
         bad-continuation,
         wrong-import-order,
         fixme
+
+[SIMILARITIES]
+ignore-imports=yes

@@ -40,7 +40,7 @@ class GroupAddress(KNXAddress):
         """Create a/b/c groupaddress out of the integer."""
         return "/".join((f"{self.main}", f"{self.middle}", f"{self.sub}"))
 
-    def almost_equal(self, other):
+    def almost_equal(self, other: "GroupAddress") -> bool:
         """Compare two group addresses.
 
         Returns true if
@@ -63,7 +63,7 @@ class GroupAddress(KNXAddress):
         # Name is almost equal
         return (self.name in other.name) or (self.name in other.name)
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Concatenate ga, name and dtype."""
         return f"{self.get_ga_str()}: {self.name}, {self.dtype}"
 
@@ -71,7 +71,7 @@ class GroupAddress(KNXAddress):
 class Factory:
     """Factory to create items from xml."""
 
-    def __init__(self, prefix):
+    def __init__(self, prefix: str):
         """Create factory."""
         self.prefix = postfix(prefix)
 

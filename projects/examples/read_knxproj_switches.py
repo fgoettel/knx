@@ -4,9 +4,9 @@
 import logging
 from pathlib import Path
 
-from devices import dev2vendor
-from devices.devices import Switch
 from examples.read_knxproj import setup_parser
+from projects.devices import dev2vendor
+from projects.devices.devices import Switch
 from projects.knxproj import KnxprojLoader
 
 

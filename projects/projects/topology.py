@@ -2,7 +2,7 @@
 
 import logging
 from dataclasses import dataclass, field
-from typing import List, Tuple
+from typing import Callable, List, Tuple
 from xml.etree.ElementTree import Element
 
 from .util import KNXAddress, postfix
@@ -36,7 +36,7 @@ class Device(KNXAddress):
 class Factory:
     """Factory to create items from xml."""
 
-    def __init__(self, finder, prefix):
+    def __init__(self, finder: Callable, prefix: str):
         """Create factory."""
         self.finder = finder
         self.prefix = postfix(prefix)
