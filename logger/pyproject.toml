@@ -6,9 +6,9 @@ authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "3.9"
-SQLAlchemy = ">=1.4"
-xknx = ">=0.18.7"
-psycopg2-binary = { version = ">=2.8.6", optional = true }
+SQLAlchemy = "^1.4"
+xknx = "^0.18.7"
+psycopg2-binary = { version = "^2.8.6", optional = true }
 
 [tool.poetry.extras]
 pgsql = ["psycopg2-binary"]
@@ -24,7 +24,7 @@ pytest-asyncio = "^0.15.1"
 pytest-cov = "^2.12.1"
 pytest-mock = "^3.6.1"
 pytest-profiling = "^1.7.0"
-sqlalchemy-stubs = ">=0.4"
+sqlalchemy-stubs = "^0.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
