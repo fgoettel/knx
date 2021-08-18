@@ -5,7 +5,7 @@
 * Projects
   * Annotate everything!
   * Move devices under projects
-  * Simplify namespaced xml findall addition
+  * Major internal refactoring
 
 ## v0.2.0
 * Projects Interal

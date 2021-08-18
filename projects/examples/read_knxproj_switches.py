@@ -2,27 +2,19 @@
 """Read a projects and display all switches."""
 
 import logging
-from pathlib import Path
 
-from examples.read_knxproj import setup_parser
+from examples.read_knxproj import obtain_knxproj
 from projects.devices import dev2vendor
 from projects.devices.devices import Switch
-from projects.knxproj import KnxprojLoader
 
 
 def main():
     """Log all provided group addresses and devices."""
 
-    # Parse arguments
-    parser = setup_parser()
-    args = parser.parse_args()
-    knxproj_path = Path(args.knxproj)
-
-    # Generic, non-vendor specific
-    gas, devices = KnxprojLoader(knxproj_path=knxproj_path).run()
+    knxproj = obtain_knxproj()
 
     # Get in the vendor specifics
-    devices = [dev2vendor(dev, gas) for dev in devices]
+    devices = [dev2vendor(dev, knxproj.groupaddresses) for dev in knxproj.devices]
 
     logging.info("Switches:")
     for dev in devices:

@@ -1,22 +1,19 @@
 """Test the projects."""
 from pathlib import Path
-from sys import platform
 
 import pytest
 
-from projects.knxproj import KnxprojLoader
+from projects.knxproj import Knxproj
 
 
-@pytest.mark.skipif(
-    platform == "win32", reason="knxproj availability."
-)  # TODO: Fix this with a minimum knxproj
+@pytest.mark.skip("no knxproj available atm")
 def test_init_path():
     """Load knxproj."""
 
     # TODO: Add test/minimum knxproj
     project_path = Path("foo")
-    knx = KnxprojLoader(project_path)
-    assert isinstance(knx, KnxprojLoader)
+    knx = Knxproj(project_path)
+    assert isinstance(knx, Knxproj)
 
 
 if __name__ == "__main__":

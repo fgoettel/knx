@@ -6,8 +6,8 @@ import logging
 from pathlib import Path
 from typing import Tuple
 
-from projects.gpa import GpaLoader
-from projects.knxproj import KnxprojLoader
+from projects.gpa import Gpa
+from projects.knxproj import Knxproj
 
 
 def get_args() -> Tuple[Path, Path]:
@@ -40,8 +40,8 @@ def main():
     gpa_path, knxproj_path = get_args()
 
     # Run
-    gpa_addresses = GpaLoader(gpa_path=gpa_path).run()
-    ets_addresses, _ = KnxprojLoader(knxproj_path=knxproj_path).run()
+    gpa_addresses = Gpa(gpa_path=gpa_path).groupaddresses
+    ets_addresses = Knxproj(knxproj_path=knxproj_path).groupaddresses
 
     # Put them to two dicts
     gpa_dict = {ga.address: ga for ga in gpa_addresses}

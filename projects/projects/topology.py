@@ -34,21 +34,56 @@ class Device(KNXAddress):
 
 
 class Factory:
-    """Factory to create items from xml."""
+    """Factory to create topology elements (e.g., `Device`) from xml."""
 
-    def __init__(self, finder: Callable, prefix: str):
-        """Create factory."""
+    def __init__(self, finder: Callable[[Element, str], List[Element]], prefix: str):
+        """Create factory.
+
+        Parameters
+        ----------
+        finder
+            A namespaced xml findall - see the util.py
+        prefix
+            The project prefix.
+
+        """
         self.finder = finder
         self.prefix = postfix(prefix)
 
     def _find_id(self, xml: Element) -> str:
-        """Find and format the ID."""
+        """Find the `Id` and remove the project prefix.
+
+        Parameters
+        ----------
+        xml
+            The element containing the `Id`.
+
+        Returns
+        -------
+        id
+            The `Id`without the project prefix.
+
+        """
         return xml.attrib["Id"].replace(self.prefix, "")
 
-    def _find_connections(self, xml: Element) -> Tuple[List[str], List[str]]:
-        """Find group addresses from a xml element."""
+    def _find_connections_and_texts(self, xml: Element) -> Tuple[List[str], List[str]]:
+        """Find group addresses and text elements in a xml element.
+
+        Parameters
+        ----------
+        xml
+            The xml of interest
+
+        Returns
+        -------
+        groupaddresses
+            A list of all connected groupaddresses
+        texts
+            A list with all annotations
+
+        """
         # TODO: Combine connection information
-        # TODO: Refactor to refelct the text part
+        # TODO: Split into two (or more) subfuncitons
         groupaddress_list: List[str] = []
         text_list: List[str] = []
 
@@ -59,9 +94,11 @@ class Factory:
             return groupaddress_list, text_list
 
         # Find each single connected ga
+        # TODO: Check why its always only the first element
         for ccc in self.finder(comobjs_xml[0], "ComObjectInstanceRef"):
             ga_new = ccc.attrib.get("Links", None)
             if ga_new:
+                # TODO: Document why it's split
                 groupaddress_list.extend(ga_new.split(" "))
 
             txt_new = ccc.attrib.get("Text", None)
@@ -71,9 +108,23 @@ class Factory:
         return groupaddress_list, text_list
 
     def device(self, xml: Element, line: Line) -> Device:
-        """Create a device from a xml."""
+        """Create a device from a xml.
 
-        gas, texts = self._find_connections(xml)
+        Parameters
+        ----------
+        xml
+            The xml containing the device description.
+        line
+            The line of the device.
+
+        Returns
+        -------
+        device
+            A configured `Device`.
+
+        """
+
+        gas, texts = self._find_connections_and_texts(xml)
 
         return Device(
             id_str=self._find_id(xml),
@@ -86,7 +137,21 @@ class Factory:
         )
 
     def line(self, xml: Element, area: Area) -> Line:
-        """Create a line from a xml."""
+        """Create a line from a xml.
+
+        Parameters
+        ----------
+        xml
+            The xml containing the line description.
+        area
+            The area of the line.
+
+        Returns
+        -------
+        Line
+            A configured `Line`.
+
+        """
         return Line(
             id_str=self._find_id(xml),
             area=area,
@@ -96,7 +161,19 @@ class Factory:
         )
 
     def area(self, xml: Element) -> Area:
-        """Create an area from a xml."""
+        """Create an area from a xml.
+
+        Parameters
+        ----------
+        xml
+            The xml containing the area description.
+
+        Returns
+        -------
+        area
+            A configured `Area`.
+
+        """
         return Area(
             id_str=self._find_id(xml),
             name=xml.attrib["Name"],

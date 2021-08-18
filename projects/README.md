@@ -1,5 +1,8 @@
 # projects
-Unzip an exported configuration and extract its devices and communication objects
+Unzip an exported configuration and extract its devices and communication objects.
+
+## Motivation
+Compare the "truth" (_ETS export_) with gira GPA project export and ensure all group addresses are still used as intended.
 
 ## Supported Exports
 * ETS (.knxproj)

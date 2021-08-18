@@ -19,7 +19,6 @@ def test_groupaddress(get_groupaddress):
     """Ensure that GroupAddresses are
     - constructed as intended
     - properly translate their GA to the x/y/z format
-
     """
 
     # Valid GroupAddress
@@ -35,6 +34,46 @@ def test_groupaddress(get_groupaddress):
     ):
         addr.address = input_
         assert addr.get_ga_str() == excpected
+
+
+def test_groupaddress_almost_eq(get_groupaddress):
+    """Ensure that GroupAddresses are
+    - constructed as intended
+    - properly translate their GA to the x/y/z format
+    """
+
+    # Valid GroupAddress
+    assert isinstance(get_groupaddress, GroupAddress)
+
+    lhs = copy(get_groupaddress)
+    lhs.address = "1/2/3"
+
+    # Different type
+    assert not lhs.almost_equal(None)
+
+    # Different address
+    rhs = copy(lhs)
+    rhs.address = "4/5/6"
+    assert not lhs.almost_equal(rhs)
+
+    # Different dtype
+    rhs = copy(lhs)
+    rhs.dtype = "Foo"
+    assert not lhs.almost_equal(rhs)
+
+    # Different name
+    rhs = copy(lhs)
+    rhs.name = "Foo"
+    assert not lhs.almost_equal(rhs)
+
+    # Almost same name
+    rhs = copy(lhs)
+    rhs.name += "Foo"
+    assert lhs.almost_equal(rhs)
+
+    # Same name
+    rhs = copy(lhs)
+    assert lhs.almost_equal(rhs)
 
 
 def test_factory_address(get_groupaddress_factory, xml_knx):

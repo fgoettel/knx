@@ -3,186 +3,224 @@
 import logging
 import tempfile
 import xml.etree.ElementTree as ET
-from dataclasses import dataclass, field
+from collections import defaultdict
+from functools import cache
 from pathlib import Path
-from typing import Callable, List, Tuple
+from typing import List, Tuple
 from zipfile import ZipFile
 
 from .groupaddresses import Factory as GAFactory
 from .groupaddresses import GroupAddress
-from .topology import Area, Device
+from .topology import Device
 from .topology import Factory as TOFactory
-from .topology import Line
 from .util import FinderXml
 
 
-@dataclass
-class KnxprojLoader:
+class Knxproj:
     """Extract a .knxproj and read project information."""
 
-    # Without defaults
-    knxproj_path: Path
+    project_file_name = "0.xml"  # TODO: Check if this is always true
+    meta_file_name = "project.xml"
 
-    # With defaults
-    project_file: str = "0"
+    def __init__(self, knxproj_path: Path) -> None:
+        """Set up a basic knxproj instance.
 
-    # Non-initialized values
-    findall: Callable = field(init=False)
-    project_prefix: str = field(init=False)
+        During creation the meta information is already extracted.
 
-    def run(self) -> Tuple[List[GroupAddress], List[Device]]:
-        """Extract groupaddresses and devices from knxproj."""
-        xml_meta_path, xml_project_path = self._unzip()
-        self._setup_findall(xml_meta_path)
-        self._meta(xml_meta_path)
-        return self._extract_project(xml_project_path)
+        Parameters
+        ----------
+        knxproj_path
+            Path to the ".knxproj" file.
 
-    def _unzip(self) -> Tuple[Path, Path]:
-        """Unzip the knx project."""
+        """
+
+        self.xml_meta_path, self.xml_project_path = self._unzip(
+            knxproj_path=knxproj_path,
+        )
+        self.ets_version = self._extract_ets_version()
+        self.findall = FinderXml(self.ets_version).findall
+
+        project_id = self._extract_project_id()
+        assert project_id in str(self.xml_project_path)
+        assert project_id in str(self.xml_meta_path)
+        self.project_prefix = (
+            project_id + "-" + self.project_file_name.split(".", maxsplit=1)[0]
+        )
+
+    @classmethod
+    def _unzip(cls, knxproj_path: Path) -> Tuple[Path, Path]:
+        """Unzip the knx project.
+
+        Unzipt the knxproj and extract the path to the meta information and project information.
+
+        Parameters
+        ----------
+        knxproj_path
+            Path to the ".knxproj",
+
+        Returns
+        -------
+        meta_path
+            Path to the "meta" xml file.
+        project_path
+            Path to the "project" xml file.
+
+        """
         unzip_folder = Path(tempfile.gettempdir()).joinpath("knxproj_unzipped")
-        project_file = ".".join((self.project_file, "xml"))
-        with ZipFile(self.knxproj_path, "r") as zip_:
-            files = zip_.namelist()
-            for file_ in files:
-                # Fast track -> skip non-xmls and elements not in the project dir
-                if not file_.endswith(".xml") or not file_.startswith("P-"):
-                    continue
-                # We need the project.xml and the ones defined in 'project_file'
-                if file_.endswith("project.xml"):
-                    unzipped = zip_.extract(file_, unzip_folder)  # type: ignore
-                    xml_meta_path = Path(unzipped).absolute()
-                    logging.debug("Meta xml unzipped to %s.", xml_meta_path)
-                elif file_.endswith(project_file):
-                    unzipped = zip_.extract(file_, unzip_folder)  # type: ignore
-                    xml_project_path = Path(unzipped).absolute()
-                    logging.debug("Project xml unzipped to %s.", xml_project_path)
-        logging.info("knxproj xmls extracted.")
-        return (xml_meta_path, xml_project_path)
+        with ZipFile(knxproj_path, "r") as zip_:
+            xml_files = list(
+                filter(lambda x: x.endswith(".xml"), zip_.namelist())
+            )  # Only introduced for debugging
 
-    def _setup_findall(self, xml_meta_path: Path) -> None:
-        """Set a finder for the correct namespace."""
-        root = ET.parse(str(xml_meta_path)).getroot()
+            # TODO: check "0.xml"
+            project_path = Path(
+                zip_.extract(
+                    list(
+                        filter(lambda x: x.endswith(cls.project_file_name), xml_files)
+                    )[0],
+                    unzip_folder,
+                )
+            )
+            meta_path = Path(
+                zip_.extract(
+                    list(filter(lambda x: x.endswith(cls.meta_file_name), xml_files))[
+                        0
+                    ],
+                    unzip_folder,
+                )
+            )
+
+        logging.info("knxproj xmls extracted:\n\t%s\n\t%s", meta_path, project_path)
+        return (meta_path, project_path)
+
+    def _extract_ets_version(self) -> str:
+        """Read ets version from the meta xml.
+
+        Returns
+        -------
+        ets_version
+            A String containing info about the ets version. E.g. "ets57".
+            This is important to deal with the xml namespaces.
+
+        """
+        root = ET.parse(str(self.xml_meta_path)).getroot()
         ets_version = (
             root.attrib["CreatedBy"].lower() + root.attrib["ToolVersion"].split(".")[1]
         )
-        self.findall = FinderXml(ets_version).findall
+        return ets_version
 
-    def _meta(self, xml_meta_path: Path) -> None:
-        """Extract and log meta information from project.xml file.
+    def _extract_project_id(self) -> str:
+        """Get the project id."""
+        root = ET.parse(str(self.xml_meta_path)).getroot()
+        return self.findall(root, "Project")[0].attrib["Id"]
 
-        Side effect: Update self.project_prefix
+    @cache
+    def _find_item_in_project(self, keyword: str) -> ET.Element:
+        """Find an item in the xml project.
+
+        Finds _exactly_ one item in the flattened project.
+
+        Parameters
+        ----------
+        keyword
+            The keyword of interest
+
+        Returns
+        -------
+        element
+            The matchingn element
+
         """
-        root = ET.parse(str(xml_meta_path)).getroot()
+        root = ET.parse(str(self.xml_project_path)).getroot()
+
+        findings = []
+        for elem in root.iter():
+            if match := self.findall(elem, keyword):
+                findings.extend(match)
+        if len(findings) != 1:
+            raise ValueError("Not exactly one finding...")
+        return findings[0]
+
+    def display_meta_information(self) -> None:
+        """Extract and log meta information from project.xml file."""
+        root = ET.parse(str(self.xml_meta_path)).getroot()
 
         # Initialize meta with the root data
         meta = {**root.attrib}
 
         # Get Project
-        project = self.findall(root, "Project", 1)
+        project = self.findall(root, "Project")[0]
         meta.update(**project.attrib)
 
         # Get ProjectInformation
-        projectinfo = self.findall(project, "ProjectInformation", 1)
+        projectinfo = self.findall(project, "ProjectInformation")[0]
         meta.update(**projectinfo.attrib)
-
-        # Store project id and the prefix used for GAs etc.
-        self.project_prefix = "-".join((meta["Id"], self.project_file))
 
         # Display meta information
         logging.info("Project meta information:")
         for key, value in meta.items():
             logging.info("\t%s: %s", key, value)
 
-    def _extract_project(
-        self, xml_project_path: Path
-    ) -> Tuple[List[GroupAddress], List[Device]]:
-        """Extract the project information from the xml."""
+    @property
+    def groupaddresses(
+        self,
+    ) -> List[GroupAddress]:
+        """Get group addresses from project."""
 
-        def get_xml() -> Tuple[ET.Element, ET.Element]:
-            """Get xml elements for topology and group addresses."""
-            root = ET.parse(str(xml_project_path)).getroot()
+        ga_factory = GAFactory(self.project_prefix)
+        gruppenaddress_list = []
 
-            project_xml = self.findall(root, "Project")[0]
-            installation_xml_list = self.findall(project_xml, "Installations")[0]
-            installation_xml = self.findall(installation_xml_list, "Installation")[0]
-            topology_xml = self.findall(installation_xml, "Topology")[0]
+        # We expect only one grouprange
+        groups_xml = self._find_item_in_project("GroupAddresses")
+        grs_xml = self.findall(groups_xml, "GroupRanges")[0]
 
-            # Special treatment for gas
-            groupaddress_xml_list = self.findall(installation_xml, "GroupAddresses")
-            if not groupaddress_xml_list:
-                groupaddress_xml = ET.Element("")  # Default element
-            elif len(groupaddress_xml_list) == 1:
-                groupaddress_xml = groupaddress_xml_list[0]
-            else:
-                logging.warning(
-                    "Unusual case! More than 1 ga xml object. Defaulting to the first."
-                )
-                groupaddress_xml = groupaddress_xml_list[0]
+        # Extract group ranges
+        for hg_xml in self.findall(grs_xml, "GroupRange"):
+            # Hauptgruppen
 
-            return (topology_xml, groupaddress_xml)
+            for mg_xml in self.findall(hg_xml, "GroupRange"):
+                # Mittelgruppen
 
-        def groupaddresses(
-            groups_xml: ET.Element,
-        ) -> List[GroupAddress]:
-            """Get group addresses from xml."""
-            ga_factory = GAFactory(self.project_prefix)
+                for ga_xml in self.findall(mg_xml, "GroupAddress"):
+                    gruppenaddresse = ga_factory.groupaddress(ga_xml)
+                    gruppenaddress_list.append(gruppenaddresse)
+                    logging.debug("GA\t\t\t%s", gruppenaddresse)
 
-            gruppenaddresse_all = []
+        gruppenaddress_list.sort(key=lambda x: x.id_str)
+        for addr in gruppenaddress_list:
+            logging.debug(addr)
 
-            # We expect only one grouprange
-            grs_xml = self.findall(groups_xml, "GroupRanges", 1)
+        return gruppenaddress_list
 
-            # Extract group ranges
-            for hg_xml in self.findall(grs_xml, "GroupRange"):
-                # Hauptgruppen
+    @property
+    def topology(
+        self,
+    ) -> dict:
+        """Get topology from xml."""
+        topo_xml = self._find_item_in_project("Topology")
+        topo_factory = TOFactory(prefix=self.project_prefix, finder=self.findall)
+        topo_items = defaultdict(list)
 
-                for mg_xml in self.findall(hg_xml, "GroupRange"):
-                    # Mittelgruppen
+        for area_xml in self.findall(topo_xml, "Area"):
+            area = topo_factory.area(area_xml)
+            topo_items["area"].append(area)
 
-                    for ga_xml in self.findall(mg_xml, "GroupAddress"):
-                        gruppenaddresse = ga_factory.groupaddress(ga_xml)
-                        gruppenaddresse_all.append(gruppenaddresse)
-                        logging.debug("GA\t\t\t%s", gruppenaddresse)
+            for line_xml in self.findall(area_xml, "Line"):
+                line = topo_factory.line(line_xml, area)
+                topo_items["line"].append(line)  # type: ignore
 
-            gruppenaddresse_all.sort(key=lambda x: x.id_str)
-            for addr in gruppenaddresse_all:
-                logging.debug(addr)
+                for device_xml in self.findall(line_xml, "DeviceInstance"):
+                    topo_items["device"].append(topo_factory.device(device_xml, line))  # type: ignore
 
-            return gruppenaddresse_all
+        # attrib links
+        topo_items["device"] = sorted(topo_items["device"], key=lambda x: x.address)
+        return topo_items
 
-        def topology(
-            topo_xml: ET.Element,
-        ) -> Tuple[List[Area], List[Line], List[Device]]:
-            """Get topology from xml."""
-            topo_factory = TOFactory(prefix=self.project_prefix, finder=self.findall)
+    @property
+    def devices(self) -> List[Device]:
+        """Return all devices.
 
-            area_list = []
-            line_list = []
-            device_list = []
+        Shortcut to coressponding topology item.
 
-            area_xml_list = self.findall(topo_xml, "Area")
-            for area_xml in area_xml_list:
-                area = topo_factory.area(area_xml)
-                area_list.append(area)
-                logging.debug(area)
-
-                lines_xml_list = self.findall(area_xml, "Line")
-                for line_xml in lines_xml_list:
-                    line = topo_factory.line(line_xml, area)
-                    line_list.append(line)
-                    logging.debug(line)
-
-                    device_xml_list = self.findall(line_xml, "DeviceInstance")
-                    for device_xml in device_xml_list:
-                        device = topo_factory.device(device_xml, line)
-                        device_list.append(device)
-                        logging.debug(device)
-
-            # attrib links
-            device_list = sorted(device_list, key=lambda x: x.address)
-            return (area_list, line_list, device_list)
-
-        topo_xml, ga_xml = get_xml()
-        ga_list = groupaddresses(ga_xml)
-        (_, _, devices) = topology(topo_xml)
-        return (ga_list, devices)
+        """
+        return self.topology["device"]

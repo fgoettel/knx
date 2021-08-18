@@ -15,9 +15,9 @@ PROJECT_NAMESPACES = {
 }
 
 
-def postfix(prefix: str, sep: str = "_") -> str:
-    """Add a postfix, default to '_' to the given prefix."""
-    return "".join((prefix, sep))
+def postfix(text: str, postfix_: str = "_") -> str:
+    """Add a postfix `p` to the given text."""
+    return text + postfix_
 
 
 @dataclass
@@ -36,11 +36,19 @@ class FinderXml:
     """Create a namespaced xml findall."""
 
     def __init__(self, namespace: Optional[str] = None) -> None:
-        """Initialize the namespace for the findall function."""
+        """Initialize the namespace for the findall function.
+
+        Parameters
+        ----------
+        namespace
+            The namespace of the xml for this findall install.
+            Must be contained in `PROJECT_NAMESPACES`.
+
+        """
         assert (namespace in PROJECT_NAMESPACES.keys()) or (namespace is None)
         self.namespace = namespace
 
-    def findall(self, xml: ET.Element, keyword: str) -> List:
+    def findall(self, xml: ET.Element, keyword: str) -> List[ET.Element]:
         """Find all elements in an xml.
 
         If an expected count `n` is given it is asserted that exaclty `n` elements are found.

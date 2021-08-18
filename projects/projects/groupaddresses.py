@@ -9,9 +9,12 @@ from .util import KNXAddress, postfix
 
 @dataclass
 class GroupAddress(KNXAddress):
-    """KNX GA.
+    """KNX Group Address.
 
+    Warnings
+    --------
     Assumes we're living in the "3-stufig-world".
+
     """
 
     dtype: str
@@ -65,18 +68,37 @@ class GroupAddress(KNXAddress):
 
     def __str__(self) -> str:
         """Concatenate ga, name and dtype."""
-        return f"{self.get_ga_str()}: {self.name}, {self.dtype}"
+        return f"{self.get_ga_str()}: {self.name}, {self.dtype}"  # pragma: no cover
 
 
 class Factory:
-    """Factory to create items from xml."""
+    """Factory to create `GroupAdress`items from a xml."""
 
-    def __init__(self, prefix: str):
-        """Create factory."""
+    def __init__(self, prefix: str) -> None:
+        """Create factory.
+
+        Parameters
+        ----------
+        prefix
+            The project prefix.
+
+        """
         self.prefix = postfix(prefix)
 
     def groupaddress(self, xml: xml_element) -> GroupAddress:
-        """Create a group adress from a xml."""
+        """Create a group adress from a xml.
+
+        Parameters
+        ----------
+        xml
+            The xml element containing the group address information.
+
+        Returns
+        -------
+        group_adress
+            A configured group adress.
+
+        """
         try:
             dtype = xml.attrib["DatapointType"]
         except KeyError:

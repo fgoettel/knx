@@ -5,7 +5,7 @@ import argparse
 import logging
 from pathlib import Path
 
-from projects.gpa import GpaLoader
+from projects.gpa import Gpa
 
 
 def main():
@@ -22,10 +22,11 @@ def main():
     gpa_path = Path(args.gpa)
 
     # Run
-    group_addresses = GpaLoader(gpa_path=gpa_path).run()
+    gpa = Gpa(gpa_path)
+    gpa.display_infos()
 
     # Display them all
-    for ga_ in sorted(group_addresses, key=lambda x: x.name):
+    for ga_ in sorted(gpa.groupaddresses, key=lambda x: x.name):
         logging.info(ga_)
 
 

@@ -7,7 +7,7 @@ import logging
 from collections import OrderedDict
 from pathlib import Path
 
-from projects.knxproj import KnxprojLoader
+from projects.knxproj import Knxproj
 
 
 def main(json_path: str = "knx_mapping.json"):
@@ -23,12 +23,10 @@ def main(json_path: str = "knx_mapping.json"):
     args = parser.parse_args()
     knxproj_path = Path(args.knxproj)
 
-    # Run
-    group_addresses, _ = KnxprojLoader(knxproj_path=knxproj_path).run()
-
-    # Iterate over group addresses and create mapping
+    # Get group address
+    knxproj = Knxproj(knxproj_path=knxproj_path)
     groupaddress_to_dtype = {}
-    for group_address in group_addresses:
+    for group_address in knxproj.groupaddresses:
         groupaddress_to_dtype[group_address.get_ga_str()] = {
             "dtype": group_address.dtype,
             "name": group_address.name,

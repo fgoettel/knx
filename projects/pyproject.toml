@@ -38,7 +38,8 @@ ignore = [
 exclude_lines = [
     "pragma: no cover",
     "def __repr__",
+    "def __str__",
     "if __name__ == .__main__.:",
+    "pytest.main([.-x.])",
 ]
-source = ["logger"]
-omit = ["logger/codegen"]
+source = ["projects"]

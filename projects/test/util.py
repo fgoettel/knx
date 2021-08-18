@@ -1,7 +1,6 @@
 """Central place for mocks, fixtures, etc."""
 # pylint: disable=invalid-name,no-name-in-module,import-error,unused-argument
 
-# TODO: Clean up
 import random
 from string import ascii_lowercase
 from xml.etree import ElementTree as ET
@@ -82,13 +81,6 @@ param_medium = ["TP", "IP", "TP_OR_IP"]
 param_productRefId = ["MDT_GT2", "FOO", "BAR.Baz"]
 
 
-def _get_limits():
-    # Todo: fix test that assume range
-    lower = 0
-    upper = lower + random.randint(1, 1000)
-    return (lower, upper)
-
-
 def _get_address():
     return random.randrange(0, 255)
 
@@ -159,7 +151,3 @@ def line():
         medium=random.choice(param_medium),
         area=_get_area(),
     )
-
-
-if __name__ == "__main__":
-    pytest.main(["-x"])
