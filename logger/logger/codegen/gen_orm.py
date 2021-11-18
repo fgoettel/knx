@@ -263,7 +263,7 @@ class ORMGenerator:
         combined = "\n\n".join(
             (get_doc(), get_imports(imports), base, get_mixin(), orms)
         )
-        with open(ORM_PATH, "w") as file_:
+        with open(ORM_PATH, "w", encoding="utf-8") as file_:
             file_.write(combined)
 
 

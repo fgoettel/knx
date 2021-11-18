@@ -26,7 +26,7 @@ async def get_mapping(mapping_path: Path) -> dict:
     dtypes are covered by the xknx mapping.
     """
     logging.info("Loading mapping from %s", mapping_path.resolve())
-    with open(mapping_path) as file_:
+    with open(mapping_path, encoding="utf-8") as file_:
         mapping = json.load(file_)
 
     # Find unmatched

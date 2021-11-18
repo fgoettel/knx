@@ -142,7 +142,7 @@ def main():
 
     lines = get_lines(mapping_extended)
 
-    with open(DTYPE_MATCHER_PATH, "w") as file_:
+    with open(DTYPE_MATCHER_PATH, "w", encoding="utf-8") as file_:
         file_.write("\n".join(lines))
 
 
