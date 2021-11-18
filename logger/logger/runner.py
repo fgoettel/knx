@@ -25,7 +25,6 @@ async def get_mapping(mapping_path: Path) -> dict:
     Load mapping from given json path and ensure that all used
     dtypes are covered by the xknx mapping.
     """
-
     logging.info("Loading mapping from %s", mapping_path.resolve())
     with open(mapping_path) as file_:
         mapping = json.load(file_)

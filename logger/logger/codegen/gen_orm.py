@@ -74,7 +74,6 @@ def get_mixin() -> str:
         KNXMixin as string to form foundation for all orms.
 
     """
-
     repr_str = (
         "{self.__class__.__name__}"
         + "(value={self.value}, name={self.name}, time={self.time} "
@@ -200,7 +199,6 @@ def get_orms() -> str:
 
     Attention: the provided import dict is modified.
     """
-
     type_dict = defaultdict(list)
     for dpst, xknx_type in DTYPE2XKNX.items():
         name = xknx2name(xknx_type)

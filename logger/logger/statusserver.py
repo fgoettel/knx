@@ -70,7 +70,6 @@ def get_server(data: Data):
 
         def log_request(*args, **kwargs):
             """Only log requests as logging.debug."""
-
             # No method, overriding an inherited method
             # pylint: disable=no-method-argument
             logging.debug("Successfull request.")
@@ -101,7 +100,6 @@ class StatusServer:
 
     def run(self):
         """Serve the Server."""
-
         server_address = ("", self.port)
         server = get_server(data=self.data)
         httpd = HTTPServer(server_address, server)

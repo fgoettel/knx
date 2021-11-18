@@ -14,7 +14,6 @@ from logger.runner import run as logger_run
 
 def main():
     """Write values to a sqlite database."""
-
     # Set address of database
     # addr = "postgresql://{user}:{password}@{host}:{port}/{database}"
     addr = "sqlite://"

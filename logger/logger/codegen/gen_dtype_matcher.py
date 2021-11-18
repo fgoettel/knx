@@ -18,7 +18,6 @@ def get_mapping() -> Dict[str, str]:
 
     Returns a dict {dpt_name: xknx_name}.
     """
-
     mapping = {}
     for name in dir(dpt):
 
@@ -121,7 +120,6 @@ def dtype_sorter(dtype_str) -> int:
 
 def get_lines(mapping: dict) -> List:
     """Create a list of lines containing the serialized mapping."""
-
     lines = []
     # Doc
     file_ = "logger" + __file__.rsplit("logger", maxsplit=1)[1]
@@ -139,7 +137,6 @@ def get_lines(mapping: dict) -> List:
 
 def main():
     """Let's autogenerate a dpst <-> xknx mapping."""
-
     mapping = get_mapping()
     mapping_extended = extend_mapping(mapping)
 

@@ -10,7 +10,6 @@ from sqlalchemy.orm import sessionmaker
 @contextmanager
 def session_scope(addr: str):
     """Provide context manager for sqlalchemy session."""
-
     # not at the top, as it needs to be generated
     from logger.orm import Base  # pylint: disable=import-outside-toplevel
 
