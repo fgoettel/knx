@@ -16,7 +16,7 @@ from . import DST_DIR, LOGGER
 
 KNXMIXIN = "KNXMixin"
 DBBASEBAME = "Base"
-ORM_PATH = DST_DIR.joinpath("orm.py")
+ORM_PATH = DST_DIR / "orm.py"
 
 
 def dpst2db(dpst: str) -> str:

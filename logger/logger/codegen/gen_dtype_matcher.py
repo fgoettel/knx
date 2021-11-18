@@ -10,7 +10,7 @@ from xknx import dpt
 
 from . import DST_DIR, LOGGER
 
-DTYPE_MATCHER_PATH = DST_DIR.joinpath("dtype_matcher.py")
+DTYPE_MATCHER_PATH = DST_DIR / "dtype_matcher.py"
 
 
 def get_mapping() -> Dict[str, str]:
