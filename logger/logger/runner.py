@@ -7,7 +7,6 @@ import json
 import logging
 from pathlib import Path
 from threading import Thread
-from typing import Optional
 
 from xknx import XKNX, dpt
 from xknx.io import ConnectionConfig, ConnectionType
@@ -42,7 +41,7 @@ async def get_mapping(mapping_path: Path) -> dict:
     return mapping
 
 
-async def get_rx_cb(mapping: dict, db_session, status: Optional[Data]):
+async def get_rx_cb(mapping: dict, db_session, status: Data | None):
     """Yield a msg receive callback."""
     # pylint: disable=too-many-statements
     # pylint: disable=too-many-return-statements

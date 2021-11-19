@@ -38,14 +38,9 @@ def get_mapping() -> Dict[str, str]:
             continue
 
         # Try to get a valid sub number
-        try:
-            dpt_sub = xknx_dpt_class.dpt_sub_number
-        except AttributeError:
-            LOGGER.info("No sub number for %s", name)
-            dpt_sub = None
-
-        # Stringify it
+        dpt_sub = getattr(xknx_dpt_class, "dpt_sub_number", None)
         if dpt_sub is None:
+            LOGGER.info("No sub number for %s", name)
             dtype_str = f"DPT-{dpt_main}"
         else:
             dtype_str = f"DPST-{dpt_main}-{dpt_sub}"

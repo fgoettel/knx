@@ -3,10 +3,11 @@
 
 # pylint: disable=redefined-outer-name
 
-import datetime as dt
 import random
 import re
 import string
+from datetime import datetime as dt
+from datetime import timedelta
 
 import pytest
 from sqlalchemy import select
@@ -15,6 +16,7 @@ from xknx.telegram import Telegram, TelegramDirection
 from xknx.telegram.apci import GroupValueWrite
 
 from logger import orm
+from logger.codegen.gen_orm import DTYPE_DOC_SEPERATION
 from logger.dtype_matcher import DTYPE2XKNX
 from logger.orm import KNXMixin
 from logger.runner import get_rx_cb
@@ -48,12 +50,8 @@ def all_orms():
             continue
 
         dtype_match = RE_DTYPE.search(orm_class.__doc__).group("dtype")
-
-        if not "," in dtype_match:
-            orm_list.append((orm_class, dtype_match))
-        else:
-            for dtype in dtype_match.split(", "):
-                orm_list.append((orm_class, dtype))
+        for dtype in dtype_match.split(DTYPE_DOC_SEPERATION):
+            orm_list.append((orm_class, dtype))
 
     return orm_list
 
@@ -135,7 +133,7 @@ def src():
 
 @pytest.fixture
 def dst():
-    """A KNX PA."""
+    """A KNX GA."""
     return f"{random.randrange(0, 256)}/{random.randrange(0, 256)}/{random.randrange(0, 256)}"
 
 
@@ -160,7 +158,7 @@ async def test_orm_x(orm_under_test, dtype, name, payload, src, dst):
     with session_scope(addr) as session:
         rx_cb = await get_rx_cb(mapping=mapping, db_session=session, status=None)
 
-        # Ensure it's correctly added
+        # Add it to the db, await success
         assert await rx_cb(tele)
 
         # Get data and ensure it's the only thing added
@@ -172,8 +170,8 @@ async def test_orm_x(orm_under_test, dtype, name, payload, src, dst):
 
         # Ensure that the thing is correctly added
         # Value is not checked, we trust xknx to do the right thing here.
-        age = dt.datetime.utcnow() - item_from_db.time
-        assert age < dt.timedelta(seconds=0.1)
+        age = dt.utcnow() - item_from_db.time
+        assert timedelta() <= age < timedelta(seconds=0.1)
         assert item_from_db.name == name
         assert item_from_db.src == src
         assert item_from_db.dst == dst

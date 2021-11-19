@@ -16,6 +16,7 @@ from . import DST_DIR, LOGGER
 
 KNXMIXIN = "KNXMixin"
 DBBASEBAME = "Base"
+DTYPE_DOC_SEPERATION = ", "
 ORM_PATH = DST_DIR / "orm.py"
 
 
@@ -186,7 +187,7 @@ def _get_orm(
 class {name}({KNXMIXIN}, {DBBASEBAME}):
     \"""ORM for xknx '{xknx_name}'.
 
-    DType: {", ".join(dpst_list)}
+    DType: {DTYPE_DOC_SEPERATION.join(dpst_list)}
     \"""
 
     __tablename__ = "{table_name}"
@@ -245,8 +246,8 @@ class ORMGenerator:
     Each ORM is based on the xknx dpt class in logger.DTYPE2xknx.
     """
 
-    @classmethod
-    def run(cls) -> None:
+    @staticmethod
+    def run() -> None:
         """Generate the ORMs."""
         # Get used xknx dtypes
         imports: DefaultDict[str, Set[str]] = defaultdict(set)
