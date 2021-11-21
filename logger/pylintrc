@@ -8,10 +8,13 @@ ignore=orm.py
 disable=too-few-public-methods,
         bad-continuation,
         wrong-import-order,
-        fixme
+        fixme,
+        line-too-long
+
+[SIMILARITIES]
+ignore-imports=yes
 
 [DESIGN]
-
 # Maximum number of arguments for function / method.
 max-args=8
 

@@ -1,11 +1,11 @@
 #  History
 
 ## Unreleased
-* Added x1 wgt node
-* Projects
-  * Annotate everything!
-  * Move devices under projects
-  * Major internal refactoring
+*
+
+## v0.3.0
+* align python projects
+* updated python dependencies
 
 ## v0.2.0
 * Projects Interal

@@ -3,7 +3,6 @@
 
 import logging
 import re
-from dataclasses import dataclass
 from re import Pattern
 from typing import List
 
@@ -13,7 +12,6 @@ from projects.topology import Device
 from .devices import Switch
 
 
-@dataclass
 class BE4(Switch):
     """MDT Tasterschnittstelle."""
 

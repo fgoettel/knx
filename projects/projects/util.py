@@ -45,7 +45,7 @@ class FinderXml:
             Must be contained in `PROJECT_NAMESPACES`.
 
         """
-        assert (namespace in PROJECT_NAMESPACES.keys()) or (namespace is None)
+        assert (namespace in PROJECT_NAMESPACES) or (namespace is None)
         self.namespace = namespace
 
     def findall(self, xml: ET.Element, keyword: str) -> List[ET.Element]:

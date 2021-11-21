@@ -11,3 +11,12 @@ disable=too-few-public-methods,
 
 [SIMILARITIES]
 ignore-imports=yes
+
+[DESIGN]
+# Maximum number of arguments for function / method.
+max-args=8
+
+[FORMAT]
+
+# Maximum number of lines in a module.
+max-module-lines=2000

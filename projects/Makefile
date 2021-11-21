@@ -40,7 +40,8 @@ lint: ## check style with flake8
 	poetry run isort .
 	poetry run black .
 	poetry run pydocstyle .
-	poetry run pylint examples test projects
+	poetry run pylint test projects
+	poetry run pylint examples --disable=duplicate-code
 	poetry run mypy .
 
 test: ## run tests quickly with the poetry python

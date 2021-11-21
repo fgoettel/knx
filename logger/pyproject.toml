@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "logger"
-version = "0.3.0" # Also update in logger/__init__.px
+version = "0.3.0" # Also update in logger/__init__.py AND projects
 description = "Log knx messages"
 authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "3.10"
+python = "^3.10"
 SQLAlchemy = "^1.4"
 xknx = "^0.18"
 psycopg-binary = { version = "^3.0", optional = true }
@@ -46,10 +46,12 @@ ignore = [
 ]
 
 [tool.coverage]
+source = ["logger"]
 exclude_lines = [
     "pragma: no cover",
     "def __repr__",
+    "def __str__",
     "if __name__ == .__main__.:",
+    "pytest.main([.-x.])",
 ]
-source = ["logger"]
 omit = ["logger/codegen"]

@@ -21,7 +21,7 @@
      ```$ poetry install```
  ### `x1_nodes`
  TODO: document setup
+
  ## TODO
- * Unify python environments
  * reuse code
  * ...
