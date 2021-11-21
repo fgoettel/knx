@@ -1,4 +1,4 @@
-# logger
+# logger [![logger-codegen-and-lint-and-test](https://github.com/fgoettel/knx/actions/workflows/pytest_logger.yml/badge.svg)](https://github.com/fgoettel/knx/actions/workflows/pytest_logger.yml)
 
 Log knx telegrams to a database.
 
