@@ -53,5 +53,3 @@ coverage: ## check code coverage quickly with the default Python
 codegen:  ## Generate new mapping and orm
 	poetry run python -m logger.codegen.gen_dtype_matcher
 	poetry run python -m logger.codegen.gen_orm
-	poetry run isort logger/dtype_matcher.py logger/orm.py
-	poetry run black logger/dtype_matcher.py logger/orm.py

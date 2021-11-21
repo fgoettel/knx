@@ -132,9 +132,14 @@ def get_imports(import_raw: Dict[str, set]) -> str:
                 raise NotImplementedError
             type_ = result.group(1)
             values_clean.append(type_)
+
+        # Mimick isort
+        additional_newline = "\n" if key == "datetime" else ""
+
         if values_clean:
             imports = ", ".join(sorted(set(values_clean)))
-            lines.append(f"from {key} import {imports}")
+            lines.append(f"from {key} import {imports}{additional_newline}")
+
     return "\n".join(lines)
 
 
@@ -155,7 +160,7 @@ def get_base(import_dict: DefaultDict[str, Set[str]]) -> str:
 
     """
     import_dict["sqlalchemy.ext.declarative"].add("declarative_base")
-    baseline = f"{DBBASEBAME} = declarative_base() \n"
+    baseline = f"{DBBASEBAME} = declarative_base()\n"
     return baseline
 
 
