@@ -1,4 +1,4 @@
-name: logger-actions
+name: logger-codegen-and-lint-and-test
 
 on: [push]
 
@@ -25,6 +25,11 @@ jobs:
         with:
           path: ~/.local
           key: poetry-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
+      - name: Cache Pylint
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pylint
+          key: pylint-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
       - name: Set up python
         uses: actions/setup-python@v2
         with:
