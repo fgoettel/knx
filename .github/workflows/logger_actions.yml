@@ -27,6 +27,10 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
       - name: Cache python
         uses: actions/cache@v2
         with:
@@ -47,10 +51,6 @@ jobs:
         with:
           path: ${{ env.MYPY_CACHE_DIR }}
           key: mypy-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}-${{ env.WORKFLOW_VERSION }}
-      - name: Set up python
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
       - name: Run poetry image
         uses: abatilo/actions-poetry@v2.1.3
         with:
