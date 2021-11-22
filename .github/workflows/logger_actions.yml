@@ -10,10 +10,10 @@ on:
 env:
   PYTHON_VERSION: "3.10"
   POETRY_VERSION: 1.1.11
-  PYLINTHOME: .pylint_cache
-  MYPY_CACHE_DIR: .mypy_cache
-  POETRY_CACHE_DIR: .poetry_cache
-  WORKFLOW_VERSION: "0.1"
+  PYLINTHOME: ~/.cache/.pylint_cache
+  MYPY_CACHE_DIR: ~/.cache/.mypy_cache
+  POETRY_CACHE_DIR: ~/.cache/.poetry_cache
+  WORKFLOW_VERSION: "0.2"
 
 jobs:
   lint-and-test:
