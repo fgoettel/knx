@@ -479,7 +479,7 @@ pgsql = []
 [metadata]
 lock-version = "1.1"
 python-versions = "3.10"
-content-hash = "8b8860942060f70df6c2d243eb7fcda49bdb8b00b99f75d1a8bc2df2425d6237"
+content-hash = "fc6201282d4ee30910a22ef5c333b0a3f2daaf793540c286cb37ab66d9ddf17f"
 
 [metadata.files]
 astroid = [

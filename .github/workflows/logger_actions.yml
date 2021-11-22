@@ -13,6 +13,7 @@ env:
   PYLINTHOME: .pylint_cache
   MYPY_CACHE_DIR: .mypy_cache
   POETRY_CACHE_DIR: .poetry_cache
+  WORKFLOW_VERSION: "0.1"
 
 jobs:
   lint-and-test:
@@ -30,17 +31,17 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ env.POETRY_CACHE_DIR }}
-          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
+          key: poetry-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}-${{ env.WORKFLOW_VERSION }}
       - name: Cache Pylint
         uses: actions/cache@v2
         with:
           path: ${{ env.PYLINTHOME }}
-          key: pylint-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
+          key: pylint-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}-${{ env.WORKFLOW_VERSION }}
       - name: Cache mypy
         uses: actions/cache@v2
         with:
           path: ${{ env.MYPY_CACHE_DIR }}
-          key: mypy-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
+          key: mypy-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}-${{ env.WORKFLOW_VERSION }}
       - name: Set up python
         uses: actions/setup-python@v2
         with:
