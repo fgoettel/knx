@@ -10,6 +10,9 @@ on:
 env:
   PYTHON_VERSION: "3.10"
   POETRY_VERSION: 1.1.11
+  PYLINTHOME: .pylint_cache
+  MYPY_CACHE_DIR: .mypy_cache
+  POETRY_CACHE_DIR: .poetry_cache
 
 jobs:
   lint-and-test:
@@ -26,22 +29,17 @@ jobs:
       - name: Cache Poetry cache
         uses: actions/cache@v2
         with:
-          path: ~/.cache/pypoetry
+          path: ${{ env.POETRY_CACHE_DIR }}
           key: poetry-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
-      - name: Cache Packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pypoetry
-          key: poetry-packages-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('poetry.lock') }}-${{ hashFiles('../.github/workflows/*.yml') }}
       - name: Cache Pylint
         uses: actions/cache@v2
         with:
-          path: ~/.cache/pylint
+          path: ${{ env.PYLINTHOME }}
           key: pylint-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
       - name: Cache mypy
         uses: actions/cache@v2
         with:
-          path: .mypy_cache
+          path: ${{ env.MYPY_CACHE_DIR }}
           key: mypy-cache-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ env.POETRY_VERSION }}
       - name: Set up python
         uses: actions/setup-python@v2
