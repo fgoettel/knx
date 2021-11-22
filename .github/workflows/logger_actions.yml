@@ -10,9 +10,9 @@ on:
 env:
   PYTHON_VERSION: "3.10"
   POETRY_VERSION: 1.1.11
-  PYLINTHOME: ${{ runner.temp }}/.pylint_cache
-  MYPY_CACHE_DIR: ${{ runner.temp }}/.mypy_cache
-  POETRY_CACHE_DIR: ${{ runner.temp }}/.poetry_cache
+  PYLINTHOME: ${{ github.workspace }}/.pylint_cache
+  MYPY_CACHE_DIR: ${{ github.workspace }}/.mypy_cache
+  POETRY_CACHE_DIR: ${{ github.workspace }}/.poetry_cache
   WORKFLOW_VERSION: 5
 
 jobs:
