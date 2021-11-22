@@ -50,3 +50,7 @@ test: ## run tests quickly with the poetry python
 coverage: ## check code coverage quickly with the default Python
 	poetry run pytest --cov=. --cov-report=html test
 	$(BROWSER) htmlcov/index.html
+
+doc: ## Collection of interesting data
+    # TODO: Add coverage
+	poetry run pyreverse -o png -p logger ./logger
