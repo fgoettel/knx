@@ -31,8 +31,8 @@ jobs:
       - name: Cache Packages
         uses: actions/cache@v2
         with:
-          path: ~/.local
-          key: poetry-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/poetry.lock') }}-${{ hashFiles('.github/workflows/*.yml') }}
+          path: ~/.cache/pypoetry
+          key: poetry-packages-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('poetry.lock') }}-${{ hashFiles('../.github/workflows/*.yml') }}
       - name: Cache Pylint
         uses: actions/cache@v2
         with:
