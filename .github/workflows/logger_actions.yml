@@ -30,7 +30,7 @@ jobs:
       - name: Cache python
         uses: actions/cache@v2
         with:
-          path:  ${{ env.pythonLocation }}
+          path: ${{ env.pythonLocation }}
           key: python-${{ runner.os }}-${{ env.pythonLocation }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/poetry.lock') }}-${{ env.WORKFLOW_VERSION }}
       - name: Cache Poetry cache
         uses: actions/cache@v2
