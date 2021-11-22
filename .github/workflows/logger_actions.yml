@@ -1,6 +1,11 @@
 name: logger-lint-and-test
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'logger/**'
+      - '.github/workflows/logger_actions.yml'
+  pull_request:
 
 env:
   PYTHON_VERSION: "3.10"
