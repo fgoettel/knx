@@ -27,7 +27,12 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Cache Poetry cache
+      - name: Cache Poetry
+        uses: actions/cache@v2
+        with:
+          path: ~/.local
+          key: poetry-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/poetry.lock') }}-${{ env.WORKFLOW_VERSION }}
+      - name: Cache Poetry packages
         uses: actions/cache@v2
         with:
           path: ${{ env.POETRY_CACHE_DIR }}
