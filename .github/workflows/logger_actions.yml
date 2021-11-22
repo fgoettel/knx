@@ -1,6 +1,11 @@
-name: logger-codegen-and-lint-and-test
+name: logger-lint-and-test
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'logger/**'
+      - '.github/workflows/logger_actions.yml'
+  pull_request:
 
 env:
   PYTHON_VERSION: "3.10"
@@ -8,7 +13,10 @@ env:
 
 jobs:
   lint-and-test:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os}}
     defaults:
       run:
         working-directory: ./logger
