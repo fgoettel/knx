@@ -13,13 +13,13 @@ env:
   PYLINTHOME: ../.cache/.pylint_cache
   MYPY_CACHE_DIR: ../.cache/.mypy_cache
   POETRY_CACHE_DIR: ../.cache/.poetry_cache
-  WORKFLOW_VERSION: "3"
+  WORKFLOW_VERSION: 4
 
 jobs:
-  lint-and-test:
+  lint-and-test: # TODO: Split into lint and test
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest] # TODO: unix by default, windows only for merges to master
     runs-on: ${{ matrix.os}}
     defaults:
       run:
