@@ -1,4 +1,4 @@
-name: logger-lint-and-test
+name: projects-lint-and-test
 
 on:
   push:
