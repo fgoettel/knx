@@ -63,7 +63,7 @@ jobs:
     needs: lint
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest] # TODO: unix by default, windows only for merges to master
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os}}
     defaults:
       run:
