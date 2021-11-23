@@ -1,10 +1,10 @@
-name: logger-lint-and-test
+name: projects-lint-and-test
 
 on:
   push:
     paths:
-      - 'logger/**'
-      - '.github/workflows/logger_actions.yml'
+      - 'projects/**'
+      - '.github/workflows/projects_actions.yml'
 
 env:
   PYTHON_VERSION: "3.10"
@@ -12,7 +12,7 @@ env:
   PYLINTHOME: ${{ github.workspace }}/.pylint_cache
   MYPY_CACHE_DIR: ${{ github.workspace }}/.mypy_cache
   POETRY_CACHE_DIR: ${{ github.workspace }}/.poetry_cache
-  WORKFLOW_VERSION: logger_0
+  WORKFLOW_VERSION: projects_0
 
 jobs:
   lint:
