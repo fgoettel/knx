@@ -1,0 +1,18 @@
+name: x1_nodes-wgt-test
+
+on:
+  push:
+    paths:
+      - 'x1_nodes/wgt/**'
+      - '.github/workflows/x1_nodes_wgt_actions.yml'
+
+jobs:
+  tests:
+    name: Unit Testing
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ./x1_nodes/wgt/WgtNodesTest
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - run: dotnet test
