@@ -1,7 +1,9 @@
 #  History
 
 ## Unreleased
-*
+* Added github actions for python projects
+* Fixed poetry lock file
+* Add poetry env to test env for x1_nodes
 
 ## v0.3.0
 * align python projects

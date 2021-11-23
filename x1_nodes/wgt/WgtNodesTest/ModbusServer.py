@@ -1,10 +1,8 @@
 ﻿#!/usr/bin/env python3
 
 from pymodbus.server.sync import StartTcpServer
-from pymodbus.datastore import ModbusSequentialDataBlock, ModbusSparseDataBlock
+from pymodbus.datastore import ModbusSequentialDataBlock
 from pymodbus.datastore import ModbusSlaveContext, ModbusServerContext
-
-from pymodbus.device import ModbusDeviceIdentification
 
 import logging
 import random

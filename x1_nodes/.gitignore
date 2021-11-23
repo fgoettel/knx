@@ -1,12 +1,5 @@
-# Mac stuff
-.DS_Store
-
 # Editor stuff
-**/.vscode/*
 **/.vs/*
-
-# SDK stuff
-wgt/LogicNodesSDK/*
 
 # Other stuff
 **/packages/*
