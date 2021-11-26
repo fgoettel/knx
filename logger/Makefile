@@ -37,20 +37,21 @@ clean: ## remove all build, test, coverage and python artifacts
 	find . -name ".pytest_cache" -exec rm -rf {} +
 
 lint: ## check style with flake8
-	poetry run isort .
-	poetry run black .
-	poetry run pydocstyle .
-	poetry run pylint examples test logger
-	poetry run mypy .
+	poetry run isort examples logger test
+	poetry run black  examples logger test
+	poetry run pydocstyle examples logger test
+	poetry run pylint examples logger test
+	poetry run mypy  examples logger test
 
 test: ## run tests quickly with the poetry python
-	poetry run pytest
+	poetry run pytest test
 
 coverage: ## check code coverage quickly with the default Python
 	poetry run pytest --cov=. --cov-report=html test
 	$(BROWSER) htmlcov/index.html
 
 codegen:  ## Generate new mapping and orm
+    # dtype matcher must run first
 	poetry run python -m logger.codegen.gen_dtype_matcher
 	poetry run python -m logger.codegen.gen_orm
 

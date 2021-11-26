@@ -11,3 +11,6 @@ htmlcov
 
 # MacOS
 .DS_Store
+
+# Bazel
+**/bazel-*

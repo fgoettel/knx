@@ -8,7 +8,7 @@ from typing import Dict, List
 
 from xknx import dpt
 
-from . import DST_DIR, LOGGER
+from logger.codegen.util import DST_DIR, LOGGER
 
 DTYPE_MATCHER_PATH = DST_DIR / "dtype_matcher.py"
 

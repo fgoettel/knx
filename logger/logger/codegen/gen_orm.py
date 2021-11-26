@@ -9,10 +9,9 @@ from typing import DefaultDict, Dict, Set
 
 from xknx import dpt
 
+from logger.codegen.util import DST_DIR, LOGGER, get_parser
+from logger.dtype_matcher import DTYPE2XKNX
 from logger.util import xknx2name
-
-from ..dtype_matcher import DTYPE2XKNX
-from . import DST_DIR, LOGGER
 
 KNXMIXIN = "KNXMixin"
 DBBASEBAME = "Base"
@@ -252,7 +251,7 @@ class ORMGenerator:
     """
 
     @staticmethod
-    def run() -> None:
+    def run() -> str:
         """Generate the ORMs."""
         # Get used xknx dtypes
         imports: DefaultDict[str, Set[str]] = defaultdict(set)
@@ -269,10 +268,24 @@ class ORMGenerator:
         combined = "\n\n".join(
             (get_doc(), get_imports(imports), base, get_mixin(), orms)
         )
+
         with open(ORM_PATH, "w", encoding="utf-8") as file_:
             file_.write(combined)
+
+        return combined
+
+
+def main():
+    """Run generator with parser."""
+    parser = get_parser()
+    args = parser.parse_args()
+    generated = ORMGenerator.run()
+    if args.stdout_generated:
+        print(generated, file=sys.stdout, flush=True)
+
+    return 0
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    ORMGenerator.run()
+    raise SystemExit(main())

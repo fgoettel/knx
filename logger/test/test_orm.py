@@ -178,4 +178,4 @@ async def test_orm_x(orm_under_test, dtype, name, payload, src, dst):
 
 
 if __name__ == "__main__":
-    pytest.main([__file__])
+    raise SystemExit(pytest.main([__file__]))
