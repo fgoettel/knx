@@ -8,7 +8,7 @@ from typing import Dict, List
 
 from xknx import dpt
 
-from logger.codegen.util import DST_DIR, LOGGER
+from logger.logger.codegen.util import DST_DIR, LOGGER, get_parser
 
 DTYPE_MATCHER_PATH = DST_DIR / "dtype_matcher.py"
 
@@ -132,15 +132,26 @@ def get_lines(mapping: dict) -> List:
 
 def main():
     """Let's autogenerate a dpst <-> xknx mapping."""
+    parser = get_parser()
+    args = parser.parse_args()
+
     mapping = get_mapping()
     mapping_extended = extend_mapping(mapping)
 
     lines = get_lines(mapping_extended)
+    generated = "\n".join(lines) + "\n"
 
+    # Display generated code
+    if args.stdout_generated:
+        print(generated, file=sys.stdout, flush=True)
+
+    # Save generated code
     with open(DTYPE_MATCHER_PATH, "w", encoding="utf-8") as file_:
-        file_.write("\n".join(lines) + "\n")
+        file_.write(generated)
+
+    return 0
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    sys.exit(main())
+    raise SystemExit(main())

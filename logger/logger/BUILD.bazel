@@ -1,0 +1,50 @@
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+load("@logger_deps//:requirements.bzl", "requirement")
+
+
+py_library(
+    name = "util_py",
+    srcs = ["util.py"],
+)
+
+py_library(
+    name = "codegen_util_py",
+    srcs = ["codegen/util.py"],
+)
+
+py_binary(
+    name = "codegen_orm_py",
+    srcs = ["codegen/gen_orm.py"],
+    main = "codegen/gen_orm.py",
+    deps = [
+        ":codegen_util_py",
+        ":util_py",
+        requirement("xknx"),
+        requirement("sqlalchemy"),
+    ],
+    data = [":generate_dtype_matcher"]
+)
+
+py_binary(
+    name = "codegen_dtype_matcher",
+    srcs = ["codegen/gen_dtype_matcher.py"],
+    main = "codegen/gen_dtype_matcher.py",
+    deps = [
+        ":codegen_util_py",
+        requirement("xknx"),
+    ],
+)
+
+genrule(
+    name = "generate_orm",
+    outs = ["orm.py"],
+    cmd = "./$(location :codegen_orm_py) --stdout_generated > \"$@\"",
+    tools = [":codegen_orm_py"],
+)
+
+genrule(
+    name = "generate_dtype_matcher",
+    outs = ["dtype_matcher.py"],
+    cmd = "./$(location :codegen_dtype_matcher) --stdout_generated > \"$@\"",
+    tools = [":codegen_dtype_matcher"],
+)
