@@ -10,9 +10,9 @@ http_archive(
 
 http_archive(
     name = "com_sonia_rules_poetry",
-    sha256 = "8a7a6a5d2ef859ba4309929f3b4d61031f2a4bfed6f450f04ab09443246a4b5c",
-    strip_prefix = "rules_poetry-ecd0d9c66b89403667304b11da3bd99764797a63",
-    urls = ["https://github.com/soniaai/rules_poetry/archive/ecd0d9c66b89403667304b11da3bd99764797a63.tar.gz"],
+    sha256 = "88a849dcece2fb81c803d6d73ee5f6788edfc78f4e9a805d7d9f22fb1e5015ea",
+    strip_prefix = "rules_poetry-a662e29a344b7762ab68e3ae44fc3aef333fe5ff",
+    urls = ["https://github.com/soniaai/rules_poetry/archive/a662e29a344b7762ab68e3ae44fc3aef333fe5ff.tar.gz"],
 )
 
 load("@com_sonia_rules_poetry//rules_poetry:defs.bzl", "poetry_deps")
@@ -26,5 +26,5 @@ poetry(
     lockfile = "//logger:poetry.lock",
     pyproject = "//logger:pyproject.toml",
     # optional, if you would like to pull from pip instead of a Bazel cache
-    tags = ["no-remote-cache"],
+    #tags = ["no-remote-cache"],
 )
