@@ -1,0 +1,42 @@
+load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+load("@logger_deps//:dependencies.bzl", "dependency")
+
+py_library(
+    name = "util",
+    srcs = ["util.py"],
+)
+
+py_binary(
+    name = "gen_orm",
+    srcs = ["gen_orm.py"],
+    data = [":generate_dtype_matcher"],
+    deps = [
+        ":util",
+        "//logger/logger:util",
+        dependency("xknx"),
+        dependency("sqlalchemy"),
+    ],
+)
+
+py_binary(
+    name = "gen_dtype_matcher",
+    srcs = ["gen_dtype_matcher.py"],
+    deps = [
+        ":util",
+        dependency("xknx"),
+    ],
+)
+
+genrule(
+    name = "generate_orm",
+    outs = ["orm.py"],
+    cmd = "./$(location :gen_orm) --stdout_generated > \"$@\"",
+    tools = [":gen_orm"],
+)
+
+genrule(
+    name = "generate_dtype_matcher",
+    outs = ["dtype_matcher.py"],
+    cmd = "./$(location :gen_dtype_matcher) --stdout_generated > \"$@\"",
+    tools = [":gen_dtype_matcher"],
+)
