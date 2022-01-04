@@ -52,8 +52,8 @@ coverage: ## check code coverage quickly with the default Python
 
 codegen:  ## Generate new mapping and orm
     # dtype matcher must run first
-	poetry run python -m logger.codegen.gen_dtype_matcher
-	poetry run python -m logger.codegen.gen_orm
+	bazel build logger/codegen
+	cp -r ../bazel-bin/logger/logger/codegen/ logger/codegen/
 
 doc: ## Collection of interesting data
     # TODO: Add coverage

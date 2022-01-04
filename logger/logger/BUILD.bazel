@@ -4,5 +4,5 @@ load("@logger_deps//:dependencies.bzl", "dependency")
 py_library(
     name = "util",
     srcs = ["util.py"],
-    visibility = ["//visibility:public"]
+    visibility = ["//visibility:public"],
 )
