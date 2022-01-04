@@ -6,14 +6,25 @@ http_archive(
     url = "https://github.com/bazelbuild/rules_python/releases/download/0.5.0/rules_python-0.5.0.tar.gz",
 )
 
-load("@rules_python//python:pip.bzl", "pip_install")
+# Poetry rules for managing Python dependencies
 
-# Create a central external repo, @logger_deps, that contains Bazel targets for all the
-# third-party packages specified in the requirements.txt file.
-# TODO: Move to lazy installation:
-#  https://github.com/bazelbuild/rules_python#fetch-pip-dependencies-lazily
-pip_install(
+http_archive(
+    name = "com_sonia_rules_poetry",
+    sha256 = "8a7a6a5d2ef859ba4309929f3b4d61031f2a4bfed6f450f04ab09443246a4b5c",
+    strip_prefix = "rules_poetry-ecd0d9c66b89403667304b11da3bd99764797a63",
+    urls = ["https://github.com/soniaai/rules_poetry/archive/ecd0d9c66b89403667304b11da3bd99764797a63.tar.gz"],
+)
+
+load("@com_sonia_rules_poetry//rules_poetry:defs.bzl", "poetry_deps")
+
+poetry_deps()
+
+load("@com_sonia_rules_poetry//rules_poetry:poetry.bzl", "poetry")
+
+poetry(
     name = "logger_deps",
-    python_interpreter = "python3.10",
-    requirements = "//logger:requirements.txt",
+    lockfile = "//logger:poetry.lock",
+    pyproject = "//logger:pyproject.toml",
+    # optional, if you would like to pull from pip instead of a Bazel cache
+    tags = ["no-remote-cache"],
 )
