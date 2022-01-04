@@ -47,4 +47,5 @@ filegroup(
         ":generate_dtype_matcher",
         ":generate_orm",
     ],
+    visibility = ["//visibility:public"],
 )

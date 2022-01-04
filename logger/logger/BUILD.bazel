@@ -1,8 +1,27 @@
-load("@rules_python//python:defs.bzl", "py_binary", "py_library")
+load("@rules_python//python:defs.bzl", "py_library")
 load("@logger_deps//:dependencies.bzl", "dependency")
 
 py_library(
     name = "util",
     srcs = ["util.py"],
     visibility = ["//visibility:public"],
+)
+
+py_library(
+    name = "logger",
+    srcs = ["runner.py"],
+    data = [
+        "//logger/logger/codegen",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":statusserver",
+        ":util",
+        dependency("xknx"),
+    ],
+)
+
+py_library(
+    name = "statusserver",
+    srcs = ["statusserver.py"],
 )

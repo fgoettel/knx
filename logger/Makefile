@@ -37,6 +37,7 @@ clean: ## remove all build, test, coverage and python artifacts
 	find . -name ".pytest_cache" -exec rm -rf {} +
 
 lint: ## check style with flake8
+	buildifier -r .
 	poetry run isort examples logger test
 	poetry run black  examples logger test
 	poetry run pydocstyle examples logger test

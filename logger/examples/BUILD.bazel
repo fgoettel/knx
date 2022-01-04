@@ -1,0 +1,17 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@logger_deps//:dependencies.bzl", "dependency")
+
+py_binary(
+    name = "examples",
+    srcs = ["main.py"],
+    data = [
+        "ga_mapping.json",
+    ],
+    main = "main.py",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//logger/logger",
+        dependency("xknx"),
+        dependency("sqlalchemy"),
+    ],
+)

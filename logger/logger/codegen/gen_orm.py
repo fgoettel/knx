@@ -10,8 +10,8 @@ from typing import DefaultDict, Dict, Set
 
 from xknx import dpt
 
-from logger.logger.codegen.util import DST_DIR, LOGGER, get_parser
 from logger.logger.codegen.dtype_matcher import DTYPE2XKNX
+from logger.logger.codegen.util import DST_DIR, LOGGER, get_parser
 from logger.logger.util import xknx2name
 
 KNXMIXIN = "KNXMixin"

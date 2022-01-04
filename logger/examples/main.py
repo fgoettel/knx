@@ -9,7 +9,7 @@ from pathlib import Path
 
 from xknx.io import ConnectionType
 
-from logger.runner import run as logger_run
+from logger.logger.runner import run as logger_run
 
 
 def main():

@@ -12,10 +12,10 @@ from xknx import XKNX, dpt
 from xknx.io import ConnectionConfig, ConnectionType
 from xknx.telegram.apci import GroupValueWrite
 
-from logger import orm
-from logger.dtype_matcher import DTYPE2XKNX
-from logger.statusserver import Data
-from logger.util import session_scope, xknx2name
+from logger.logger.codegen import orm
+from logger.logger.codegen.dtype_matcher import DTYPE2XKNX
+from logger.logger.statusserver import Data
+from logger.logger.util import session_scope, xknx2name
 
 
 async def get_mapping(mapping_path: Path) -> dict:
