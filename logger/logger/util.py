@@ -11,8 +11,9 @@ from sqlalchemy.orm import sessionmaker
 def session_scope(addr: str):
     """Provide context manager for sqlalchemy session."""
     # not at the top, as it needs to be generated
-    from logger.logger.codegen.orm import \
-        Base  # pylint: disable=import-outside-toplevel
+    from logger.logger.codegen.orm import (
+        Base,
+    )  # pylint: disable=import-outside-toplevel
 
     engine = create_engine(addr, future=True)
     Base.metadata.create_all(

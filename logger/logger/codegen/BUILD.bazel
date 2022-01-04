@@ -10,6 +10,7 @@ py_binary(
     name = "gen_orm",
     srcs = ["gen_orm.py"],
     data = [":generate_dtype_matcher"],
+    visibility = ["//logger/test:__pkg__"],
     deps = [
         ":util",
         "//logger/logger:util",

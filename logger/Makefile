@@ -45,7 +45,7 @@ lint: ## check style with flake8
 	poetry run mypy  examples logger test
 
 test: ## run tests quickly with the poetry python
-	poetry run pytest test
+	bazel test ...
 
 coverage: ## check code coverage quickly with the default Python
 	poetry run pytest --cov=. --cov-report=html test
