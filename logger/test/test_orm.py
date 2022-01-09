@@ -175,7 +175,3 @@ async def test_orm_x(orm_under_test, dtype, name, payload, src, dst):
         assert item_from_db.name == name
         assert item_from_db.src == src
         assert item_from_db.dst == dst
-
-
-if __name__ == "__main__":
-    raise SystemExit(pytest.main([__file__]))

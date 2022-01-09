@@ -1,17 +1,21 @@
-load("@rules_python//python:defs.bzl", "py_test")
+load("//tools/pytest:defs.bzl", "py_pytest")
 load("@logger_deps//:dependencies.bzl", "dependency")
 
-py_test(
+py_pytest(
     name = "orm",
     srcs = ["test_orm.py"],
-    main = "test_orm.py",
-    visibility = ["//visibility:public"],
     deps = [
         "//logger/logger",
         "//logger/logger/codegen:gen_orm",
         dependency("xknx"),
         dependency("sqlalchemy"),
-        dependency("pytest"),
         dependency("pytest-asyncio"),
+    ],
+)
+
+test_suite(
+    name = "test",
+    tests = [
+        "orm",
     ],
 )
