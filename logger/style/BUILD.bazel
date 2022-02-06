@@ -1,0 +1,63 @@
+load("@rules_python//python:defs.bzl", "py_library")
+load("//tools/pytest:defs.bzl", "py_pytest")
+load("@logger_deps//:dependencies.bzl", "dependency")
+
+py_library(
+    name = "util",
+    testonly = True,
+    srcs = ["util.py"],
+)
+
+py_pytest(
+    name = "isort",
+    srcs = ["test_isort.py"],
+    data = ["//logger:source_all"],
+    deps = [
+        ":util",
+        dependency("isort"),
+    ],
+)
+
+py_pytest(
+    name = "black",
+    srcs = ["test_black.py"],
+    data = ["//logger:source_all"],
+    deps = [
+        ":util",
+        dependency("black"),
+    ],
+)
+
+py_pytest(
+    name = "pylint",
+    srcs = ["test_pylint.py"],
+    data = [
+        "pylintrc",
+        "//logger:source_all",
+    ],
+    deps = [
+        ":util",
+        dependency("pylint"),
+        dependency("sqlalchemy"),
+        dependency("xknx"),
+    ],
+)
+
+test_suite(
+    name = "style",
+    tests = [
+        "black",
+        "isort",
+        "pylint",
+    ],
+)
+
+filegroup(
+    name = "source_all",
+    testonly = True,
+    srcs = glob(["**/*.py"]),
+    visibility = [
+        "//logger:__pkg__",
+        "//logger/style:__pkg__",
+    ],
+)

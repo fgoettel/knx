@@ -12,8 +12,10 @@ from xknx import XKNX, dpt
 from xknx.io import ConnectionConfig, ConnectionType
 from xknx.telegram.apci import GroupValueWrite
 
-from logger.logger.codegen import orm
-from logger.logger.codegen.dtype_matcher import DTYPE2XKNX
+from logger.logger.codegen import orm  # pylint: disable=no-name-in-module
+from logger.logger.codegen.dtype_matcher import (  # pylint: disable=no-name-in-module,import-error
+    DTYPE2XKNX,
+)
 from logger.logger.statusserver import Data
 from logger.logger.util import session_scope, xknx2name
 
@@ -177,7 +179,7 @@ async def run(
     if status_server:
         logging.info("Status Server enabled.")
         # pylint: disable=import-outside-toplevel
-        from logger.statusserver import StatusServer
+        from logger.logger.statusserver import StatusServer
 
         status = Data(
             last_rx_time=dt.datetime(year=2000, month=1, day=1),

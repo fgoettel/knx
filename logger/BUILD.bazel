@@ -1,1 +1,14 @@
-"""Make python dependencies visible."""
+"""Make python dependencies visible. Also get all python files for linting/style checks."""
+
+filegroup(
+    name = "source_all",
+    testonly = True,
+    srcs = glob(["**/*.py"]) + [
+        "//logger/logger/codegen:source_all",
+        "//logger/logger:source_all",
+        "//logger/examples:source_all",
+        "//logger/style:source_all",
+        "//logger/test:source_all",
+    ],
+    visibility = ["//visibility:public"],
+)

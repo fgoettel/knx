@@ -10,7 +10,9 @@ from typing import DefaultDict, Dict, Set
 
 from xknx import dpt
 
-from logger.logger.codegen.dtype_matcher import DTYPE2XKNX
+from logger.logger.codegen.dtype_matcher import (  # pylint: disable=import-error,no-name-in-module
+    DTYPE2XKNX,
+)
 from logger.logger.codegen.util import DST_DIR, LOGGER, get_parser
 from logger.logger.util import xknx2name
 
@@ -24,6 +26,7 @@ def dpst2db(dpst: str) -> str:
     """Translate a knx dtype into a db type."""
     # pylint: disable=too-many-return-statements
     # pylint: disable=too-many-branches
+    # pylint: disable=too-few-public-methods
 
     xknx_class = DTYPE2XKNX[dpst]
 

@@ -15,3 +15,13 @@ py_binary(
         dependency("sqlalchemy"),
     ],
 )
+
+filegroup(
+    name = "source_all",
+    testonly = True,
+    srcs = glob(["**/*.py"]),
+    visibility = [
+        "//logger:__pkg__",
+        "//logger/style:__pkg__",
+    ],
+)

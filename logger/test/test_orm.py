@@ -15,10 +15,14 @@ from xknx.dpt import DPTArray, DPTBinary
 from xknx.telegram import Telegram, TelegramDirection
 from xknx.telegram.apci import GroupValueWrite
 
-from logger.logger.codegen import orm
-from logger.logger.codegen.dtype_matcher import DTYPE2XKNX
+from logger.logger.codegen import orm  # pylint: disable=no-name-in-module
+from logger.logger.codegen.dtype_matcher import (  # pylint: disable=import-error,no-name-in-module
+    DTYPE2XKNX,
+)
 from logger.logger.codegen.gen_orm import DTYPE_DOC_SEPERATION
-from logger.logger.codegen.orm import KNXMixin
+from logger.logger.codegen.orm import (  # pylint: disable=import-error,no-name-in-module
+    KNXMixin,
+)
 from logger.logger.runner import get_rx_cb
 from logger.logger.util import session_scope
 

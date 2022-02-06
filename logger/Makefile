@@ -38,14 +38,11 @@ clean: ## remove all build, test, coverage and python artifacts
 
 lint: ## check style with flake8
 	buildifier -r .
-	poetry run isort examples logger test
-	poetry run black  examples logger test
-	poetry run pydocstyle examples logger test
-	poetry run pylint examples logger test
+	bazel test //logger/style
 	poetry run mypy  examples logger test
 
 test: ## run tests quickly with the poetry python
-	bazel test ...
+	bazel test //logger/test/...
 
 coverage: ## check code coverage quickly with the default Python
 	poetry run pytest --cov=. --cov-report=html test

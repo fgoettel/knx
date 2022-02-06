@@ -82,6 +82,8 @@ def get_server(data: Data):
 class StatusServer:
     """Simple status server. Serving the current status as dict."""
 
+    # pylint: disable=too-few-public-methods
+
     def __init__(self, data: Data, port: int = 8080):
         """Initialize the server.
 
