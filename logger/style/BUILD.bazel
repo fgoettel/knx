@@ -41,6 +41,7 @@ py_pytest(
         dependency("sqlalchemy"),
         dependency("xknx"),
     ],
+    size="medium",
 )
 
 test_suite(
