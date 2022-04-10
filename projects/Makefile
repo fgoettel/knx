@@ -53,4 +53,4 @@ coverage: ## check code coverage quickly with the default Python
 
 doc: ## Collection of interesting data
     # TODO: Add coverage
-	poetry run pyreverse -o png -p logger ./logger
+	poetry run pyreverse -o png -p project ./projects
