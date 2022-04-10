@@ -698,6 +698,16 @@ class KelvinPerPercent(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class Latin1(KNXMixin, Base):
+    """ORM for xknx 'DPTLatin1'.
+
+    DType: DPST-16-1
+    """
+
+    __tablename__ = "latin1"
+    value = Column(types.String(14))
+
+
 class Length(KNXMixin, Base):
     """ORM for xknx 'DPTLength'.
 
@@ -1141,7 +1151,7 @@ class Stress(KNXMixin, Base):
 class String(KNXMixin, Base):
     """ORM for xknx 'DPTString'.
 
-    DType: DPST-16-0, DPST-16-1
+    DType: DPST-16-0
     """
 
     __tablename__ = "string"

@@ -170,7 +170,7 @@ DTYPE2XKNX = {
     "DPST-14-78": dpt.DPTWeight,
     "DPST-14-79": dpt.DPTWork,
     "DPST-16-0": dpt.DPTString,
-    "DPST-16-1": dpt.DPTString,  # encoding: iso-8859-1
+    "DPST-16-1": dpt.DPTLatin1,
     "DPST-17-1": dpt.DPTSceneNumber,
     "DPST-18-1": dpt.DPTSceneNumber,  # SceneControl
     "DPST-19-1": dpt.DPTDateTime,

@@ -59,7 +59,7 @@ def dpst2db(dpst: str) -> str:
             return "types.DateTime"
     if xknx_return_type == "str":
         return "types.String(14)"
-    if xknx_return_type == "HVACModeType":
+    if xknx_return_type == "HVACModeT":
         # This will be only saved as integer
         return "types.Integer"
 

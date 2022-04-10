@@ -77,8 +77,6 @@ def extend_mapping(mapping):
     ] = "dpt.DPTSignedRelativeValue,  # Status_Mode3 TODO:xknx type"
     extension["DPST-10-1"] = "dpt.DPTTime,"
     extension["DPST-11-1"] = "dpt.DPTDate,"
-    extension["DPST-16-1"] = "dpt.DPTString,  # encoding: iso-8859-1"
-
     extension["DPST-18-1"] = "dpt.DPTSceneNumber,  # SceneControl"
     extension["DPST-19-1"] = "dpt.DPTDateTime,"
     extension["DPST-20-105"] = "dpt.DPTHVACContrMode,"
