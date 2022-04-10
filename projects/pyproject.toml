@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "projects"
-version = "0.4.0" # Also update in projects/__init__.py AND logger
+version = "0.4.1" # Also update in projects/__init__.py AND logger
 description = "Interact with ets/gpa/... project files."
 authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 

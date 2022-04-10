@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "logger"
-version = "0.4.0" # Also update in logger/__init__.py AND projects
+version = "0.4.1" # Also update in logger/__init__.py AND projects
 description = "Log knx messages"
 authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 
@@ -8,10 +8,10 @@ authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 python = "3.10"
 SQLAlchemy = "*"
 xknx = "*"
-psycopg-binary = { version = "*", optional = true }
+psycopg2-binary = { version = "*", optional = true }
 
 [tool.poetry.extras]
-pgsql = ["psycopg3-binary"]
+pgsql = ["psycopg2-binary"]
 
 [tool.poetry.dev-dependencies]
 black = "*"
