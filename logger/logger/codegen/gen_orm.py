@@ -71,7 +71,7 @@ def get_mixin() -> str:
 
     Returns
     -------
-    KNXMixin : str
+    str
         KNXMixin as string to form foundation for all orms.
 
     """
@@ -112,8 +112,13 @@ def get_imports(import_raw: Dict[str, set]) -> str:
 
     Returns
     -------
-    imports : str
+    str
         Stringified imports
+
+    Raises
+    ------
+    NotImplementedError
+        For stuff that is not implemented.
 
     """
     lines = []
@@ -155,7 +160,7 @@ def get_base(import_dict: DefaultDict[str, Set[str]]) -> str:
 
     Returns
     -------
-    baseline : str
+    str
         Stringified code to create a base
 
     """
@@ -171,15 +176,15 @@ def _get_orm(
 
     Parameters
     ----------
-    name
+    name : str
         Name of the orm class (also used for the table)
-    xknx_name
+    xknx_name : str
         Name of the associated xknx datatype (documentation only)
-    table_name
+    table_name : str
         Name of the table
-    db_type
+    db_type : str
         Type of the database entry
-    dpst_list
+    dpst_list : list
         Datapoint type (in knx notation)
 
     Returns
@@ -203,7 +208,18 @@ class {name}({KNXMIXIN}, {DBBASEBAME}):
 def get_orms() -> str:
     """Create all orms for dpsts.
 
-    Attention: the provided import dict is modified.
+    Returns
+    -------
+    str
+        A string representing all sorted orms.
+
+    Raises
+    ------
+    AssertionError
+        In case of ambiguous db types.
+
+    ValueError
+        In case of duplicated orms.
     """
     type_dict = defaultdict(list)
     for dpst, xknx_type in DTYPE2XKNX.items():
@@ -215,7 +231,8 @@ def get_orms() -> str:
 
         # Ensure that all dpsts map to the same db type
         db_types = {dpst2db(d) for d in dpst_list}
-        assert len(db_types) == 1
+        if len(db_types) != 1:
+            raise AssertionError()
         db_type = db_types.pop()
 
         # Ensure each name is only used once

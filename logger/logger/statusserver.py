@@ -95,7 +95,8 @@ class StatusServer:
 
         """
         self.port = port
-        assert isinstance(data, Data)
+        if not isinstance(data, Data):
+            raise ValueError
         self.data = data
 
     def run(self):
