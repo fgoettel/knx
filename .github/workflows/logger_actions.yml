@@ -16,9 +16,10 @@ env:
 
 jobs:
   nox:
-    - uses: actions/checkout@v2
-    - uses: excitedleigh/setup-nox@v2.0.0
-    - run: nox
+    steps:
+      - uses: actions/checkout@v2
+      - uses: excitedleigh/setup-nox@v2.0.0
+      - run: nox
   lint:
     strategy:
       matrix:
