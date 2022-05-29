@@ -9,6 +9,9 @@ on:
 jobs:
   tests:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./logger
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
