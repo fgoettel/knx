@@ -92,10 +92,10 @@ class {KNXMIXIN}:
 
     @property
     @abstractmethod
-    def value(self):
+    def value(self) -> Column:
         \"""Abstract placeholder for values.\"""
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         \"""Return basic information about this entity (value, name, time, src, dst).\"""
         return f"{repr_str}"  # noqa: E501
     """
@@ -220,6 +220,7 @@ def get_orms() -> str:
 
     ValueError
         In case of duplicated orms.
+
     """
     type_dict = defaultdict(list)
     for dpst, xknx_type in DTYPE2XKNX.items():

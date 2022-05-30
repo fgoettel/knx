@@ -24,25 +24,29 @@ class Data:
         return (self.last_rx_time - dt.now()) < self.max_delta
 
 
-def get_server(data: Data):
+class BaseServer(BaseHTTPRequestHandler):
+    """Wrapper to have a return type for "get_sever"."""
+
+
+def get_server(data: Data) -> BaseServer:
     """Closure for data."""
 
-    class Server(BaseHTTPRequestHandler):
+    class Server(BaseServer):
         """Simple webserver that serves the data dict from the closure as json."""
 
         # overwriting methods, names are given
         # pylint: disable=invalid-name
 
-        def _set_headers(self):
+        def _set_headers(self) -> None:
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
 
-        def do_HEAD(self):
+        def do_HEAD(self) -> None:
             """Set header to SUCCESS and application/json."""
             self._set_headers()
 
-        def do_GET(self):
+        def do_GET(self) -> None:
             """Serve the data tuple."""
             # pylint: disable=broad-except
             data_clean = {}
@@ -53,7 +57,7 @@ def get_server(data: Data):
                 for key, val in data.data_dict.items():
                     data_clean[key] = str(val)
             except Exception as err:
-                all_good &= False
+                all_good = False
                 logging.warning("Error: %s", err)
 
             # Dump it to json
@@ -68,7 +72,7 @@ def get_server(data: Data):
             except Exception as err:
                 logging.warning("Error: %s", err)
 
-        def log_request(*args, **kwargs):
+        def log_request(*args, **kwargs) -> None:
             """Only log requests as logging.debug."""
             # No method, overriding an inherited method
             # pylint: disable=no-method-argument
@@ -82,7 +86,7 @@ def get_server(data: Data):
 class StatusServer:
     """Simple status server. Serving the current status as dict."""
 
-    def __init__(self, data: Data, port: int = 8080):
+    def __init__(self, data: Data, port: int = 8080) -> None:
         """Initialize the server.
 
         Parameters
@@ -93,13 +97,18 @@ class StatusServer:
         port : int
             Port of the server, defaults to 8080
 
+        Raises
+        ------
+        ValueError
+            In case of data is not of instance Data.
+
         """
         self.port = port
         if not isinstance(data, Data):
             raise ValueError
         self.data = data
 
-    def run(self):
+    def run(self) -> None:
         """Serve the Server."""
         server_address = ("", self.port)
         server = get_server(data=self.data)
@@ -109,7 +118,7 @@ class StatusServer:
         httpd.serve_forever()
 
 
-def main():
+def main() -> None:
     """Run the server for eternity.
 
     Start the server as it's own thread and run it.

@@ -7,9 +7,11 @@ import json
 import logging
 from pathlib import Path
 from threading import Thread
+from typing import Callable
 
 from xknx import XKNX, dpt
 from xknx.io import ConnectionConfig, ConnectionType
+from xknx.telegram import Telegram
 from xknx.telegram.apci import GroupValueWrite
 
 from logger import orm
@@ -23,6 +25,22 @@ async def get_mapping(mapping_path: Path) -> dict:
 
     Load mapping from given json path and ensure that all used
     dtypes are covered by the xknx mapping.
+
+    Parameters
+    ----------
+    mapping_path : Path
+        Path to a json mapping
+
+    Returns
+    -------
+    dict
+        A mapping loaded and validated to match the used dtypes.
+
+    Raises
+    ------
+    ValueError
+        In case not all used dpts are covered.
+
     """
     logging.info("Loading mapping from %s", mapping_path.resolve())
     with open(mapping_path, encoding="utf-8") as file_:
@@ -41,13 +59,18 @@ async def get_mapping(mapping_path: Path) -> dict:
     return mapping
 
 
-async def get_rx_cb(mapping: dict, db_session, status: Data | None):
+async def get_rx_cb(mapping: dict, db_session, status: Data | None) -> Callable:
     """Yield a msg receive callback."""
     # pylint: disable=too-many-statements
     # pylint: disable=too-many-return-statements
 
-    async def telegram_rx_cb(telegram):
+    async def telegram_rx_cb(telegram: Telegram) -> bool:
         """Extract value from received telegram and store in database.
+
+        Parameters
+        ----------
+        telegram : Telegram
+            A received telegram
 
         Returns
         -------
@@ -164,7 +187,7 @@ async def run(
     knx_connection_type: ConnectionType = ConnectionType.AUTOMATIC,
     status_server: bool = False,
     status_server_port: int = 8080,
-):
+) -> None:
     """Write all logged knx telegrams to a db."""
     # pylint: disable=too-many-arguments
     # pylint: disable=too-many-locals

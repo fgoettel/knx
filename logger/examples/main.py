@@ -4,7 +4,6 @@
 
 import asyncio
 import logging
-import sys
 from pathlib import Path
 
 from xknx.io import ConnectionType
@@ -12,7 +11,7 @@ from xknx.io import ConnectionType
 from logger.runner import run as logger_run
 
 
-def main():
+def main() -> int:
     """Write values to a sqlite database."""
     # Set address of database
     # addr = "postgresql://{user}:{password}@{host}:{port}/{database}"
@@ -37,6 +36,8 @@ def main():
         )
     )
 
+    return 0
+
 
 if __name__ == "__main__":
-    sys.exit(main())
+    raise SystemExit(main())

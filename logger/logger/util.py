@@ -5,10 +5,11 @@ from functools import cache
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from xknx.dpt import DPTBase
 
 
 @contextmanager
-def session_scope(addr: str):
+def session_scope(addr: str) -> None:
     """Provide context manager for sqlalchemy session."""
     # not at the top, as it needs to be generated
     from logger.orm import Base  # pylint: disable=import-outside-toplevel
@@ -31,7 +32,7 @@ def session_scope(addr: str):
 
 
 @cache
-def xknx2name(xknx_type) -> str:
+def xknx2name(xknx_type: DPTBase) -> str:
     """Make a proper name out of an xknx dpt."""
     name = xknx_type.__name__
     name = name.removeprefix("DPT")

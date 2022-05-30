@@ -3,7 +3,6 @@
 """Generate the mapping of dtype to xknx class."""
 
 import logging
-import sys
 from typing import Dict, List
 
 from xknx import dpt
@@ -20,6 +19,7 @@ def get_mapping() -> Dict[str, str]:
     -------
     dict
         A mapping between a dpt name and the xknx name:  {dpt_name: xknx_name}.
+
     """
     mapping = {}
     for name in dir(dpt):
@@ -131,7 +131,7 @@ def get_lines(mapping: dict) -> List:
     return lines
 
 
-def main() -> None:
+def main() -> int:
     """Let's autogenerate a dpst <-> xknx mapping."""
     mapping = get_mapping()
     mapping_extended = extend_mapping(mapping)
@@ -141,7 +141,9 @@ def main() -> None:
     with open(DTYPE_MATCHER_PATH, "w", encoding="utf-8") as file_:
         file_.write("\n".join(lines) + "\n")
 
+    return 0
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
-    sys.exit(main())
+    raise SystemExit(main())

@@ -5,10 +5,10 @@ import tempfile
 import nox  # type: ignore
 from nox_poetry import session  # type: ignore
 
-locations = ("examples", "logger", "test", "noxfile.py")
+locations = ("examples", "logger", "test", "./noxfile.py")
 python_default = "3.10"
 python_versions = (python_default, "3.9")
-nox.options.sessions = "lint", "tests"
+nox.options.sessions = "lint", "tests", "mypy", "safety"
 
 
 def open_in_browser(path: str) -> None:
@@ -41,7 +41,7 @@ def lint(session: session) -> None:
     """Lint it, but don't change it."""
     args_common = (
         "--max-line-length=200",
-        "--ignore=E203,W503",
+        "--ignore=E203,W503,ANN101,ANN002,ANN003",
         "--per-file-ignores=test/*:S311,S101,ANN,DAR",
     )
     args_opt = session.posargs or locations
@@ -59,6 +59,7 @@ def lint(session: session) -> None:
         "sqlalchemy",
         "darglint",
         "xknx",
+        "toml",
     )
     session.run("flake8", *args)
     session.run("pylint", "examples", "test", "logger")
