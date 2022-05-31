@@ -9,6 +9,7 @@ from pathlib import Path
 from threading import Thread
 from typing import Callable
 
+from sqlalchemy.orm import Session
 from xknx import XKNX, dpt
 from xknx.io import ConnectionConfig, ConnectionType
 from xknx.telegram import Telegram
@@ -59,7 +60,9 @@ async def get_mapping(mapping_path: Path) -> dict:
     return mapping
 
 
-async def get_rx_cb(mapping: dict, db_session, status: Data | None) -> Callable:
+async def get_rx_cb(
+    mapping: dict, db_session: Session, status: Data | None
+) -> Callable:
     """Yield a msg receive callback."""
     # pylint: disable=too-many-statements
     # pylint: disable=too-many-return-statements

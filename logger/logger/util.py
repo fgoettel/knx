@@ -2,14 +2,16 @@
 import logging
 from contextlib import contextmanager
 from functools import cache
+from typing import Generator
 
 from sqlalchemy import create_engine
+from sqlalchemy.orm import Session as sqla_session
 from sqlalchemy.orm import sessionmaker
 from xknx.dpt import DPTBase
 
 
 @contextmanager
-def session_scope(addr: str) -> None:
+def session_scope(addr: str) -> Generator[sqla_session, None, None]:
     """Provide context manager for sqlalchemy session."""
     # not at the top, as it needs to be generated
     from logger.orm import Base  # pylint: disable=import-outside-toplevel

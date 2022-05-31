@@ -24,14 +24,10 @@ class Data:
         return (self.last_rx_time - dt.now()) < self.max_delta
 
 
-class BaseServer(BaseHTTPRequestHandler):
-    """Wrapper to have a return type for "get_sever"."""
-
-
-def get_server(data: Data) -> BaseServer:
+def get_server(data: Data) -> HTTPServer:
     """Closure for data."""
 
-    class Server(BaseServer):
+    class Server(BaseHTTPRequestHandler):
         """Simple webserver that serves the data dict from the closure as json."""
 
         # overwriting methods, names are given
@@ -123,7 +119,8 @@ def main() -> None:
 
     Start the server as it's own thread and run it.
     """
-    server = StatusServer(port=8000, data={"time": dt.now().timestamp()})
+    data = Data(last_rx_time=dt.now(), max_delta=timedelta(minutes=10), data_dict={})
+    server = StatusServer(port=8000, data=data)
     thread = Thread(target=server.run)
     thread.start()
     logging.info("Server has been kicked off.")

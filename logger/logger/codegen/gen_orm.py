@@ -217,7 +217,6 @@ def get_orms() -> str:
     ------
     AssertionError
         In case of ambiguous db types.
-
     ValueError
         In case of duplicated orms.
 
