@@ -93,22 +93,25 @@ def payload(dtype):
         if value_raw[0] >> 7:
             value_raw[0] &= 0x80
     elif dtype == "DPST-10-1":
-        # Time
+        # TimeOfDay
         value_raw[0] = (random.randint(1, 7) << 5) | random.randint(
             0, 23
-        )  # weekday | hours
+        )  # weekday (0 - not set, invalid for datetime) | hours
         value_raw[1] = random.randint(0, 59)  # minutes
         value_raw[2] = random.randint(0, 59)  # seconds
     elif dtype == "DPST-11-1":
         # Date
         value_raw[0] = random.randint(1, 28)  # day
         value_raw[1] = random.randint(1, 12)  # month
-        value_raw[2] = random.randint(0, 30)  # year
+        value_raw[2] = random.randint(
+            0, 89
+        )  # year (full range is 0-99, but >= 90 is 19xx)
     elif dtype in ("DPST-18-1", "DPST-17-1"):
         # Scenes must be < 64
-        value_raw[0] &= 0xF
+        value_raw[0] = random.randint(0, 63)
     elif dtype == "DPST-19-1":
         # Datetime
+        value_raw[0] = random.randint(0, 255)  # year
         value_raw[1] = random.randint(1, 12)  # month
         value_raw[2] = random.randint(1, 28)  # day
         value_raw[3] = (random.randint(1, 7) << 5) | random.randint(
@@ -117,6 +120,7 @@ def payload(dtype):
         value_raw[4] = random.randint(0, 59)  # minutes
         value_raw[5] = random.randint(0, 59)  # seconds
         value_raw[6] = 0  # no fault
+        value_raw[7] = 0  # no quality indication
 
     return GroupValueWrite(value=DPTArray(value_raw))
 

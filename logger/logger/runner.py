@@ -122,12 +122,25 @@ async def get_rx_cb(
                 value = xknx_class.from_knx(value_raw)
 
             # Translate time_struct to datetime objects
-            if dtype == "DPST-11-1":
-                value = dt.date(*value_raw[:3])  # type: ignore
-            elif dtype == "DPST-10-1":
-                value = dt.time(*value_raw[3:6])  # type: ignore
+            if dtype == "DPST-10-1":
+                # value_raw is a tuple with 3 elements
+                value = dt.time(
+                    hour=value_raw[0] & 0b11111,  # type: ignore
+                    minute=value_raw[1],  # type: ignore
+                    second=value_raw[2],  # type: ignore
+                )
+            elif dtype == "DPST-11-1":
+                value = dt.date(day=value_raw[0], month=value_raw[1], year=value_raw[2])  # type: ignore
             elif dtype == "DPST-19-1":
-                value = dt.datetime(*value_raw[:6])  # type: ignore
+                # value_raw is a tuple with 8 elements
+                value = dt.datetime(
+                    year=value_raw[0],  # type: ignore
+                    month=value_raw[1],  # type: ignore
+                    day=value_raw[2],  # type: ignore
+                    hour=value_raw[3] & 0b11111,  # type: ignore
+                    minute=value_raw[4],  # type: ignore
+                    second=value_raw[5],  # type: ignore
+                )
 
             # Get unit (if existent)
             try:
