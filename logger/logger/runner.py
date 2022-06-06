@@ -7,7 +7,7 @@ import json
 import logging
 from pathlib import Path
 from threading import Thread
-from typing import Callable, Iterable, SupportsInt
+from typing import Callable
 
 from sqlalchemy.orm import Session
 from xknx import XKNX, dpt
