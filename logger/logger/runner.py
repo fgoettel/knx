@@ -7,7 +7,7 @@ import json
 import logging
 from pathlib import Path
 from threading import Thread
-from typing import Callable
+from typing import Callable, Iterable, SupportsInt
 
 from sqlalchemy.orm import Session
 from xknx import XKNX, dpt
@@ -96,7 +96,7 @@ async def get_rx_cb(
         try:
             src = str(telegram.source_address)
             dst = str(telegram.destination_address)
-            value = telegram.payload.value.value
+            value_raw = telegram.payload.value.value  # type: ignore
         except Exception as err:
             logging.error("Couldn't extract necessary information from telegram.")
             logging.error(err)
@@ -114,20 +114,20 @@ async def get_rx_cb(
             # Also translate hvac enum
             if xknx_class == dpt.DPTHVACContrMode:
                 # This is an enum, just take the raw value
-                value = value[0]
+                value = value_raw[0]  # type: ignore
             elif xknx_class == dpt.DPTBinary:
                 # Keep the binary as integer for easier storage
-                value = int(value)
+                value = int(value_raw)  # type: ignore
             else:
-                value = xknx_class.from_knx(value)
+                value = xknx_class.from_knx(value_raw)
 
             # Translate time_struct to datetime objects
             if dtype == "DPST-11-1":
-                value = dt.date(*value[:3])
+                value = dt.date(*value_raw[:3])  # type: ignore
             elif dtype == "DPST-10-1":
-                value = dt.time(*value[3:6])
+                value = dt.time(*value_raw[3:6])  # type: ignore
             elif dtype == "DPST-19-1":
-                value = dt.datetime(*value[:6])
+                value = dt.datetime(*value_raw[:6])  # type: ignore
 
             # Get unit (if existent)
             try:

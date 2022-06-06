@@ -7,7 +7,7 @@ from typing import Generator
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session as sqla_session
 from sqlalchemy.orm import sessionmaker
-from xknx.dpt import DPTBase
+from xknx.dpt import DPTArray, DPTBinary, DPTNumeric
 
 
 @contextmanager
@@ -34,9 +34,9 @@ def session_scope(addr: str) -> Generator[sqla_session, None, None]:
 
 
 @cache
-def xknx2name(xknx_type: DPTBase) -> str:
+def xknx2name(xknx_type: DPTNumeric | DPTBinary | DPTArray) -> str:
     """Make a proper name out of an xknx dpt."""
-    name = xknx_type.__name__
+    name = xknx_type.__name__  # type: ignore
     name = name.removeprefix("DPT")
     name = name.removesuffix("2Byte")
 

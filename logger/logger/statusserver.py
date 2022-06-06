@@ -45,7 +45,7 @@ def get_server(data: Data) -> HTTPServer:
         def do_GET(self) -> None:
             """Serve the data tuple."""
             # pylint: disable=broad-except
-            data_clean = {}
+            data_clean: dict[str, str | bool] = {"all_good": False}
             all_good = True
 
             # Make objects serializiable
@@ -76,7 +76,7 @@ def get_server(data: Data) -> HTTPServer:
             logging.debug("\targs: %s", args)
             logging.debug("\t:kwargs %s", kwargs)
 
-    return Server
+    return Server  # type: ignore
 
 
 class StatusServer:
@@ -108,7 +108,7 @@ class StatusServer:
         """Serve the Server."""
         server_address = ("", self.port)
         server = get_server(data=self.data)
-        httpd = HTTPServer(server_address, server)
+        httpd = HTTPServer(server_address, server)  # type: ignore
 
         logging.info("Starting httpd on port %i...", self.port)
         httpd.serve_forever()
