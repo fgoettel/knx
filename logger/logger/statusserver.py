@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 """Provide simple status of the logger."""
+from __future__ import annotations
+
 import json
 import logging
 from dataclasses import dataclass

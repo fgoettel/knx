@@ -88,7 +88,7 @@ def isort(session: session) -> None:
     session.run("isort", *args)
 
 
-@session(python=python_default)
+@session(python=python_versions)
 def safety(session: session) -> None:
     """Check for security issues."""
     with tempfile.NamedTemporaryFile() as requirements:

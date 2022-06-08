@@ -80,18 +80,16 @@ def payload(dtype):
         value_raw[0] &= 0xF
     elif dtype in (
         "DPST-9-1",
+        "DPST-9-2",
         "DPST-9-4",
         "DPST-9-5",
         "DPST-9-6",
         "DPST-9-7",
+        "DPST-9-27",
         "DPST-9-28",
     ):
         # Value must be > 0
         value_raw[0] &= 0b01111111
-    elif dtype == "DPST-9-27":
-        # Temperature must be >-273
-        if value_raw[0] >> 7:
-            value_raw[0] &= 0x80
     elif dtype == "DPST-10-1":
         # TimeOfDay
         value_raw[0] = (random.randint(1, 7) << 5) | random.randint(
