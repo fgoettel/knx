@@ -6,7 +6,6 @@ ignore=orm.py
 [MESSAGES CONTROL]
 
 disable=too-few-public-methods,
-        bad-continuation,
         wrong-import-order,
         fixme,
         line-too-long
