@@ -12,6 +12,9 @@ jobs:
       matrix:
         python: ["3.9", "3.10"]
         session: ["tests", "lint", "mypy", "safety"]
+        exclude:
+        - python: 3.9
+          session: mypy
     runs-on: ubuntu-latest
     defaults:
       run:
