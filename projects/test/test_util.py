@@ -1,5 +1,5 @@
 """Test the projects."""
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # noqa: S405
 
 import pytest
 
@@ -36,7 +36,7 @@ def test_finder_xml(namespace, expected_count):
     assert callable(findall)
 
     # Find
-    result = findall(ET.fromstring(xml_string), keyword=keyword)
+    result = findall(ET.fromstring(xml_string), keyword=keyword)  # noqa: S314
     assert isinstance(result, list)
     assert len(result) == expected_count
 

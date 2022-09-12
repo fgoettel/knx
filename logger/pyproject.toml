@@ -43,23 +43,22 @@ build-backend = "poetry.core.masonry.api"
 [tool.mypy]
 python_version = "3.10"
 
+[tool.isort]
+profile = "black"
+
 [[tool.mypy.overrides]]
 module = "logger.orm"
 ignore_errors = true
-
-[tool.pydocstyle]
-ignore = [
-    "D202",
-    "D203",
-    "D213",
-    "D416",
-]
 
 [tool.pytest.ini_options]
 testpaths = [
     "test",
 ]
 asyncio_mode = "auto"
+
+
+[tool.darglint]
+docstring_style="numpy"
 
 [tool.coverage]
 source = ["logger"]

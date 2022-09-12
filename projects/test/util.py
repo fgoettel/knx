@@ -3,7 +3,7 @@
 
 import random
 from string import ascii_lowercase
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # noqa: S405
 
 import pytest
 
@@ -81,19 +81,19 @@ param_medium = ["TP", "IP", "TP_OR_IP"]
 param_productRefId = ["MDT_GT2", "FOO", "BAR.Baz"]
 
 
-def _get_address():
+def _get_address() -> int:
     return random.randrange(0, 255)
 
 
-def _get_id():
+def _get_id() -> str:
     return str(random.randrange(0, 99999))
 
 
-def _get_area():
+def _get_area() -> Area:
     return Area(id_str=_get_id(), address=_get_address(), name=_get_name_str())
 
 
-def _get_name_str():
+def _get_name_str() -> str:
     name_len = random.randrange(1, 15)  # Arbitrarily chosen length
     return "".join(random.choice(ascii_lowercase) for _ in range(name_len)).capitalize()
 

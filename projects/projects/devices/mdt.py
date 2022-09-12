@@ -4,7 +4,7 @@
 import logging
 import re
 from re import Pattern
-from typing import List
+from typing import List, Type
 
 from projects.groupaddresses import GroupAddress
 from projects.topology import Device
@@ -15,19 +15,43 @@ from .devices import Switch
 class BE4(Switch):
     """MDT Tasterschnittstelle."""
 
-    def __init__(self, project_ga_list: List[GroupAddress], *args, **kwargs):
-        """Create a MDT binary interface."""
+    def __init__(self, project_ga_list: List[GroupAddress], *args, **kwargs) -> None:
+        """Create a MDT binary interface.
+
+        args:
+            project_ga_list: TODO.
+            args: Optional positional arguments. Forwarded to the Switch constructor.
+            kwargs: Optional keyword arguments. Forwarded to the Switch constructor.
+        """
         super().__init__(*args, **kwargs)
         self.project_ga_list = project_ga_list
 
     @classmethod
-    def from_device(cls, device: Device, *args, **kwargs) -> "BE4":
-        """Create a MDT Glastaster 2 from a generic device."""
+    def from_device(cls: Type["BE4"], device: Device, *args, **kwargs) -> "BE4":
+        """Create a MDT BE4 from a generic device.
 
+        Args:
+            device: The device that should become a BE4.
+            args: UNUSED
+            kwargs: Expecting at least a 'project_ga_list'
+
+        Returns:
+            BE4 instance
+        """
         return cls(project_ga_list=kwargs["project_ga_list"], **vars(device))
 
     def find_ga(self, id_: str) -> GroupAddress:
-        """Find the complete GA to a given id."""
+        """Find the complete GA to a given id.
+
+        Args:
+            id_: The wanted GA id.
+
+        Returns:
+            Groupaddress
+
+        Raises:
+            ValueError: In case the id couldn't be matched.
+        """
         for groupaddress in self.project_ga_list:
             if groupaddress.id_str == id_:
                 return groupaddress
@@ -80,19 +104,37 @@ class GT2(Switch):
         r"^(?P<description>Status LED)$"
     )  # Not inside ComObjectInstanceRefs, but GroupObjectTree
 
-    def __init__(self, texts: List[str], *args, **kwargs):
-        """Create a MDT GT2."""
+    def __init__(self, texts: List[str], *args, **kwargs) -> None:
+        """Create a MDT GT2.
+
+        Args:
+            texts: A list of strings that describe the button functionalities.
+            args: Optional positional arguments. Forwarded to the Switch constructor.
+            kwargs: Optional keyword arguments. Forwarded to the Switch constructor.
+        """
         super().__init__(*args, **kwargs)
         self.texts = texts
 
     @classmethod
-    def from_device(cls, device: Device, *args, **kwargs) -> "GT2":
-        """Create a MDT Glastaster 2 from a generic device."""
+    def from_device(cls: Type["GT2"], device: Device, *args, **kwargs) -> "GT2":
+        """Create a MDT Glastaster 2 from a generic device.
 
+        Args:
+            device: The original device.
+            args: UNUSED!
+            kwargs: Expecting (at least) a "texts" keywords with a List of strings.
+
+        Returns:
+            GT2: A Glastaster-Switch-Device.
+        """
         return cls(texts=kwargs["texts"], **vars(device))
 
     def doc(self) -> None:
-        """Show all pages from a GT2."""
+        """Show all pages from a GT2.
+
+        Raises:
+            ValueError: In case not all lines from the description could be consumed.
+        """
 
         def _match_line(lines: set, expr: Pattern) -> str:
             sep = 5 * " "
@@ -128,7 +170,7 @@ class GT2(Switch):
 
         # Assert there are no leftovers
         if lines:
-            raise Exception(lines)
+            raise ValueError(f"Could not consume all lines from: {lines}.")
 
         # Formatting
         button_space = "    "

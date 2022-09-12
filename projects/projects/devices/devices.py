@@ -1,7 +1,10 @@
 """Generic device types."""
 from abc import ABC, abstractmethod
+from typing import Type, TypeVar
 
 from projects.topology import Device
+
+T = TypeVar("T", bound="Switch")
 
 
 class Switch(Device, ABC):
@@ -14,9 +17,16 @@ class Switch(Device, ABC):
 
     @classmethod
     @abstractmethod
-    def from_device(cls, device: Device, *args, **kwargs):
-        """Create a switch from a generic device."""
+    def from_device(cls: Type[T], device: Device, *args, **kwargs) -> T:
+        """Create a switch from a generic device.
+
+        Args:
+            device: The basic Device to create a swtich from.
+            args: Position only arguments.
+            kwargs: Keyword arguments.
+
+        """
 
     @abstractmethod
-    def doc(self):
+    def doc(self) -> None:
         """Print documentation."""

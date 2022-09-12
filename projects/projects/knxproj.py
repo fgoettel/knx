@@ -4,7 +4,7 @@ import logging
 import tempfile
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-from functools import cache
+from functools import lru_cache
 from pathlib import Path
 from typing import List, Tuple
 from zipfile import ZipFile
@@ -114,7 +114,7 @@ class Knxproj:
         root = ET.parse(str(self.xml_meta_path)).getroot()
         return self.findall(root, "Project")[0].attrib["Id"]
 
-    @cache
+    @lru_cache(maxsize=1024)
     def _find_item_in_project(self, keyword: str) -> ET.Element:
         """Find an item in the xml project.
 

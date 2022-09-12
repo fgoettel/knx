@@ -8,7 +8,7 @@ from pathlib import Path
 from projects.gpa import Gpa
 
 
-def main():
+def main() -> None:
     """Display existing knx datapoints in a gpa project."""
     # Setup argument parser
     description = "Display existing knx datapoints in a gpa project."

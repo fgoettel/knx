@@ -123,7 +123,6 @@ class Factory:
             A configured `Device`.
 
         """
-
         gas, texts = self._find_connections_and_texts(xml)
 
         return Device(
@@ -163,15 +162,11 @@ class Factory:
     def area(self, xml: Element) -> Area:
         """Create an area from a xml.
 
-        Parameters
-        ----------
-        xml
-            The xml containing the area description.
+        Args:
+            xml: The xml containing the area description.
 
-        Returns
-        -------
-        area
-            A configured `Area`.
+        Returns:
+            area: A configured `Area`.
 
         """
         return Area(

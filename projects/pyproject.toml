@@ -6,19 +6,30 @@ authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "3.10"
+defusedxml = "*"
 
 [tool.poetry.dev-dependencies]
 black = "*"
+flake8 = "*"
+flake8-annotations = "*"
+flake8-bandit = "*"
+flake8-black = "*"
+flake8-bugbear = "*"
+flake8-docstrings = "*"
+flake8-isort = "*"
 isort = "*"
 mypy = "*"
-pydocstyle = "*"
+nox-poetry = "*"
 pylint = "*"
 pytest = "*"
 pytest-asyncio = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-profiling = "*"
+safety = "*"
+sqlalchemy-stubs = "*"
 toml = "*"
+darglint = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -35,13 +46,11 @@ testpaths = [
 [tool.mypy]
 python_version = "3.10"
 
-[tool.pydocstyle]
-ignore = [
-    "D202",
-    "D203",
-    "D213",
-    "D416",
-]
+[tool.isort]
+profile = "black"
+
+[tool.darglint]
+docstring_style="numpy"
 
 [tool.coverage]
 source = ["projects"]

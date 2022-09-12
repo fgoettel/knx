@@ -9,8 +9,11 @@ from projects.knxproj import Knxproj
 
 
 def obtain_knxproj() -> Knxproj:
-    """Set up knxproj."""
+    """Obtain a Knxproj object.
 
+    Returns:
+        Knxproj: The read knxproj object.
+    """
     description = "Read a knxproj export from the ETS and fiddle around with it."
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
@@ -22,9 +25,8 @@ def obtain_knxproj() -> Knxproj:
     return Knxproj(knxproj_path=knxproj_path)
 
 
-def main():
+def main() -> None:
     """Log all provided group addresses and devices."""
-
     knxproj = obtain_knxproj()
 
     logging.info("Group addresses:")

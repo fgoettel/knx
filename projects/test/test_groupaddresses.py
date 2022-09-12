@@ -16,11 +16,12 @@ from .util import (  # noqa: F401  # pylint:disable=unused-import
 
 
 def test_groupaddress(get_groupaddress):
-    """Ensure that GroupAddresses are
+    """Test group adresses.
+
+    Ensure that GroupAddresses are
     - constructed as intended
     - properly translate their GA to the x/y/z format
     """
-
     # Valid GroupAddress
     assert isinstance(get_groupaddress, GroupAddress)
 
@@ -37,11 +38,12 @@ def test_groupaddress(get_groupaddress):
 
 
 def test_groupaddress_almost_eq(get_groupaddress):
-    """Ensure that GroupAddresses are
+    """Test groupaddress.
+
+    Ensure that GroupAddresses are
     - constructed as intended
     - properly translate their GA to the x/y/z format
     """
-
     # Valid GroupAddress
     assert isinstance(get_groupaddress, GroupAddress)
 
@@ -78,7 +80,6 @@ def test_groupaddress_almost_eq(get_groupaddress):
 
 def test_factory_address(get_groupaddress_factory, xml_knx):
     """Test the Groupaddress factory."""
-
     address = get_groupaddress_factory.groupaddress(xml_knx)
 
     assert isinstance(address, GroupAddress)

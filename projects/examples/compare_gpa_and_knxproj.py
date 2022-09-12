@@ -13,9 +13,10 @@ from projects.knxproj import Knxproj
 def get_args() -> Tuple[Path, Path]:
     """Set up the parser.
 
-    Returns a tuple with (gpa_path, knxproj_path).
+    Returns:
+        Path: The path to the gpa file.
+        Path: The path to the knxproj file.
     """
-
     # Setup argument parser
     description = "Compare knx GAs from ETS and GPA export."
     parser = argparse.ArgumentParser(description=description)
@@ -34,9 +35,8 @@ def get_args() -> Tuple[Path, Path]:
     return (gpa_path, knxproj_path)
 
 
-def main():
+def main() -> None:
     """Compare knx GAs from ETS and GPA export."""
-
     gpa_path, knxproj_path = get_args()
 
     # Run

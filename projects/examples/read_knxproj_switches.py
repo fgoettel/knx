@@ -9,9 +9,8 @@ from projects.devices.devices import Switch
 from . import read_knxproj
 
 
-def main():
+def main() -> None:
     """Log all provided group addresses and devices."""
-
     knxproj = read_knxproj.obtain_knxproj()
 
     # Get in the vendor specifics
