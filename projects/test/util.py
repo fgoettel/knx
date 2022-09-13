@@ -3,7 +3,7 @@
 
 import random
 from string import ascii_lowercase
-from xml.etree import ElementTree as ET  # noqa: S405
+from xml.etree import ElementTree as ET
 
 import pytest
 

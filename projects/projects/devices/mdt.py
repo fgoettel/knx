@@ -18,7 +18,7 @@ class BE4(Switch):
     def __init__(self, project_ga_list: List[GroupAddress], *args, **kwargs) -> None:
         """Create a MDT binary interface.
 
-        args:
+        Args:
             project_ga_list: TODO.
             args: Optional positional arguments. Forwarded to the Switch constructor.
             kwargs: Optional keyword arguments. Forwarded to the Switch constructor.

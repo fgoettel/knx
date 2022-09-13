@@ -39,6 +39,14 @@ def coverage(session: session) -> None:
 @session(python=python_versions)
 def lint(session: session) -> None:
     """Lint it, but don't change it."""
+    common_ignores = (
+        "ANN002",  # Type annotation for *args
+        "ANN003",  # Type annotation for kwargs
+        "ANN101",  # Type annotation for self
+        "S314",  # Unsafe xml
+        "S405",  # Unsafe xml
+        "W503",  # Line break before binary operator
+    )
     test_ignores = (
         "ANN001",  # Missing arg type
         "ANN201",  # Missing return type
@@ -54,7 +62,7 @@ def lint(session: session) -> None:
     )
     args_common = (
         "--max-line-length=200",
-        "--ignore=E203,W503,ANN101,ANN002,ANN003",
+        f"--ignore={' '.join(common_ignores)}",
         f"--per-file-ignores={' '.join(per_file_ignores)}",
     )
     args_opt = session.posargs or locations
@@ -71,6 +79,7 @@ def lint(session: session) -> None:
         "pytest",
         "darglint",
         "toml",
+        "defusedxml",
     )
     session.run("flake8", *args)
     session.run("pylint", "test", "projects")

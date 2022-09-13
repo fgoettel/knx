@@ -1,7 +1,7 @@
 """Test the projects topology."""
 # pylint: disable=redefined-outer-name
 
-from xml.etree import ElementTree as ET  # noqa: S405
+from xml.etree import ElementTree as ET
 
 import pytest
 

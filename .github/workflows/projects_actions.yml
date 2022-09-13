@@ -7,7 +7,7 @@ on:
       - '.github/workflows/projects_actions.yml'
 
 jobs:
-  tests:
+  nox:
     strategy:
       matrix:
         python: ["3.9", "3.10"]

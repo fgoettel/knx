@@ -16,8 +16,16 @@ PROJECT_NAMESPACES = {
 
 
 def postfix(text: str, postfix_: str = "_") -> str:
-    """Add a postfix `p` to the given text."""
-    return text + postfix_
+    """Add a postfix `p` to the given text.
+
+    Args:
+        text: the first part
+        postfix_: the second part
+
+    Returns:
+        A concatenated string.
+    """
+    return f"{text}{postfix_}"
 
 
 @dataclass
@@ -38,34 +46,28 @@ class FinderXml:
     def __init__(self, namespace: Optional[str] = None) -> None:
         """Initialize the namespace for the findall function.
 
-        Parameters
-        ----------
-        namespace
-            The namespace of the xml for this findall install.
-            Must be contained in `PROJECT_NAMESPACES`.
+        Args:
+            namespace:
+                The namespace of the xml for this findall install.
+                Must be contained in `PROJECT_NAMESPACES`.
 
+        Raises:
+            ValueError: If an unsupported version / namespace is used.
         """
-        assert (namespace in PROJECT_NAMESPACES) or (namespace is None)
+        if namespace and namespace not in PROJECT_NAMESPACES:
+            raise ValueError(f"Unsupported namespace (probably Version): {namespace}.")
+
         self.namespace = namespace
 
     def findall(self, xml: ET.Element, keyword: str) -> List[ET.Element]:
         """Find all elements in an xml.
 
-        If an expected count `n` is given it is asserted that exaclty `n` elements are found.
+        Args:
+            xml: The document that should be searched. Given as an xml element.
+            keyword: The keyword of interest.
 
-        Parameters
-        ----------
-        xml
-            The document that should be searched. Given as an xml element.
-
-        keyword
-            The keyword of interest.
-
-        Returns
-        -------
-        items
+        Returns:
             list of items that have been found.
-
         """
         # Adapt to namespace
         if self.namespace:

@@ -36,16 +36,14 @@ class Device(KNXAddress):
 class Factory:
     """Factory to create topology elements (e.g., `Device`) from xml."""
 
-    def __init__(self, finder: Callable[[Element, str], List[Element]], prefix: str):
+    def __init__(
+        self, finder: Callable[[Element, str], List[Element]], prefix: str
+    ) -> None:
         """Create factory.
 
-        Parameters
-        ----------
-        finder
-            A namespaced xml findall - see the util.py
-        prefix
-            The project prefix.
-
+        Args:
+            finder: A namespaced xml findall - see the util.py
+            prefix: The project prefix.
         """
         self.finder = finder
         self.prefix = postfix(prefix)
@@ -53,34 +51,23 @@ class Factory:
     def _find_id(self, xml: Element) -> str:
         """Find the `Id` and remove the project prefix.
 
-        Parameters
-        ----------
-        xml
-            The element containing the `Id`.
+        Args:
+            xml: The element containing the `Id`.
 
-        Returns
-        -------
-        id
-            The `Id`without the project prefix.
-
+        Returns:
+            str: The `Id`without the project prefix.
         """
         return xml.attrib["Id"].replace(self.prefix, "")
 
     def _find_connections_and_texts(self, xml: Element) -> Tuple[List[str], List[str]]:
         """Find group addresses and text elements in a xml element.
 
-        Parameters
-        ----------
-        xml
-            The xml of interest
+        Args:
+            xml: The xml of interest
 
-        Returns
-        -------
-        groupaddresses
-            A list of all connected groupaddresses
-        texts
-            A list with all annotations
-
+        Returns:
+            groupaddresses: A list of all connected groupaddresses
+            texts: A list with all annotations
         """
         # TODO: Combine connection information
         # TODO: Split into two (or more) subfuncitons
@@ -110,18 +97,12 @@ class Factory:
     def device(self, xml: Element, line: Line) -> Device:
         """Create a device from a xml.
 
-        Parameters
-        ----------
-        xml
-            The xml containing the device description.
-        line
-            The line of the device.
+        Args:
+            xml: The xml containing the device description.
+            line: The line of the device.
 
-        Returns
-        -------
-        device
-            A configured `Device`.
-
+        Returns:
+            Device: A configured `Device`.
         """
         gas, texts = self._find_connections_and_texts(xml)
 
@@ -138,18 +119,12 @@ class Factory:
     def line(self, xml: Element, area: Area) -> Line:
         """Create a line from a xml.
 
-        Parameters
-        ----------
-        xml
-            The xml containing the line description.
-        area
-            The area of the line.
+        Args:
+            xml: The xml containing the line description.
+            area: The area of the line.
 
-        Returns
-        -------
-        Line
-            A configured `Line`.
-
+        Returns:
+            Line: A configured `Line`.
         """
         return Line(
             id_str=self._find_id(xml),
@@ -166,7 +141,7 @@ class Factory:
             xml: The xml containing the area description.
 
         Returns:
-            area: A configured `Area`.
+            Area: A configured `Area`.
 
         """
         return Area(

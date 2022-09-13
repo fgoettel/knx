@@ -4,9 +4,8 @@ import logging
 import tempfile
 import xml.etree.ElementTree as ET
 from collections import defaultdict
-from functools import lru_cache
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Tuple, Type
 from zipfile import ZipFile
 
 from .groupaddresses import Factory as GAFactory
@@ -27,13 +26,12 @@ class Knxproj:
 
         During creation the meta information is already extracted.
 
-        Parameters
-        ----------
-        knxproj_path
-            Path to the ".knxproj" file.
+        Args:
+            knxproj_path: Path to the ".knxproj" file.
 
+        Raises:
+            RuntimeError: If the poject id is inconsistent.
         """
-
         self.xml_meta_path, self.xml_project_path = self._unzip(
             knxproj_path=knxproj_path,
         )
@@ -41,30 +39,26 @@ class Knxproj:
         self.findall = FinderXml(self.ets_version).findall
 
         project_id = self._extract_project_id()
-        assert project_id in str(self.xml_project_path)
-        assert project_id in str(self.xml_meta_path)
+        if project_id not in str(self.xml_project_path) or project_id not in str(
+            self.xml_meta_path
+        ):
+            raise RuntimeError("Inconsistent project id found.")
         self.project_prefix = (
             project_id + "-" + self.project_file_name.split(".", maxsplit=1)[0]
         )
 
     @classmethod
-    def _unzip(cls, knxproj_path: Path) -> Tuple[Path, Path]:
+    def _unzip(cls: Type["Knxproj"], knxproj_path: Path) -> Tuple[Path, Path]:
         """Unzip the knx project.
 
-        Unzipt the knxproj and extract the path to the meta information and project information.
+        Unzip the knxproj and extract the path to the meta information and project information.
 
-        Parameters
-        ----------
-        knxproj_path
-            Path to the ".knxproj",
+        Args:
+            knxproj_path: Path to the ".knxproj",
 
-        Returns
-        -------
-        meta_path
-            Path to the "meta" xml file.
-        project_path
-            Path to the "project" xml file.
-
+        Returns:
+            meta_path: Path to the "meta" xml file.
+            project_path: Path to the "project" xml file.
         """
         unzip_folder = Path(tempfile.gettempdir()).joinpath("knxproj_unzipped")
         with ZipFile(knxproj_path, "r") as zip_:
@@ -96,12 +90,10 @@ class Knxproj:
     def _extract_ets_version(self) -> str:
         """Read ets version from the meta xml.
 
-        Returns
-        -------
-        ets_version
-            A String containing info about the ets version. E.g. "ets57".
-            This is important to deal with the xml namespaces.
-
+        Returns:
+            ets_version
+                A String containing info about the ets version. E.g. "ets57".
+                This is important to deal with the xml namespaces.
         """
         root = ET.parse(str(self.xml_meta_path)).getroot()
         ets_version = (
@@ -110,26 +102,27 @@ class Knxproj:
         return ets_version
 
     def _extract_project_id(self) -> str:
-        """Get the project id."""
+        """Get the project id.
+
+        Returns:
+            The project id.
+        """
         root = ET.parse(str(self.xml_meta_path)).getroot()
         return self.findall(root, "Project")[0].attrib["Id"]
 
-    @lru_cache(maxsize=1024)
     def _find_item_in_project(self, keyword: str) -> ET.Element:
         """Find an item in the xml project.
 
         Finds _exactly_ one item in the flattened project.
 
-        Parameters
-        ----------
-        keyword
-            The keyword of interest
+        Args:
+            keyword: The keyword of interest
 
-        Returns
-        -------
-        element
-            The matchingn element
+        Returns:
+            element: The matching element
 
+        Raises:
+            RuntimeError: In case != 1 item is found.
         """
         root = ET.parse(str(self.xml_project_path)).getroot()
 
@@ -138,7 +131,7 @@ class Knxproj:
             if match := self.findall(elem, keyword):
                 findings.extend(match)
         if len(findings) != 1:
-            raise ValueError("Not exactly one finding...")
+            raise RuntimeError("Not exactly one finding...")
         return findings[0]
 
     def display_meta_information(self) -> None:
@@ -165,8 +158,11 @@ class Knxproj:
     def groupaddresses(
         self,
     ) -> List[GroupAddress]:
-        """Get group addresses from project."""
+        """Get group addresses from project.
 
+        Returns:
+            A list of group addresses.
+        """
         ga_factory = GAFactory(self.project_prefix)
         gruppenaddress_list = []
 
@@ -196,7 +192,11 @@ class Knxproj:
     def topology(
         self,
     ) -> dict:
-        """Get topology from xml."""
+        """Get topology from xml.
+
+        Returns:
+            A dict representing the topology.
+        """
         topo_xml = self._find_item_in_project("Topology")
         topo_factory = TOFactory(prefix=self.project_prefix, finder=self.findall)
         topo_items = defaultdict(list)
@@ -218,9 +218,9 @@ class Knxproj:
 
     @property
     def devices(self) -> List[Device]:
-        """Return all devices.
+        """Get all devices.
 
-        Shortcut to coressponding topology item.
-
+        Returns:
+            List of Devices.
         """
         return self.topology["device"]

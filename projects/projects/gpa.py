@@ -29,7 +29,11 @@ class Gpa:
     """Extra a .gpa project and read GA information."""
 
     def __init__(self, gpa_path: Path) -> None:
-        """Set up a basic Gpa instance."""
+        """Set up a basic Gpa instance.
+
+        Args:
+            gpa_path: Path to the gpa file.
+        """
         self.findall = FinderXml("gpa").findall
         self.files = self._unzip(gpa_path=gpa_path)
 
@@ -56,16 +60,14 @@ class Gpa:
     def _unzip(gpa_path: Path) -> ProjectFiles:
         """Unzip a .gpa project into list of projects paths and group address path.
 
-        Parameters
-        ----------
-        gpa_path
-            Path to the ".gpa" file.
+        Args:
+            gpa_path: Path to the ".gpa" file.
 
-        Returns
-        -------
-        ProjectFiles
-            A named tuple with list of related files.
+        Returns:
+            ProjectFiles: A named tuple with list of related files.
 
+        Raises:
+            ValueError: If the knxproj contains more than one project.
         """
         logging.info("Extracting: %s", gpa_path.resolve())
 
@@ -109,7 +111,10 @@ class Gpa:
                 else:
                     logging.debug("Skipping %s", file_)
 
-        assert len(project_list) == 1  # We only expect one project right now
+        if len(project_list) != 1:
+            raise ValueError(
+                "Currently exactly one project per knxproj file is supported."
+            )
 
         return ProjectFiles(
             project=project_list[0],
@@ -120,14 +125,7 @@ class Gpa:
         )
 
     def _display_project_info(self) -> None:
-        """Display meta information about the given project.
-
-        Parameters
-        ----------
-        project_xml
-            Path to a project xml
-
-        """
+        """Display meta information about the given project."""
         root = ET.parse(str(self.files.project)).getroot()
         author = self.findall(root, "Author")[0].text
         name = self.findall(root, "EntityName")[0].text
@@ -140,11 +138,16 @@ class Gpa:
         )
 
     def _display_device_datapoints(self) -> None:
-        """Ensure that the internal/device datapoints are not used."""
+        """Ensure that the internal/device datapoints are not used.
+
+        Raises:
+            ValueError: In case no device data point could be found.
+        """
         ddp_counter = 0
         for dp_xml in self.files.devicedatapoints:
             root = ET.parse(str(dp_xml)).getroot()
-            assert "DeviceDataPoint" in root.tag
+            if "DeviceDataPoint" not in root.tag:
+                raise ValueError("No Device Data Point found.")
             enabled = self.findall(root, "Enabled")[0].text == "true"
             used = self.findall(root, "KnxIntegration")[0].text == "true"
             if enabled and used:
@@ -153,26 +156,34 @@ class Gpa:
         logging.info("%i device datapoints are existent.", ddp_counter)
 
     def _display_internal_datapoints(self) -> None:
-        """Display all internal datapoints."""
+        """Display all internal datapoints.
 
+        Raises:
+            RuntimeError: In case of missing any internal data point.
+        """
         internal_dp = []
         for dp_xml in self.files.internaldatapoints:
             root = ET.parse(str(dp_xml)).getroot()
-            assert "InternalDataPoint" in root.tag
+            if "InternalDataPoint" not in root.tag:
+                raise RuntimeError("No internal data point found.")
             try:
                 if self.findall(root, "Enabled")[0].text == "false":
                     continue
             except IndexError:
                 pass
 
+            type_complete = self.findall(root, "ValueTypeUrn")[0].text
+            if type_complete is None:
+                raise RuntimeError("Invalid type for value.")
+
+            type_ = type_complete.split(".")[-1]
+
             internal_dp.append(
                 InternalDataPoint(
                     name=self.findall(root, "EntityName")[0].text,
                     knx=self.findall(root, "KnxIntegration")[0].text,
                     id=self.findall(root, "EntityId")[0].text,
-                    type=getattr(self.findall(root, "ValueTypeUrn")[0], "text").split(
-                        "."
-                    )[-1],
+                    type=type_,
                 )
             )
 
@@ -183,17 +194,37 @@ class Gpa:
 
     @property
     def groupaddresses(self) -> List[GroupAddress]:
-        """From a list of paths to group addresses extract the GA information."""
+        """From a list of paths to group addresses extract the GA information.
+
+        Returns:
+            A list of GAs.
+
+        Raises:
+            RuntimeError: In case the xml doesn't match the expectation.
+        """
         ga_list = []
         for ga_xml in self.files.knxdatapoints:
             root = ET.parse(str(ga_xml)).getroot()
-            assert "KnxDataPoint" in root.tag
-            id_ = getattr(self.findall(root, "EntityId")[0], "text")
-            ga_rx = int(getattr(self.findall(root, "ReadGroupAddress")[0], "text"))
-            ga_tx = int(getattr(self.findall(root, "WriteGroupAddress")[0], "text"))
-            name = getattr(self.findall(root, "EntityName")[0], "text")
+            if "KnxDataPoint" not in root.tag:
+                raise RuntimeError("Datapoints are no real datapoints.")
+            id_str = self.findall(root, "EntityId")[0].text
+            ga_rx_str = self.findall(root, "ReadGroupAddress")[0].text
+            ga_tx_str = self.findall(root, "WriteGroupAddress")[0].text
+            name = self.findall(root, "EntityName")[0].text
+            dtype = self.findall(root, "DataTypeKnx")[0].text
 
-            dtype = getattr(self.findall(root, "DataTypeKnx")[0], "text")
+            if (
+                name is None
+                or id_str is None
+                or dtype is None
+                or ga_rx_str is None
+                or ga_tx_str is None
+            ):
+                raise RuntimeError("No valid type in the arguments.")
+
+            ga_rx = int(ga_rx_str)
+            ga_tx = int(ga_tx_str)
+
             tmp = dtype.split(".")
             dtype_main = tmp[0]
             dtype_sub = tmp[1].lstrip("0")
@@ -203,10 +234,14 @@ class Gpa:
             dtype_str = "-".join(("DPST", dtype_main, dtype_sub))
             if ga_rx != 0:
                 ga_list.append(
-                    GroupAddress(id_str=id_, name=name, address=ga_rx, dtype=dtype_str)
+                    GroupAddress(
+                        id_str=id_str, name=name, address=ga_rx, dtype=dtype_str
+                    )
                 )
             if ga_rx not in (0, ga_rx):
                 ga_list.append(
-                    GroupAddress(id_str=id_, name=name, address=ga_tx, dtype=dtype_str)
+                    GroupAddress(
+                        id_str=id_str, name=name, address=ga_tx, dtype=dtype_str
+                    )
                 )
         return ga_list
