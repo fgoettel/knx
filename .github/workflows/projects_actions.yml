@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./logger
+        working-directory: ./projects
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
