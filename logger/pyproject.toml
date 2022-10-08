@@ -34,7 +34,7 @@ pytest-profiling = "*"
 safety = "*"
 sqlalchemy-stubs = "*"
 toml = "*"
-darglint = "^1.8.1"
+darglint = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
