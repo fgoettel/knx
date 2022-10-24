@@ -15,8 +15,6 @@ jobs:
         working-directory: ./x1_nodes/wgt
     steps:
       - uses: actions/checkout@v2.1.0
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
-        with:
-          vs-version: '[15.0,15.1)'
-      - run: msbuild ./Wgt.sln
+      - uses: actions/setup-dotnet@v3
+      - run: dotnet restore
+      - run: dotnet ./Wgt.sln
