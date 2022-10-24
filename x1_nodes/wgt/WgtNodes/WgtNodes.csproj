@@ -34,10 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LogicModule.Nodes.Helpers">
-      <HintPath>..\LogicNodesSDK\LogicModule.Nodes.Helpers.dll</HintPath>
+      <HintPath>..\..\LogicNodesSDK\LogicModule.Nodes.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="LogicModule.ObjectModel">
-      <HintPath>..\LogicNodesSDK\LogicModule.ObjectModel.dll</HintPath>
+      <HintPath>..\..\LogicNodesSDK\LogicModule.ObjectModel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
