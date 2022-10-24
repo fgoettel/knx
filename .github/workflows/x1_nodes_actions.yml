@@ -20,4 +20,4 @@ jobs:
       - run: dotnet restore
       - run: nuget restore
       - run: dotnet build
-      - run: dotnet test
+      - run: dotnet test ./WgtNodesTest/
