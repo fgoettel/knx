@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: BuildWgt
-    runs-on: windows-latest
+    runs-on: windows-2019
     defaults:
       run:
         working-directory: ./x1_nodes/wgt
