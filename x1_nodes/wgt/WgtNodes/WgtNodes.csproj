@@ -76,7 +76,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)\LogicNodesSDK\LogicNodeTool.exe" create "$(TargetDir) " "$(SolutionDir)\Zip"
+    <PostBuildEvent>"$(SolutionDir)\..\LogicNodesSDK\LogicNodeTool.exe" create "$(TargetDir) " "$(SolutionDir)\Zip"
 
 echo INFO: Logic Nodes are not signed yet and can only be used in the simulation in GPA.
 REM "$(SolutionDir)\LogicNodesSDK\SignLogicNodes.exe" [path_to_certificate] [certificate_password] $(SolutionDir)\Zip</PostBuildEvent>
