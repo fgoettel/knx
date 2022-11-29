@@ -5,7 +5,7 @@ description = "Log knx messages"
 authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "3.10"
+python = "3.11"
 SQLAlchemy = "*"
 xknx = "*"
 psycopg2-binary = { version = "*", optional = true }
@@ -41,7 +41,7 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.11"
 
 [tool.isort]
 profile = "black"

@@ -70,7 +70,7 @@ def get_server(data: Data) -> HTTPServer:
             except Exception as err:
                 logging.warning("Error: %s", err)
 
-        def log_request(*args, **kwargs) -> None:
+        def log_request(self, *args, **kwargs) -> None:
             """Only log requests as logging.debug."""
             # No method, overriding an inherited method
             # pylint: disable=no-method-argument

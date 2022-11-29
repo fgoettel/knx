@@ -1,7 +1,5 @@
 """Log all knx telegrams to database."""
 
-from __future__ import annotations  # "|" is first available in 3.10
-
 import datetime as dt
 import json
 import logging
@@ -234,9 +232,11 @@ async def run(
         gateway_ip=knx_gateway_ip,
         gateway_port=knx_gateway_port,
         route_back=knx_route_back,
+        individual_address=knx_own_address,
     )
     xknx = XKNX(
-        own_address=knx_own_address, daemon_mode=True, connection_config=connection_conf
+        daemon_mode=True,
+        connection_config=connection_conf,
     )
     with session_scope(db_addr) as session:
         rx_cb = await get_rx_cb(mapping, session, status)
