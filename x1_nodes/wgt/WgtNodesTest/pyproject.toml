@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "wgt"
+version = "0.1.0"
+description = ""
+authors = ["fgoettel <fabian.goettel@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+pymodbus = "^2.5.3"
+isort = "^5.10.1"
+black = "^22.10.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

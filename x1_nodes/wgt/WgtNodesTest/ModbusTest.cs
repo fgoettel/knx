@@ -10,7 +10,7 @@ namespace ModbusTest
     {
         Modbus client;
         const string ip = "127.0.0.1";
-        const int port = 502;
+        const int port = 5020;
 
         [SetUp]
         public void SetUp()

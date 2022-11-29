@@ -17,7 +17,7 @@ namespace Fabian_goettel_gmail_com.Logic.Wgt
     /// </summary>
     public class Wgt : LogicNodeBase
     {
-        private const int port = 502;
+        private const int port = 5020;
         private readonly ITypeService typeService;
         private Modbus modbusClient;
 
