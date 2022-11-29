@@ -10,10 +10,10 @@ jobs:
   nox:
     strategy:
       matrix:
-        python: ["3.9", "3.10"]
+        python: ["3.10", "3.11"]
         session: ["tests", "lint", "mypy", "safety"]
         exclude:
-        - python: 3.9
+        - python: 3.10
           session: mypy
     runs-on: ubuntu-latest
     defaults:

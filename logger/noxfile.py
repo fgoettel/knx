@@ -6,8 +6,8 @@ import nox  # type: ignore
 from nox_poetry import session  # type: ignore
 
 locations = ("examples", "logger", "test", "./noxfile.py")
-python_default = "3.10"
-python_versions = (python_default, "3.9")
+python_default = "3.11"
+python_versions = (python_default, "3.10")
 nox.options.sessions = "lint", "tests", "mypy", "safety"
 
 
