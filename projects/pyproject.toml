@@ -28,7 +28,6 @@ pytest-mock = "*"
 pytest-profiling = "*"
 safety = "*"
 sqlalchemy-stubs = "*"
-toml = "*"
 darglint = "*"
 
 [build-system]

@@ -7,7 +7,7 @@ from nox_poetry import session  # type: ignore
 
 locations = ("examples", "projects", "test", "./noxfile.py")
 python_default = "3.11"
-python_versions = (python_default, "3.10")
+python_versions = (python_default,)
 nox.options.sessions = "lint", "tests", "mypy", "safety"
 
 
@@ -78,7 +78,6 @@ def lint(session: session) -> None:
         "pylint",
         "pytest",
         "darglint",
-        "toml",  # Remove with python3.11
         "defusedxml",
     )
     session.run("flake8", *args)
