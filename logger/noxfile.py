@@ -7,7 +7,7 @@ from nox_poetry import session  # type: ignore
 
 locations = ("examples", "logger", "test", "./noxfile.py")
 python_default = "3.11"
-python_versions = (python_default, "3.10")
+python_versions = (python_default,)
 nox.options.sessions = "lint", "tests", "mypy", "safety"
 
 
@@ -24,7 +24,10 @@ def open_in_browser(path: str) -> None:
 def tests(session: session) -> None:
     """Run pytest."""
     session.install("pytest", "sqlalchemy", "xknx", "pytest-asyncio")
-    session.run("pytest")
+    env = {
+        "SQLALCHEMY_WARN_20": "1"
+    }  # Remove once sqlalchemy 2.0 is officially released
+    session.run("pytest", env=env)
 
 
 @session(python=python_versions)
@@ -59,7 +62,6 @@ def lint(session: session) -> None:
         "sqlalchemy",
         "darglint",
         "xknx",
-        "toml",
     )
     session.run("flake8", *args)
     session.run("pylint", "examples", "test", "logger")

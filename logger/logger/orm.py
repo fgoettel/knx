@@ -4,7 +4,7 @@ from abc import abstractmethod
 from datetime import datetime
 
 from sqlalchemy import Column, types
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 

@@ -6,7 +6,7 @@ authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "3.11"
-SQLAlchemy = "*"
+SQLAlchemy = { version = "*", allow-prereleases = true}
 xknx = "*"
 psycopg2-binary = { version = "*", optional = true }
 
@@ -33,7 +33,6 @@ pytest-mock = "*"
 pytest-profiling = "*"
 safety = "*"
 sqlalchemy-stubs = "*"
-toml = "*"
 darglint = "*"
 
 [build-system]
