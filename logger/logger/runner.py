@@ -1,11 +1,13 @@
+#!/usr/bin/env python3
+
 """Log all knx telegrams to database."""
 
 import datetime as dt
 import json
 import logging
+from collections.abc import Callable
 from pathlib import Path
 from threading import Thread
-from typing import Callable
 
 from sqlalchemy.orm import Session
 from xknx import XKNX, dpt
@@ -42,7 +44,7 @@ async def get_mapping(mapping_path: Path) -> dict:
 
     """
     logging.info("Loading mapping from %s", mapping_path.resolve())
-    with open(mapping_path, encoding="utf-8") as file_:
+    with Path(mapping_path).open(encoding="utf-8") as file_:
         mapping = json.load(file_)
 
     # Find unmatched
@@ -53,17 +55,18 @@ async def get_mapping(mapping_path: Path) -> dict:
         logging.error("%s not covered by DTYPE2XKNX", needed_not_available)
 
     if not needed_dtypes.issubset(available_dtypes):
-        raise ValueError("Not all dpst that are needed are covered.")
+        error_msg = "Not all dpst that are needed are covered."
+        raise ValueError(error_msg)
 
     return mapping
 
 
 async def get_rx_cb(
-    mapping: dict, db_session: Session, status: Data | None
+    mapping: dict,
+    db_session: Session,
+    status: Data | None,
 ) -> Callable:
     """Yield a msg receive callback."""
-    # pylint: disable=too-many-statements
-    # pylint: disable=too-many-return-statements
 
     async def telegram_rx_cb(telegram: Telegram) -> bool:
         """Extract value from received telegram and store in database.
@@ -79,10 +82,6 @@ async def get_rx_cb(
             False on failure
 
         """
-        # pylint: disable=too-many-statements,too-many-branches
-
-        # Intended to catch everything to not crash the logging
-        # pylint: disable=broad-except
         logging.debug("Telegram rx: %s", telegram)
 
         # Only act on write requests
@@ -94,10 +93,10 @@ async def get_rx_cb(
         try:
             src = str(telegram.source_address)
             dst = str(telegram.destination_address)
-            value_raw = telegram.payload.value.value  # type: ignore
+            value_raw = telegram.payload.value.value
         except Exception as err:
-            logging.error("Couldn't extract necessary information from telegram.")
-            logging.error(err)
+            logging.exception("Couldn't extract necessary information from telegram.")
+            logging.exception(err)
             return False
 
         # Map telegram information to knx a-priori information
@@ -112,10 +111,10 @@ async def get_rx_cb(
             # Also translate hvac enum
             if xknx_class == dpt.DPTHVACContrMode:
                 # This is an enum, just take the raw value
-                value = value_raw[0]  # type: ignore
+                value = value_raw[0]
             elif xknx_class == dpt.DPTBinary:
                 # Keep the binary as integer for easier storage
-                value = int(value_raw)  # type: ignore
+                value = int(value_raw)
             else:
                 value = xknx_class.from_knx(value_raw)
 
@@ -123,21 +122,21 @@ async def get_rx_cb(
             if dtype == "DPST-10-1":
                 # value_raw is a tuple with 3 elements
                 value = dt.time(
-                    hour=value_raw[0] & 0b11111,  # type: ignore
-                    minute=value_raw[1],  # type: ignore
-                    second=value_raw[2],  # type: ignore
+                    hour=value_raw[0] & 0b11111,
+                    minute=value_raw[1],
+                    second=value_raw[2],
                 )
             elif dtype == "DPST-11-1":
-                value = dt.date(day=value_raw[0], month=value_raw[1], year=value_raw[2])  # type: ignore
+                value = dt.date(day=value_raw[0], month=value_raw[1], year=value_raw[2])
             elif dtype == "DPST-19-1":
                 # value_raw is a tuple with 8 elements
                 value = dt.datetime(
-                    year=value_raw[0],  # type: ignore
-                    month=value_raw[1],  # type: ignore
-                    day=value_raw[2],  # type: ignore
-                    hour=value_raw[3] & 0b11111,  # type: ignore
-                    minute=value_raw[4],  # type: ignore
-                    second=value_raw[5],  # type: ignore
+                    year=value_raw[0],
+                    month=value_raw[1],
+                    day=value_raw[2],
+                    hour=value_raw[3] & 0b11111,
+                    minute=value_raw[4],
+                    second=value_raw[5],
                 )
 
             # Get unit (if existent)
@@ -149,8 +148,10 @@ async def get_rx_cb(
                 unit = ""
             logging.info("%s sent %s%s from %s to %s.", name, value, unit, src, dst)
         except Exception as err:
-            logging.error("Couldn't map received telegram to a-priori knx information.")
-            logging.error(err)
+            logging.exception(
+                "Couldn't map received telegram to a-priori knx information.",
+            )
+            logging.exception(err)
             return False
 
         # Translate information to db ORM
@@ -159,8 +160,8 @@ async def get_rx_cb(
             orm_class = getattr(orm, orm_name)
             orm_instance = orm_class(src=src, dst=dst, name=name, value=value)
         except Exception as err:
-            logging.error("Couldn't map info to ORM.")
-            logging.error(err)
+            logging.exception("Couldn't map info to ORM.")
+            logging.exception(err)
             return False
 
         # Save to db
@@ -168,8 +169,8 @@ async def get_rx_cb(
             db_session.add(orm_instance)
             db_session.commit()
         except Exception as err:
-            logging.error("Couldn't save instance of orm: %s", orm_instance)
-            logging.error(err)
+            logging.exception("Couldn't save instance of orm: %s", orm_instance)
+            logging.exception(err)
             return False
 
         # Populate status
@@ -180,8 +181,8 @@ async def get_rx_cb(
                     "last_rx"
                 ] = f"{name} sent {value}{unit} from {src} to {dst}."
             except Exception as err:
-                logging.error("Couldn't populate status.")
-                logging.error(err)
+                logging.exception("Couldn't populate status.")
+                logging.exception(err)
                 return False
 
         return True
@@ -194,6 +195,7 @@ async def run(
     knx_mapping: Path,
     knx_own_address: str,
     knx_gateway_ip: str | None = None,
+    *,
     knx_gateway_port: int = 3671,
     knx_route_back: bool = False,
     knx_local_ip: str | None = None,
@@ -203,9 +205,6 @@ async def run(
     status_server_port: int = 8080,
 ) -> None:
     """Write all logged knx telegrams to a db."""
-    # pylint: disable=too-many-arguments
-    # pylint: disable=too-many-locals
-
     # Get validated mapping
     mapping = await get_mapping(knx_mapping)
 
@@ -213,7 +212,6 @@ async def run(
     status = None
     if status_server:
         logging.info("Status Server enabled.")
-        # pylint: disable=import-outside-toplevel
         from logger.statusserver import StatusServer
 
         status = Data(

@@ -25,7 +25,7 @@ class KNXMixin:
 
     def __repr__(self) -> str:
         """Return basic information about this entity (value, name, time, src, dst)."""
-        return f"{self.__class__.__name__}(value={self.value}, name={self.name}, time={self.time} src={self.src}, dst={self.dst})"  # noqa: E501
+        return f"{self.__class__.__name__}(value={self.value}, name={self.name}, time={self.time} src={self.src}, dst={self.dst})"
 
 
 class AbsoluteTemperature(KNXMixin, Base):

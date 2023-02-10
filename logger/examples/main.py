@@ -10,9 +10,13 @@ from logger.runner import run as logger_run
 
 
 def main() -> int:
-    """Write values to a sqlite database."""
-    # Set address of database
-    # addr = "postgresql://{user}:{password}@{host}:{port}/{database}"
+    """Write values to a local temporary database.
+
+    By default it writes to a local sqlite db.
+
+    It could also use a remote db with the following address scheme:
+    `postgresql://{user}:{password}@{host}:{port}/{database}`
+    """
     addr = "sqlite://"
     mapping = Path(__file__).parent.joinpath("ga_mapping.json")
 
@@ -25,7 +29,7 @@ def main() -> int:
             knx_own_address="1.1.99",
             knx_route_back=False,
             knx_local_port=3671,
-        )
+        ),
     )
 
     return 0

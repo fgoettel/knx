@@ -6,34 +6,26 @@ authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "3.11"
-SQLAlchemy = { version = "*", allow-prereleases = true}
+SQLAlchemy = "*"
 xknx = "*"
 psycopg2-binary = { version = "*", optional = true }
 
 [tool.poetry.extras]
 pgsql = ["psycopg2-binary"]
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "*"
-flake8 = "*"
-flake8-annotations = "*"
-flake8-bandit = "*"
-flake8-black = "*"
-flake8-bugbear = "*"
-flake8-docstrings = "*"
-flake8-isort = "*"
-isort = "*"
 mypy = "*"
+nox = "*"
 nox-poetry = "*"
-pylint = "*"
 pytest = "*"
 pytest-asyncio = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-profiling = "*"
+ruff = "*"
 safety = "*"
 sqlalchemy-stubs = "*"
-darglint = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -41,9 +33,8 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
 python_version = "3.11"
-
-[tool.isort]
-profile = "black"
+exclude = ["^noxfile\\.py", "^logger/runner\\.py"]
+show_error_codes = true
 
 [[tool.mypy.overrides]]
 module = "logger.orm"
@@ -55,9 +46,36 @@ testpaths = [
 ]
 asyncio_mode = "auto"
 
+[tool.ruff]
+target-version = "py311"
+select = [ "ALL"
+]
+line-length = 180
 
-[tool.darglint]
-docstring_style="numpy"
+# TODO: Either make these more specific or fix
+ignore = [
+    "ANN002", # Missing type annotation for *args
+    "ANN003", # Missing type annotation for **kwargs
+    "ANN101", # Missing type annotation for self
+    "ANN401", # Dynamically types allowed
+    "D213", # mulit-line-summary-second-line
+    "D203", # one blank line before class
+    "PLR0913", # Too many arguments to function call
+    "PLR0915", # Too many statements
+    "PLR0911", # Too many return statements
+    "PLR0912", # Too many branches
+    "TCH002", # Move import into a type checking block
+    "TCH003", # Move import into a type checking block
+    "BLE001", # Do not catch blind exception
+    "DTZ001", # The use without tzinfo argument is not allowed
+    "DTZ003", # The use without tzinfo argument is not allowed
+    "DTZ005", # The use without tzinfo argument is not allowed
+    "PGH003", # Use specific rule codes when ignore type issues
+]
+mccabe.max-complexity = 30 # TODO: shrink to ~10
+
+[tool.ruff.per-file-ignores]
+"test/*.py" = ["S101"]
 
 [tool.coverage]
 source = ["logger"]

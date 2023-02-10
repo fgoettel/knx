@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 """Provide simple status of the logger."""
-from __future__ import annotations
 
 import json
 import logging
@@ -32,21 +31,17 @@ def get_server(data: Data) -> HTTPServer:
     class Server(BaseHTTPRequestHandler):
         """Simple webserver that serves the data dict from the closure as json."""
 
-        # overwriting methods, names are given
-        # pylint: disable=invalid-name
-
         def _set_headers(self) -> None:
             self.send_response(200)
             self.send_header("Content-type", "application/json")
             self.end_headers()
 
-        def do_HEAD(self) -> None:
+        def do_HEAD(self) -> None:  # noqa: N802
             """Set header to SUCCESS and application/json."""
             self._set_headers()
 
-        def do_GET(self) -> None:
+        def do_GET(self) -> None:  # noqa: N802
             """Serve the data tuple."""
-            # pylint: disable=broad-except
             data_clean: dict[str, str | bool] = {"all_good": False}
             all_good = True
 
@@ -72,13 +67,11 @@ def get_server(data: Data) -> HTTPServer:
 
         def log_request(self, *args, **kwargs) -> None:
             """Only log requests as logging.debug."""
-            # No method, overriding an inherited method
-            # pylint: disable=no-method-argument
             logging.debug("Successfull request.")
             logging.debug("\targs: %s", args)
             logging.debug("\t:kwargs %s", kwargs)
 
-    return Server  # type: ignore
+    return Server  # type: ignore [return-value]
 
 
 class StatusServer:
@@ -103,14 +96,14 @@ class StatusServer:
         """
         self.port = port
         if not isinstance(data, Data):
-            raise ValueError
+            raise TypeError
         self.data = data
 
     def run(self) -> None:
         """Serve the Server."""
         server_address = ("", self.port)
         server = get_server(data=self.data)
-        httpd = HTTPServer(server_address, server)  # type: ignore
+        httpd = HTTPServer(server_address, server)  # type: ignore [arg-type]
 
         logging.info("Starting httpd on port %i...", self.port)
         httpd.serve_forever()

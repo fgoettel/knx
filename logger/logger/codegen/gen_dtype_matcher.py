@@ -3,7 +3,8 @@
 """Generate the mapping of dtype to xknx class."""
 
 import logging
-from typing import Dict, List
+from contextlib import suppress
+from pathlib import Path
 
 from xknx import dpt
 
@@ -12,7 +13,7 @@ from . import DST_DIR, LOGGER
 DTYPE_MATCHER_PATH = DST_DIR / "dtype_matcher.py"
 
 
-def get_mapping() -> Dict[str, str]:
+def get_mapping() -> dict[str, str]:
     """Map all existing xknx dpt classes against their dtype.
 
     Returns
@@ -23,7 +24,6 @@ def get_mapping() -> Dict[str, str]:
     """
     mapping = {}
     for name in dir(dpt):
-
         if name.startswith("_"):
             continue
 
@@ -107,14 +107,13 @@ def dtype_sorter(dtype_str: str) -> int:
     """Sort by dtype maingroup."""
     value = int(dtype_str.split("-")[1]) * 1000
 
-    try:
+    with suppress(IndexError):
         value += int(dtype_str.split("-")[2])
-    except IndexError:
-        pass
+
     return value
 
 
-def get_lines(mapping: dict) -> List:
+def get_lines(mapping: dict) -> list:
     """Create a list of lines containing the serialized mapping."""
     lines = []
     # Doc
@@ -138,7 +137,7 @@ def main() -> int:
 
     lines = get_lines(mapping_extended)
 
-    with open(DTYPE_MATCHER_PATH, "w", encoding="utf-8") as file_:
+    with Path(DTYPE_MATCHER_PATH).open("w", encoding="utf-8") as file_:
         file_.write("\n".join(lines) + "\n")
 
     return 0

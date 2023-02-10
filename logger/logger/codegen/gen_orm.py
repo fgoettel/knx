@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 """Generate an ORM for database logging based on xknx datatypes."""
-from __future__ import annotations
-
 import logging
 import re
 from collections import OrderedDict, defaultdict
-from typing import DefaultDict, Dict, Set
+from pathlib import Path
+from typing import DefaultDict
 
 from xknx import dpt
 
+from logger.dtype_matcher import DTYPE2XKNX
 from logger.util import xknx2name
 
-from ..dtype_matcher import DTYPE2XKNX
 from . import DST_DIR, LOGGER
 
 KNXMIXIN = "KNXMixin"
@@ -22,13 +21,10 @@ ORM_PATH = DST_DIR / "orm.py"
 
 def dpst2db(dpst: str) -> str:
     """Translate a knx dtype into a db type."""
-    # pylint: disable=too-many-return-statements
-    # pylint: disable=too-many-branches
-
     xknx_class = DTYPE2XKNX[dpst]
 
     try:
-        xknx_return_type = xknx_class.from_knx.__annotations__["return"]  # type: ignore
+        xknx_return_type = xknx_class.from_knx.__annotations__["return"]
     except AttributeError:
         if issubclass(xknx_class, dpt.DPTBinary):
             # Binary not stored as boolean, rationale:
@@ -63,7 +59,8 @@ def dpst2db(dpst: str) -> str:
         # This will be only saved as integer
         return "types.Integer"
 
-    raise ValueError(f"{xknx_return_type} / {dpst} is not mapped to a db type.")
+    error_msg = f"{xknx_return_type} / {dpst} is not mapped to a db type."
+    raise ValueError(error_msg)
 
 
 def get_mixin() -> str:
@@ -76,9 +73,9 @@ def get_mixin() -> str:
 
     """
     repr_str = (
-        "{self.__class__.__name__}"
-        + "(value={self.value}, name={self.name}, time={self.time} "
-        + "src={self.src}, dst={self.dst})"
+        "{self.__class__.__name__}",
+        "(value={self.value}, name={self.name}, time={self.time} ",
+        "src={self.src}, dst={self.dst})",
     )
     mixin = f"""
 class {KNXMIXIN}:
@@ -102,7 +99,7 @@ class {KNXMIXIN}:
     return mixin.strip()
 
 
-def get_imports(import_raw: Dict[str, set]) -> str:
+def get_imports(import_raw: dict[str, set]) -> str:
     """Dump imports to string.
 
     Parameters
@@ -148,7 +145,7 @@ def get_imports(import_raw: Dict[str, set]) -> str:
     return "\n".join(lines)
 
 
-def get_base(import_dict: DefaultDict[str, Set[str]]) -> str:
+def get_base(import_dict: DefaultDict[str, set[str]]) -> str:
     """Create base for sqlalchemy.
 
     Attention: The provided import dict is modified.
@@ -165,12 +162,15 @@ def get_base(import_dict: DefaultDict[str, Set[str]]) -> str:
 
     """
     import_dict["sqlalchemy.ext.declarative"].add("declarative_base")
-    baseline = f"{DBBASEBAME} = declarative_base()\n"
-    return baseline
+    return f"{DBBASEBAME} = declarative_base()\n"
 
 
 def _get_orm(
-    name: str, xknx_name: str, table_name: str, db_type: str, dpst_list: list
+    name: str,
+    xknx_name: str,
+    table_name: str,
+    db_type: str,
+    dpst_list: list,
 ) -> str:
     """Create the ORM.
 
@@ -226,18 +226,18 @@ def get_orms() -> str:
         name = xknx2name(xknx_type)
         type_dict[name].append(dpst)
 
-    orm_dict: Dict[str, str] = {}
+    orm_dict: dict[str, str] = {}
     for name, dpst_list in type_dict.items():
-
         # Ensure that all dpsts map to the same db type
         db_types = {dpst2db(d) for d in dpst_list}
         if len(db_types) != 1:
-            raise AssertionError()
+            raise AssertionError
         db_type = db_types.pop()
 
         # Ensure each name is only used once
         if name in orm_dict:
-            raise ValueError(f"ORM {name} already exists (check {orm_dict[name]}).")
+            error_msg = f"ORM {name} already exists (check {orm_dict[name]})."
+            raise ValueError(error_msg)
 
         # Shouldn't matter which dpst we take (just documentation)
         # Exception: Power, there we have two xknx typesx
@@ -252,8 +252,7 @@ def get_orms() -> str:
 
     # Sort em by the classname
     orms_sorted = OrderedDict(sorted(orm_dict.items(), key=lambda x: x[0]))
-    orms_combined = "\n".join(orms_sorted.values())
-    return orms_combined
+    return "\n".join(orms_sorted.values())
 
 
 def get_doc() -> str:
@@ -272,7 +271,7 @@ class ORMGenerator:
     def run() -> None:
         """Generate the ORMs."""
         # Get used xknx dtypes
-        imports: DefaultDict[str, Set[str]] = defaultdict(set)
+        imports: DefaultDict[str, set[str]] = defaultdict(set)
 
         imports["abc"].add("abstractmethod")
         imports["datetime"].add("datetime")
@@ -284,9 +283,9 @@ class ORMGenerator:
 
         # Combine it and write it to a file
         combined = "\n\n".join(
-            (get_doc(), get_imports(imports), base, get_mixin(), orms)
+            (get_doc(), get_imports(imports), base, get_mixin(), orms),
         )
-        with open(ORM_PATH, "w", encoding="utf-8") as file_:
+        with Path(ORM_PATH).open("w", encoding="utf-8") as file_:
             file_.write(combined)
 
 
