@@ -5,6 +5,7 @@
 import datetime as dt
 import json
 import logging
+import typing
 from collections.abc import Callable
 from pathlib import Path
 from threading import Thread
@@ -68,6 +69,7 @@ async def get_rx_cb(
 ) -> Callable:
     """Yield a msg receive callback."""
 
+    @typing.no_type_check
     async def telegram_rx_cb(telegram: Telegram) -> bool:
         """Extract value from received telegram and store in database.
 

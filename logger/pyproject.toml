@@ -33,7 +33,9 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
 python_version = "3.11"
-exclude = ["^noxfile\\.py", "^logger/runner\\.py"]
+exclude = [
+    "^noxfile\\.py",
+]
 show_error_codes = true
 
 [[tool.mypy.overrides]]
