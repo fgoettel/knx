@@ -4,7 +4,6 @@ import logging
 import re
 from collections import OrderedDict, defaultdict
 from pathlib import Path
-from typing import DefaultDict
 
 from xknx import dpt
 
@@ -145,7 +144,7 @@ def get_imports(import_raw: dict[str, set]) -> str:
     return "\n".join(lines)
 
 
-def get_base(import_dict: DefaultDict[str, set[str]]) -> str:
+def get_base(import_dict: defaultdict[str, set[str]]) -> str:
     """Create base for sqlalchemy.
 
     Attention: The provided import dict is modified.
@@ -161,7 +160,7 @@ def get_base(import_dict: DefaultDict[str, set[str]]) -> str:
         Stringified code to create a base
 
     """
-    import_dict["sqlalchemy.ext.declarative"].add("declarative_base")
+    import_dict["sqlalchemy.orm"].add("declarative_base")
     return f"{DBBASEBAME} = declarative_base()\n"
 
 
@@ -271,7 +270,7 @@ class ORMGenerator:
     def run() -> None:
         """Generate the ORMs."""
         # Get used xknx dtypes
-        imports: DefaultDict[str, set[str]] = defaultdict(set)
+        imports: defaultdict[str, set[str]] = defaultdict(set)
 
         imports["abc"].add("abstractmethod")
         imports["datetime"].add("datetime")

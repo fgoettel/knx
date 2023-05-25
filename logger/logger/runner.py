@@ -12,6 +12,7 @@ from threading import Thread
 
 from sqlalchemy.orm import Session
 from xknx import XKNX, dpt
+from xknx.dpt import DPTArray
 from xknx.io import ConnectionConfig, ConnectionType
 from xknx.telegram import Telegram
 from xknx.telegram.apci import GroupValueWrite
@@ -111,14 +112,19 @@ async def get_rx_cb(
 
             # Calculate value
             # Also translate hvac enum
-            if xknx_class == dpt.DPTHVACContrMode:
+            if xknx_class in (
+                dpt.DPTHVACContrMode,
+                dpt.DPTControlStepwise,
+                dpt.DPTControlStepwiseBlinds,
+                dpt.DPTControlStepwiseDimming,
+            ):
                 # This is an enum, just take the raw value
                 value = value_raw[0]
             elif xknx_class == dpt.DPTBinary:
                 # Keep the binary as integer for easier storage
                 value = int(value_raw)
             else:
-                value = xknx_class.from_knx(value_raw)
+                value = xknx_class.from_knx(DPTArray(value_raw))
 
             # Translate time_struct to datetime objects
             if dtype == "DPST-10-1":

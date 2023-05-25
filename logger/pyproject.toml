@@ -60,19 +60,23 @@ ignore = [
     "ANN003", # Missing type annotation for **kwargs
     "ANN101", # Missing type annotation for self
     "ANN401", # Dynamically types allowed
-    "D213", # mulit-line-summary-second-line
-    "D203", # one blank line before class
-    "PLR0913", # Too many arguments to function call
-    "PLR0915", # Too many statements
-    "PLR0911", # Too many return statements
-    "PLR0912", # Too many branches
-    "TCH002", # Move import into a type checking block
-    "TCH003", # Move import into a type checking block
     "BLE001", # Do not catch blind exception
+    "D203",   # one blank line before class
+    "D213",   # mulit-line-summary-second-line
     "DTZ001", # The use without tzinfo argument is not allowed
     "DTZ003", # The use without tzinfo argument is not allowed
     "DTZ005", # The use without tzinfo argument is not allowed
     "PGH003", # Use specific rule codes when ignore type issues
+    "PLR0911", # Too many return statements
+    "PLR0912", # Too many branches
+    "PLR0913", # Too many arguments to function call
+    "PLR0915", # Too many statements
+    "S311",   # Standard pseudo-random generators are not suitable for cryptographic purpose
+    "TCH002", # Move import into a type checking block
+    "TCH003", # Move import into a type checking block
+    "TD002",  # Missing author in TODO
+    "TD003",  # Missing issue link on the line following this TODO
+    "TRY401", # Redundant exception object
 ]
 mccabe.max-complexity = 30 # TODO: shrink to ~10
 

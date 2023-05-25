@@ -25,7 +25,17 @@ class KNXMixin:
 
     def __repr__(self) -> str:
         """Return basic information about this entity (value, name, time, src, dst)."""
-        return f"{self.__class__.__name__}(value={self.value}, name={self.name}, time={self.time} src={self.src}, dst={self.dst})"
+        return f"('{self.__class__.__name__}', '(value={self.value}, name={self.name}, time={self.time} ', 'src={self.src}, dst={self.dst})')"
+
+
+class AbsoluteHumidity(KNXMixin, Base):
+    """ORM for xknx 'DPTAbsoluteHumidity'.
+
+    DType: DPST-9-29
+    """
+
+    __tablename__ = "absolutehumidity"
+    value = Column(types.Float)
 
 
 class AbsoluteTemperature(KNXMixin, Base):
@@ -78,6 +88,16 @@ class ActiveEnergy(KNXMixin, Base):
     value = Column(types.Integer)
 
 
+class ActiveEnergyMWh(KNXMixin, Base):
+    """ORM for xknx 'DPTActiveEnergyMWh'.
+
+    DType: DPST-13-16
+    """
+
+    __tablename__ = "activeenergymwh"
+    value = Column(types.Integer)
+
+
 class ActiveEnergykWh(KNXMixin, Base):
     """ORM for xknx 'DPTActiveEnergykWh'.
 
@@ -95,6 +115,16 @@ class Activity(KNXMixin, Base):
     """
 
     __tablename__ = "activity"
+    value = Column(types.Float)
+
+
+class AirFlow(KNXMixin, Base):
+    """ORM for xknx 'DPTAirFlow'.
+
+    DType: DPST-9-9
+    """
+
+    __tablename__ = "airflow"
     value = Column(types.Float)
 
 
@@ -188,6 +218,16 @@ class ApparantEnergykVAh(KNXMixin, Base):
     value = Column(types.Integer)
 
 
+class ApparentPower(KNXMixin, Base):
+    """ORM for xknx 'DPTApparentPower'.
+
+    DType: DPST-14-80
+    """
+
+    __tablename__ = "apparentpower"
+    value = Column(types.Float)
+
+
 class Area(KNXMixin, Base):
     """ORM for xknx 'DPTArea'.
 
@@ -278,6 +318,16 @@ class Compressibility(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class ConcentrationUGM3(KNXMixin, Base):
+    """ORM for xknx 'DPTConcentrationUGM3'.
+
+    DType: DPST-9-30
+    """
+
+    __tablename__ = "concentrationugm3"
+    value = Column(types.Float)
+
+
 class Conductance(KNXMixin, Base):
     """ORM for xknx 'DPTConductance'.
 
@@ -355,6 +405,26 @@ class DecimalFactor(KNXMixin, Base):
     """
 
     __tablename__ = "decimalfactor"
+    value = Column(types.Integer)
+
+
+class DeltaTime100Msec(KNXMixin, Base):
+    """ORM for xknx 'DPTDeltaTime100Msec'.
+
+    DType: DPST-8-4
+    """
+
+    __tablename__ = "deltatime100msec"
+    value = Column(types.Integer)
+
+
+class DeltaTime10Msec(KNXMixin, Base):
+    """ORM for xknx 'DPTDeltaTime10Msec'.
+
+    DType: DPST-8-3
+    """
+
+    __tablename__ = "deltatime10msec"
     value = Column(types.Integer)
 
 
@@ -718,6 +788,16 @@ class Length(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class LengthM(KNXMixin, Base):
+    """ORM for xknx 'DPTLengthM'.
+
+    DType: DPST-8-12
+    """
+
+    __tablename__ = "lengthm"
+    value = Column(types.Integer)
+
+
 class LengthMm(KNXMixin, Base):
     """ORM for xknx 'DPTLengthMm'.
 
@@ -745,6 +825,36 @@ class LongDeltaTimeSec(KNXMixin, Base):
     """
 
     __tablename__ = "longdeltatimesec"
+    value = Column(types.Integer)
+
+
+class LongTimePeriodHrs(KNXMixin, Base):
+    """ORM for xknx 'DPTLongTimePeriodHrs'.
+
+    DType: DPST-12-102
+    """
+
+    __tablename__ = "longtimeperiodhrs"
+    value = Column(types.Integer)
+
+
+class LongTimePeriodMin(KNXMixin, Base):
+    """ORM for xknx 'DPTLongTimePeriodMin'.
+
+    DType: DPST-12-101
+    """
+
+    __tablename__ = "longtimeperiodmin"
+    value = Column(types.Integer)
+
+
+class LongTimePeriodSec(KNXMixin, Base):
+    """ORM for xknx 'DPTLongTimePeriodSec'.
+
+    DType: DPST-12-100
+    """
+
+    __tablename__ = "longtimeperiodsec"
     value = Column(types.Integer)
 
 
@@ -996,6 +1106,16 @@ class Pressure(KNXMixin, Base):
 
     __tablename__ = "pressure"
     value = Column(types.Float)
+
+
+class PropDataType(KNXMixin, Base):
+    """ORM for xknx 'DPTPropDataType'.
+
+    DType: DPST-7-10
+    """
+
+    __tablename__ = "propdatatype"
+    value = Column(types.Integer)
 
 
 class RainAmount(KNXMixin, Base):
@@ -1458,6 +1578,16 @@ class Value4Count(KNXMixin, Base):
     value = Column(types.Integer)
 
 
+class Value4Ucount(KNXMixin, Base):
+    """ORM for xknx 'DPTValue4Ucount'.
+
+    DType: DPST-12-1
+    """
+
+    __tablename__ = "value4ucount"
+    value = Column(types.Integer)
+
+
 class Voltage(KNXMixin, Base):
     """ORM for xknx 'DPTVoltage'.
 
@@ -1496,6 +1626,26 @@ class VolumeFlux(KNXMixin, Base):
 
     __tablename__ = "volumeflux"
     value = Column(types.Float)
+
+
+class VolumeLiquidLitre(KNXMixin, Base):
+    """ORM for xknx 'DPTVolumeLiquidLitre'.
+
+    DType: DPST-12-1200
+    """
+
+    __tablename__ = "volumeliquidlitre"
+    value = Column(types.Integer)
+
+
+class VolumeM3(KNXMixin, Base):
+    """ORM for xknx 'DPTVolumeM3'.
+
+    DType: DPST-12-1201
+    """
+
+    __tablename__ = "volumem3"
+    value = Column(types.Integer)
 
 
 class Weight(KNXMixin, Base):

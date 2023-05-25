@@ -88,6 +88,8 @@ def payload(dtype: str) -> GroupValueWrite:
         "DPST-9-7",
         "DPST-9-27",
         "DPST-9-28",
+        "DPST-9-29",
+        "DPST-9-30",
     ):
         # Value must be > 0
         value_raw[0] &= 0b01111111
@@ -104,7 +106,7 @@ def payload(dtype: str) -> GroupValueWrite:
         value_raw[0] = random.randint(1, 28)  # day
         value_raw[1] = random.randint(1, 12)  # month
         value_raw[2] = random.randint(
-            0,
+            1,
             89,
         )  # year (full range is 0-99, but >= 90 is 19xx)
     elif dtype in ("DPST-18-1", "DPST-17-1"):
