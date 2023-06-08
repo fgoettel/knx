@@ -66,6 +66,7 @@ ignore = [
     "DTZ001", # The use without tzinfo argument is not allowed
     "DTZ003", # The use without tzinfo argument is not allowed
     "DTZ005", # The use without tzinfo argument is not allowed
+    "FIX002", # Line contains TODO
     "PGH003", # Use specific rule codes when ignore type issues
     "PLR0911", # Too many return statements
     "PLR0912", # Too many branches
