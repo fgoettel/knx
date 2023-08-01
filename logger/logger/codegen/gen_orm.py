@@ -93,7 +93,7 @@ class {KNXMIXIN}:
 
     def __repr__(self) -> str:
         \"""Return basic information about this entity (value, name, time, src, dst).\"""
-        return f"{repr_str}"  # noqa: E501
+        return f"{repr_str}"
     """
     return mixin.strip()
 

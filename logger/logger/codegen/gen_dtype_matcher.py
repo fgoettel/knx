@@ -123,8 +123,10 @@ def get_lines(mapping: dict) -> list:
     # Imports
     lines.append("from xknx import dpt\n")
     lines.append("DTYPE2XKNX = {")
-    for dtype in sorted(mapping.keys(), key=dtype_sorter):
-        lines.append(4 * " " + f'"{dtype}": {mapping[dtype]}')
+    lines += [
+        f'    "{dtype}": {mapping[dtype]}'
+        for dtype in sorted(mapping.keys(), key=dtype_sorter)
+    ]
     lines.append("}")
 
     return lines

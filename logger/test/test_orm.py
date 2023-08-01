@@ -50,8 +50,9 @@ def all_orms() -> list[tuple[KNXMixin, str]]:
         dtype_search = RE_DTYPE.search(orm_class.__doc__)
         assert dtype_search is not None
         dtype_match = dtype_search.group("dtype")
-        for dtype in dtype_match.split(DTYPE_DOC_SEPERATION):
-            orm_list.append((orm_class, dtype))
+        orm_list += [
+            (orm_class, dtype) for dtype in dtype_match.split(DTYPE_DOC_SEPERATION)
+        ]
 
     return orm_list
 
