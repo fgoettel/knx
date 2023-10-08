@@ -2,7 +2,7 @@
 
 __author__ = """Fabian Göttel"""
 __email__ = "fabian.goettel@gmail.com"
-__version__ = "0.4.1"
+__version__ = "0.4.3"
 
 
 import defusedxml  # type: ignore

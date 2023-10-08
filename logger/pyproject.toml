@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "logger"
-version = "0.4.1" # Also update in logger/__init__.py AND projects
+version = "0.4.3" # Also update in logger/__init__.py AND projects
 description = "Log knx messages"
 authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "3.11"
+python = "3.12"
 SQLAlchemy = "*"
 xknx = "*"
 psycopg2-binary = { version = "*", optional = true }
@@ -32,7 +32,7 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 exclude = [
     "^noxfile\\.py",
 ]

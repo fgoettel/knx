@@ -187,7 +187,7 @@ class GT2(Switch):
 
         # Create pages
         for idx in range(page_count):
-            name = f"{self.name} {idx+1}/{page_count}"
+            name = f"{self.name} {idx + 1}/{page_count}"
             switch = f"""
 {name}
 {hline}

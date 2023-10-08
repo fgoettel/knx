@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "projects"
-version = "0.4.1" # Also update in projects/__init__.py AND logger
+version = "0.4.3" # Also update in projects/__init__.py AND logger
 description = "Interact with ets/gpa/... project files."
 authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "3.11"
+python = "3.12"
 defusedxml = "*"
 
 [tool.poetry.dev-dependencies]
@@ -43,7 +43,7 @@ testpaths = [
 ]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 
 [tool.isort]
 profile = "black"

@@ -7,8 +7,11 @@ import nox
 from nox_poetry import session
 
 locations = ("examples", "logger", "test", "./noxfile.py")
-python_default = "3.11"
-python_versions = (python_default,)
+python_default = "3.12"
+python_versions = (
+    "3.11",
+    python_default,
+)
 nox.options.sessions = "lint", "tests", "mypy", "safety"
 
 

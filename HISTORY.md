@@ -1,7 +1,8 @@
 #  History
 
-## Unreleased
-* Update to python3.11
+## v0.4.4
+* Update to python3.12
+* Updated dependencies
 
 ## v0.3.0
 * align python projects
