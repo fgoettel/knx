@@ -1,26 +1,24 @@
 """Entrypoint for tests and linting."""
 
 import tempfile
+from pathlib import Path
 
-import nox  # type: ignore
-from nox_poetry import session  # type: ignore
+import nox
+from nox_poetry import session
 
 locations = ("examples", "projects", "test", "./noxfile.py")
 python_default = "3.12"
-python_versions = (
-    "3.11",
-    python_default,
-)
+python_versions = (python_default,)
 nox.options.sessions = "lint", "tests", "mypy", "safety"
 
 
 def open_in_browser(path: str) -> None:
     """Open a given path in the default browser."""
-    import os
     import webbrowser
     from urllib.request import pathname2url
 
-    webbrowser.open("file://" + pathname2url(os.path.abspath(path)))
+    resolved_path = str(Path(path).resolve())
+    webbrowser.open("file://" + pathname2url(resolved_path))
 
 
 @session(python=python_versions)
@@ -41,51 +39,16 @@ def coverage(session: session) -> None:
 
 @session(python=python_versions)
 def lint(session: session) -> None:
-    """Lint it, but don't change it."""
-    common_ignores = (
-        "ANN101",  # Type annotation for self
-        "ANN002",  # Type annotation for *args
-        "ANN003",  # Type annotation for kwargs
-        "S314",  # Unsafe xml
-        "S405",  # Unsafe xml
-        "W503",  # Line break before binary operator
-    )
-    test_ignores = (
-        "ANN001",  # Missing arg type
-        "ANN201",  # Missing return type
-        "DAR101",  # Missing Parameters
-        "DAR201",  # Return in docstring
-        "F811",  # Redefines (needed for fixtures)
-        "S101",  # Assert statements
-        "S311",  # Pseudo-random generators unsafe
-    )
-    per_file_ignores = (
-        f"test/*:{','.join(test_ignores)}",
-        "noxfile.py:DAR101",
-    )
-    args_common = (
-        "--max-line-length=200",
-        f"--ignore={' '.join(common_ignores)}",
-        f"--per-file-ignores={' '.join(per_file_ignores)}",
-    )
-    args_opt = session.posargs or locations
-    args = args_opt + args_common
+    """Lint it, and format it."""
     session.install(
-        "flake8",
-        "flake8-annotations",
-        "flake8-bandit",
-        "flake8-black",
-        "flake8-bugbear",
-        "flake8-isort",
-        "flake8-docstrings",
         "pylint",
         "pytest",
-        "darglint",
         "defusedxml",
     )
-    session.run("flake8", *args)
     session.run("pylint", "test", "projects")
     session.run("pylint", "examples", "--disable=duplicate-code")
+    session.run("ruff", "format")
+    session.run("ruff", "check", "--fix")
 
 
 @session(python=python_default)
@@ -93,22 +56,6 @@ def mypy(session: session) -> None:
     """Types, types, types."""
     session.install("mypy", "pytest", "defusedxml")
     session.run("mypy", *locations)
-
-
-@session(python=python_default)
-def black(session: session) -> None:
-    """Run black."""
-    args = session.posargs or locations
-    session.install("black")
-    session.run("black", *args)
-
-
-@session(python=python_default)
-def isort(session: session) -> None:
-    """Run isort."""
-    args = session.posargs or locations
-    session.install("isort")
-    session.run("isort", *args)
 
 
 @session(python=python_versions)

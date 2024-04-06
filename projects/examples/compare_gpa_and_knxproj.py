@@ -4,27 +4,35 @@
 import argparse
 import logging
 from pathlib import Path
-from typing import Tuple
 
 from projects.gpa import Gpa
 from projects.knxproj import Knxproj
 
 
-def get_args() -> Tuple[Path, Path]:
-    """Set up the parser.
+def get_args() -> tuple[Path, Path]:
+    """
+    Set up the parser.
 
-    Returns:
+    Returns
+    -------
         Path: The path to the gpa file.
         Path: The path to the knxproj file.
+
     """
     # Setup argument parser
     description = "Compare knx GAs from ETS and GPA export."
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
-        "--gpa", type=str, required=True, help="Path to the gpa .gpa export."
+        "--gpa",
+        type=str,
+        required=True,
+        help="Path to the gpa .gpa export.",
     )
     parser.add_argument(
-        "--knxproj", type=str, required=True, help="Path to the ETS .knxproj export."
+        "--knxproj",
+        type=str,
+        required=True,
+        help="Path to the ETS .knxproj export.",
     )
 
     # Parse arguments
@@ -53,7 +61,7 @@ def main() -> None:
         try:
             rhs = ets_dict[key]
         except KeyError:
-            logging.error(
+            logging.exception(
                 "GA in gpa but not in knxproj: \n\t%s",
                 lhs,
             )

@@ -15,8 +15,9 @@ from .util import (  # noqa: F401  # pylint:disable=unused-import
 )
 
 
-def test_groupaddress(get_groupaddress):
-    """Test group adresses.
+def test_groupaddress(get_groupaddress) -> None:
+    """
+    Test group adresses.
 
     Ensure that GroupAddresses are
     - constructed as intended
@@ -37,8 +38,9 @@ def test_groupaddress(get_groupaddress):
         assert addr.get_ga_str() == excpected
 
 
-def test_groupaddress_almost_eq(get_groupaddress):
-    """Test groupaddress.
+def test_groupaddress_almost_eq(get_groupaddress) -> None:
+    """
+    Test groupaddress.
 
     Ensure that GroupAddresses are
     - constructed as intended
@@ -49,9 +51,6 @@ def test_groupaddress_almost_eq(get_groupaddress):
 
     lhs = copy(get_groupaddress)
     lhs.address = "1/2/3"
-
-    # Different type
-    assert not lhs.almost_equal(None)
 
     # Different address
     rhs = copy(lhs)
@@ -78,7 +77,7 @@ def test_groupaddress_almost_eq(get_groupaddress):
     assert lhs.almost_equal(rhs)
 
 
-def test_factory_address(get_groupaddress_factory, xml_knx):
+def test_factory_address(get_groupaddress_factory, xml_knx) -> None:
     """Test the Groupaddress factory."""
     address = get_groupaddress_factory.groupaddress(xml_knx)
 

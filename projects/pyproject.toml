@@ -7,17 +7,6 @@ authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 [tool.poetry.dependencies]
 python = "3.12.*"
 defusedxml = "*"
-
-[tool.poetry.dev-dependencies]
-black = "*"
-flake8 = "*"
-flake8-annotations = "*"
-flake8-bandit = "*"
-flake8-black = "*"
-flake8-bugbear = "*"
-flake8-docstrings = "*"
-flake8-isort = "*"
-isort = "*"
 mypy = "*"
 nox-poetry = "*"
 pylint = "*"
@@ -27,8 +16,7 @@ pytest-cov = "*"
 pytest-mock = "*"
 pytest-profiling = "*"
 safety = "*"
-sqlalchemy-stubs = "*"
-darglint = "*"
+ruff = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -45,11 +33,40 @@ testpaths = [
 [tool.mypy]
 python_version = "3.12"
 
-[tool.isort]
-profile = "black"
+[tool.ruff]
+target-version = "py312"
+line-length = 200
 
-[tool.darglint]
-docstring_style="numpy"
+[tool.ruff.lint]
+select = [ "ALL" ]
+ignore = [
+    "ANN002", # Missing type annotation for *args
+    "ANN003", # Missing type annotation for **kwargs
+    "ANN101", # Missing type annotation for self
+    "COM812", # Conflicting with other rule
+    "D203",   # One blank line before class
+    "D212",   # Multi line summary first line
+    "FIX002", # Line contains TODO, consider resolving the issue
+    "ISC001", # Conflicting with other rules
+    "TD002",  # Missing author in TODO
+    "TD003",  # Missing issue link on the line following this TODO
+
+]
+
+[tool.ruff.lint.per-file-ignores]
+"test/*" = [
+    "ANN001", # Missing type annotation for function argument
+    "ANN201", # Missing return type annotation for public function
+    "F811",   # Redefinition of unused
+    "N813",   # Camelcase `Factory` imported as lowercase `topo_factory`
+    "N816",   # Variable `param_productRefId` in global scope should not be mixedCase
+    "N817",   # CamelCase `ElementTree` imported as acronym `ET`
+    "S101",   # Use of `assert` detected
+    "S311",   # Standard pseudo-random generators are not suitable for cryptographic purposes
+    "S314",   # Using `xml` to parse untrusted data is known to be vulnerable to XML attacks; use `defusedxml` equivalents
+]
+
+[tool.ruff.format]
 
 [tool.coverage]
 source = ["projects"]

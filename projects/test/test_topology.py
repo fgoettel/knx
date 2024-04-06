@@ -8,14 +8,16 @@ import pytest
 from projects.topology import DEFAULT_ADDR, Area, Device, Line
 from projects.util import KNXAddress
 
-from .util import area  # noqa: F401  # pylint:disable=unused-import
-from .util import get_topo_factory  # noqa: F401  # pylint:disable=unused-import
-from .util import line  # noqa: F401  # pylint:disable=unused-import
-from .util import param_bools  # noqa: F401  # pylint:disable=unused-import
-from .util import xml_knx  # noqa: F401  # pylint:disable=unused-import
+from .util import (
+    area,  # noqa: F401  # pylint:disable=unused-import
+    get_topo_factory,  # noqa: F401  # pylint:disable=unused-import
+    line,  # noqa: F401  # pylint:disable=unused-import
+    param_bools,  # pylint:disable=unused-import
+    xml_knx,  # noqa: F401  # pylint:disable=unused-import
+)
 
 
-def test_item_subclasses():
+def test_item_subclasses() -> None:
     """Ensure that all topology items are subclasses of KNXAddress."""
     assert issubclass(Area, KNXAddress)
     assert issubclass(Device, KNXAddress)
@@ -23,7 +25,7 @@ def test_item_subclasses():
 
 
 @pytest.mark.parametrize("use_addr", param_bools)
-def test_factory_device_addr(use_addr, get_topo_factory, xml_knx, line):
+def test_factory_device_addr(use_addr, get_topo_factory, xml_knx, line) -> None:
     """Try to create a device."""
     if use_addr:
         expected_addr = xml_knx.attrib["Address"]
@@ -41,7 +43,7 @@ def test_factory_device_addr(use_addr, get_topo_factory, xml_knx, line):
 
 
 @pytest.mark.parametrize("valid_gas", param_bools)
-def test_factory_find_connections(valid_gas, get_topo_factory, xml_knx, line):
+def test_factory_find_connections(valid_gas, get_topo_factory, xml_knx, line) -> None:
     """Try to create a device."""
     refs = ET.SubElement(xml_knx, "ComObjectInstanceRefs")
     ref = ET.SubElement(refs, "ComObjectInstanceRef")
@@ -65,7 +67,7 @@ def test_factory_find_connections(valid_gas, get_topo_factory, xml_knx, line):
     assert device.other["texts"] == expected_texts
 
 
-def test_factory_line(get_topo_factory, xml_knx, area):
+def test_factory_line(get_topo_factory, xml_knx, area) -> None:
     """Try to create a line."""
     line = get_topo_factory.line(xml=xml_knx, area=area)
 
@@ -76,7 +78,7 @@ def test_factory_line(get_topo_factory, xml_knx, area):
     assert line.medium == xml_knx.attrib["MediumTypeRefId"]
 
 
-def test_factory_area(get_topo_factory, xml_knx):
+def test_factory_area(get_topo_factory, xml_knx) -> None:
     """Try to create an area."""
     area = get_topo_factory.area(xml_knx)
 

@@ -14,7 +14,10 @@ def main() -> None:
     description = "Display existing knx datapoints in a gpa project."
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
-        "--gpa", type=str, required=True, help="Path to the gpa .gpa export."
+        "--gpa",
+        type=str,
+        required=True,
+        help="Path to the gpa .gpa export.",
     )
 
     # Parse arguments

@@ -1,5 +1,5 @@
 """projects unit tests."""
 
-import defusedxml  # type: ignore
+import defusedxml
 
 defusedxml.defuse_stdlib()

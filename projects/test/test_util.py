@@ -1,4 +1,5 @@
 """Test the projects."""
+
 from xml.etree import ElementTree as ET
 
 import pytest
@@ -17,7 +18,7 @@ from .util import (  # noqa: F401  # pylint:disable=unused-import
 
 @pytest.mark.parametrize("expected_count", [0, 1, 10])
 @pytest.mark.parametrize("namespace", [None, "ets56", "ets57"])
-def test_finder_xml(namespace, expected_count):
+def test_finder_xml(namespace, expected_count) -> None:
     """Test the finder function with namespace variation."""
     # Setup xml
     xml = ET.Element("KNX")
@@ -44,7 +45,7 @@ def test_finder_xml(namespace, expected_count):
         assert res.attrib == payload
 
 
-def test_postfix():
+def test_postfix() -> None:
     """Test that the separator is properly attended."""
     assert postfix("foo") == "foo_"
     assert postfix("foo", "+") == "foo+"

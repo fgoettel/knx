@@ -9,15 +9,21 @@ from projects.knxproj import Knxproj
 
 
 def obtain_knxproj() -> Knxproj:
-    """Obtain a Knxproj object.
+    """
+    Obtain a Knxproj object.
 
-    Returns:
+    Returns
+    -------
         Knxproj: The read knxproj object.
+
     """
     description = "Read a knxproj export from the ETS and fiddle around with it."
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
-        "--knxproj", required=True, type=str, help="Path to the ETS .knxproj export."
+        "--knxproj",
+        required=True,
+        type=str,
+        help="Path to the ETS .knxproj export.",
     )
     args = parser.parse_args()
     knxproj_path = Path(args.knxproj)
