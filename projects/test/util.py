@@ -9,9 +9,8 @@ import pytest
 
 from projects.groupaddresses import Factory as ga_factory
 from projects.groupaddresses import GroupAddress
-from projects.topology import Area
+from projects.topology import Area, Line
 from projects.topology import Factory as topo_factory
-from projects.topology import Line
 from projects.util import FinderXml
 
 PREFIX = "FOO"
@@ -98,7 +97,7 @@ def _get_name_str() -> str:
     return "".join(random.choice(ascii_lowercase) for _ in range(name_len)).capitalize()
 
 
-@pytest.fixture
+@pytest.fixture()
 def get_groupaddress():
     """Get a randomized group address."""
     return GroupAddress(

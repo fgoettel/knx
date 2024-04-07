@@ -8,10 +8,7 @@ from nox_poetry import session
 
 locations = ("examples", "logger", "test", "./noxfile.py")
 python_default = "3.12"
-python_versions = (
-    "3.11",
-    python_default,
-)
+python_versions = (python_default,)
 nox.options.sessions = "lint", "tests", "mypy", "safety"
 
 
@@ -44,14 +41,13 @@ def coverage(session: session) -> None:
 def lint(session: session) -> None:
     """Lint it, but don't change it."""
     session.install(
-        "black",
         "pytest",
         "sqlalchemy",
         "xknx",
         "ruff",
     )
-    session.run("black", ".", *session.posargs)
-    session.run("ruff", ".", *session.posargs)
+    session.run("ruff", "format", *session.posargs)
+    session.run("ruff", "check", *session.posargs)
 
 
 @session(python=python_default)

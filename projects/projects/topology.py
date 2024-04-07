@@ -1,8 +1,8 @@
 """Classes and helpers related to the KNX topology."""
 
 import logging
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable, List, Tuple
 from xml.etree.ElementTree import Element
 
 from .util import KNXAddress, postfix
@@ -37,42 +37,55 @@ class Factory:
     """Factory to create topology elements (e.g., `Device`) from xml."""
 
     def __init__(
-        self, finder: Callable[[Element, str], List[Element]], prefix: str
+        self,
+        finder: Callable[[Element, str], list[Element]],
+        prefix: str,
     ) -> None:
-        """Create factory.
+        """
+        Create factory.
 
         Args:
+        ----
             finder: A namespaced xml findall - see the util.py
             prefix: The project prefix.
+
         """
         self.finder = finder
         self.prefix = postfix(prefix)
 
     def _find_id(self, xml: Element) -> str:
-        """Find the `Id` and remove the project prefix.
+        """
+        Find the `Id` and remove the project prefix.
 
         Args:
+        ----
             xml: The element containing the `Id`.
 
         Returns:
+        -------
             str: The `Id`without the project prefix.
+
         """
         return xml.attrib["Id"].replace(self.prefix, "")
 
-    def _find_connections_and_texts(self, xml: Element) -> Tuple[List[str], List[str]]:
-        """Find group addresses and text elements in a xml element.
+    def _find_connections_and_texts(self, xml: Element) -> tuple[list[str], list[str]]:
+        """
+        Find group addresses and text elements in a xml element.
 
         Args:
+        ----
             xml: The xml of interest
 
         Returns:
+        -------
             groupaddresses: A list of all connected groupaddresses
             texts: A list with all annotations
+
         """
         # TODO: Combine connection information
         # TODO: Split into two (or more) subfuncitons
-        groupaddress_list: List[str] = []
-        text_list: List[str] = []
+        groupaddress_list: list[str] = []
+        text_list: list[str] = []
 
         # Find top level references
         comobjs_xml = self.finder(xml, "ComObjectInstanceRefs")
@@ -95,14 +108,18 @@ class Factory:
         return groupaddress_list, text_list
 
     def device(self, xml: Element, line: Line) -> Device:
-        """Create a device from a xml.
+        """
+        Create a device from a xml.
 
         Args:
+        ----
             xml: The xml containing the device description.
             line: The line of the device.
 
         Returns:
+        -------
             Device: A configured `Device`.
+
         """
         gas, texts = self._find_connections_and_texts(xml)
 
@@ -117,14 +134,18 @@ class Factory:
         )
 
     def line(self, xml: Element, area: Area) -> Line:
-        """Create a line from a xml.
+        """
+        Create a line from a xml.
 
         Args:
+        ----
             xml: The xml containing the line description.
             area: The area of the line.
 
         Returns:
+        -------
             Line: A configured `Line`.
+
         """
         return Line(
             id_str=self._find_id(xml),
@@ -135,12 +156,15 @@ class Factory:
         )
 
     def area(self, xml: Element) -> Area:
-        """Create an area from a xml.
+        """
+        Create an area from a xml.
 
         Args:
+        ----
             xml: The xml containing the area description.
 
         Returns:
+        -------
             Area: A configured `Area`.
 
         """

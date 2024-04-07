@@ -10,17 +10,23 @@ from pathlib import Path
 from projects.knxproj import Knxproj
 
 
-def main(json_path: str = "knx_mapping.json") -> None:
-    """Dump a dictionary that links group_addresses to data types.
+def main(json_path: Path = Path("knx_mapping.json")) -> None:
+    """
+    Dump a dictionary that links group_addresses to data types.
 
     Args:
+    ----
         json_path: Path to a mapping of group addresses in a json format.
+
     """
     # Setup argument parser
     description = "Generate documentation for a KNX project based on its ETS export."
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
-        "--knxproj", required=True, type=str, help="Path to the ETS .knxproj export."
+        "--knxproj",
+        required=True,
+        type=str,
+        help="Path to the ETS .knxproj export.",
     )
 
     # Parse arguments
@@ -38,7 +44,7 @@ def main(json_path: str = "knx_mapping.json") -> None:
 
     ordered_by_address = OrderedDict(sorted(groupaddress_to_dtype.items()))
 
-    with open(json_path, "w", encoding="utf-8") as file_:
+    with json_path.open("w", encoding="utf-8") as file_:
         json.dump(ordered_by_address, file_, ensure_ascii=False, indent=2)
 
 

@@ -5,20 +5,10 @@ description = "Interact with ets/gpa/... project files."
 authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "3.12"
+python = "3.12.*"
 defusedxml = "*"
-
-[tool.poetry.dev-dependencies]
-black = "*"
-flake8 = "*"
-flake8-annotations = "*"
-flake8-bandit = "*"
-flake8-black = "*"
-flake8-bugbear = "*"
-flake8-docstrings = "*"
-flake8-isort = "*"
-isort = "*"
 mypy = "*"
+nox = "*"
 nox-poetry = "*"
 pylint = "*"
 pytest = "*"
@@ -26,30 +16,12 @@ pytest-asyncio = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-profiling = "*"
+ruff = "*"
 safety = "*"
-sqlalchemy-stubs = "*"
-darglint = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.pytest.ini_options]
-minversion = "6.0"
-addopts = "-ra -q"
-asyncio_mode = "auto"
-testpaths = [
-    "test"
-]
-
-[tool.mypy]
-python_version = "3.12"
-
-[tool.isort]
-profile = "black"
-
-[tool.darglint]
-docstring_style="numpy"
 
 [tool.coverage]
 source = ["projects"]
@@ -59,4 +31,80 @@ exclude_lines = [
     "def __str__",
     "if __name__ == .__main__.:",
     "pytest.main([.-x.])",
+]
+
+
+[tool.mypy]
+python_version = "3.12"
+show_error_codes = true
+ignore_missing_imports = true
+
+[tool.pylint]
+fail-under = 10
+
+[tool.pylint.basic]
+good-names = ["ga"]
+
+[tool.pylint."messages control"]
+disable = [
+    "too-few-public-methods",
+    "wrong-import-order",
+    "fixme",
+    "line-too-long",
+]
+
+[tool.pylint.similarities]
+ignore-imports = true
+
+[tool.pylint.design]
+max-args = 8
+max-locals = 20
+
+[tool.pylint.format]
+max-module-lines = 2000
+
+[tool.ruff]
+target-version = "py312"
+line-length = 200
+
+[tool.ruff.lint]
+select = [ "ALL" ]
+ignore = [
+    "ANN002", # Missing type annotation for *args
+    "ANN003", # Missing type annotation for **kwargs
+    "ANN101", # Missing type annotation for self
+    "COM812", # Conflicting with other rule
+    "D203",   # One blank line before class
+    "D212",   # Multi line summary first line
+    "FIX002", # Line contains TODO, consider resolving the issue
+    "ISC001", # Conflicting with other rules
+    "N813",   # Camelcase `Factory` imported as lowercase `topo_factory`
+    "N817",   # CamelCase `ElementTree` imported as acronym `ET`
+    "S314",   # Using `xml` to parse untrusted data is known to be vulnerable to XML attacks; use `defusedxml` equivalents
+    "TD002",  # Missing author in TODO
+    "TD003",  # Missing issue link on the line following this TODO
+
+]
+
+[tool.ruff.lint.per-file-ignores]
+"test/*" = [
+    "ANN001", # Missing type annotation for function argument
+    "ANN201", # Missing return type annotation for public function
+    "F811",   # Redefinition of unused
+    "N816",   # Variable `param_productRefId` in global scope should not be mixedCase
+    "S101",   # Use of `assert` detected
+    "S311",   # Standard pseudo-random generators are not suitable for cryptographic purposes
+    "S314",   # Using `xml` to parse untrusted data is known to be vulnerable to XML attacks; use `defusedxml` equivalents
+]
+"projects/devices/*" = [
+    "T201",    # `print` found
+    "PERF401", # Use a list comprehension to create a transformed list
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+asyncio_mode = "auto"
+testpaths = [
+    "test"
 ]

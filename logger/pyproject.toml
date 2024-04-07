@@ -5,19 +5,13 @@ description = "Log knx messages"
 authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "3.12"
+python = "3.12.*"
 SQLAlchemy = "*"
-xknx = "*"
-psycopg2-binary = { version = "*", optional = true }
-
-[tool.poetry.extras]
-pgsql = ["psycopg2-binary"]
-
-[tool.poetry.group.dev.dependencies]
-black = "*"
 mypy = "*"
 nox = "*"
 nox-poetry = "*"
+pgsql = "*"
+psycopg2-binary = { version = "*", optional = true }
 pytest = "*"
 pytest-asyncio = "*"
 pytest-cov = "*"
@@ -26,6 +20,7 @@ pytest-profiling = "*"
 ruff = "*"
 safety = "*"
 sqlalchemy-stubs = "*"
+xknx = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -49,10 +44,11 @@ testpaths = [
 asyncio_mode = "auto"
 
 [tool.ruff]
-target-version = "py311"
-select = [ "ALL"
-]
-line-length = 180
+target-version = "py312"
+line-length = 200
+
+[tool.ruff.lint]
+select = [ "ALL" ]
 
 # TODO: Either make these more specific or fix
 ignore = [
@@ -60,13 +56,16 @@ ignore = [
     "ANN003", # Missing type annotation for **kwargs
     "ANN101", # Missing type annotation for self
     "ANN401", # Dynamically types allowed
+    "ASYNC101", # Async functions should not call `open`, `time.sleep`, or `subprocess` methods
     "BLE001", # Do not catch blind exception
+    "COM812", # Incompatibility with formatting
     "D203",   # one blank line before class
     "D213",   # mulit-line-summary-second-line
     "DTZ001", # The use without tzinfo argument is not allowed
     "DTZ003", # The use without tzinfo argument is not allowed
     "DTZ005", # The use without tzinfo argument is not allowed
     "FIX002", # Line contains TODO
+    "ISC001", # Incompatibility with formatting
     "PGH003", # Use specific rule codes when ignore type issues
     "PLR0911", # Too many return statements
     "PLR0912", # Too many branches
@@ -81,7 +80,7 @@ ignore = [
 ]
 mccabe.max-complexity = 30 # TODO: shrink to ~10
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "test/*.py" = ["S101"]
 
 [tool.coverage]

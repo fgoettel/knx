@@ -5,6 +5,6 @@ __email__ = "fabian.goettel@gmail.com"
 __version__ = "0.4.3"
 
 
-import defusedxml  # type: ignore
+import defusedxml
 
 defusedxml.defuse_stdlib()
