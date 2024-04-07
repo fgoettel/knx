@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate an ORM for database logging based on xknx datatypes."""
+
 import logging
 import re
 from collections import OrderedDict, defaultdict

@@ -1,4 +1,5 @@
 """Code generator scripts."""
+
 import logging
 from pathlib import Path
 

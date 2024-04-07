@@ -185,9 +185,7 @@ async def get_rx_cb(
         if status is not None:
             try:
                 status.last_rx_time = dt.datetime.now()
-                status.data_dict[
-                    "last_rx"
-                ] = f"{name} sent {value}{unit} from {src} to {dst}."
+                status.data_dict["last_rx"] = f"{name} sent {value}{unit} from {src} to {dst}."
             except Exception as err:
                 logging.exception("Couldn't populate status.")
                 logging.exception(err)

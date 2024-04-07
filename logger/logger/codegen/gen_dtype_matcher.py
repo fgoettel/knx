@@ -75,9 +75,7 @@ def extend_mapping(mapping: dict) -> dict:
     extension["DPST-1-23"] = "dpt.DPTBinary,  # ShutterBlinds_Mode"
     extension["DPST-2-1"] = "dpt.DPTValue1Ucount,  # Switch_Control TODO: xknx type"
     extension["DPST-2-2"] = "dpt.DPTValue1Ucount,  # Bool_Control TODO: xknx type"
-    extension[
-        "DPST-6-20"
-    ] = "dpt.DPTSignedRelativeValue,  # Status_Mode3 TODO:xknx type"
+    extension["DPST-6-20"] = "dpt.DPTSignedRelativeValue,  # Status_Mode3 TODO:xknx type"
     extension["DPST-10-1"] = "dpt.DPTTime,"
     extension["DPST-11-1"] = "dpt.DPTDate,"
     extension["DPST-18-1"] = "dpt.DPTSceneNumber,  # SceneControl"
@@ -85,12 +83,8 @@ def extend_mapping(mapping: dict) -> dict:
     extension["DPST-20-105"] = "dpt.DPTHVACContrMode,"
     extension["DPST-21-1"] = "dpt.DPTValue1Ucount,  # StatusGen TODO: xknx type"
     extension["DPT-22"] = "dpt.DPT2ByteUnsigned,  # StatusGen TODO: xknx type"
-    extension[
-        "DPST-27-1"
-    ] = "dpt.DPT4ByteUnsigned,  # CombinedInfoOnOff TODO: xknx type; info_on_off"
-    extension[
-        "DPST-238-600"
-    ] = "dpt.DPT4ByteUnsigned,  # TODO: xknx type, just a guess now"
+    extension["DPST-27-1"] = "dpt.DPT4ByteUnsigned,  # CombinedInfoOnOff TODO: xknx type; info_on_off"
+    extension["DPST-238-600"] = "dpt.DPT4ByteUnsigned,  # TODO: xknx type, just a guess now"
 
     extension_keys = set(extension.keys())
     mapping_keys = set(mapping.keys())
@@ -123,10 +117,7 @@ def get_lines(mapping: dict) -> list:
     # Imports
     lines.append("from xknx import dpt\n")
     lines.append("DTYPE2XKNX = {")
-    lines += [
-        f'    "{dtype}": {mapping[dtype]}'
-        for dtype in sorted(mapping.keys(), key=dtype_sorter)
-    ]
+    lines += [f'    "{dtype}": {mapping[dtype]}' for dtype in sorted(mapping.keys(), key=dtype_sorter)]
     lines.append("}")
 
     return lines

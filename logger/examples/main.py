@@ -21,7 +21,7 @@ def main() -> int:
     mapping = Path(__file__).parent.joinpath("ga_mapping.json")
 
     logging.basicConfig(level=logging.INFO)
-    logging.getLogger("xknx").setLevel(logging.WARN)
+    logging.getLogger("xknx").setLevel(logging.WARNING)
     asyncio.run(
         logger_run(
             db_addr=addr,

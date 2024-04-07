@@ -21,7 +21,7 @@ jobs:
       with:
         python-version: ${{ matrix.python }}
         architecture: x64
-    - run: pip install poetry==1.6.1
-    - run: pip install nox==2023.4.22
+    - run: pip install poetry==1.8.1
+    - run: pip install nox==2024.3.2
     - run: pip install nox_poetry==1.0.3
     - run: nox --python ${{ matrix.python }}
