@@ -8,6 +8,7 @@ authors = ["Fabian Göttel <fabian.goettel@gmail.com>"]
 python = "3.12.*"
 defusedxml = "*"
 mypy = "*"
+nox = "*"
 nox-poetry = "*"
 pylint = "*"
 pytest = "*"
@@ -15,23 +16,52 @@ pytest-asyncio = "*"
 pytest-cov = "*"
 pytest-mock = "*"
 pytest-profiling = "*"
-safety = "*"
 ruff = "*"
+safety = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.pytest.ini_options]
-minversion = "6.0"
-addopts = "-ra -q"
-asyncio_mode = "auto"
-testpaths = [
-    "test"
+[tool.coverage]
+source = ["projects"]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "def __str__",
+    "if __name__ == .__main__.:",
+    "pytest.main([.-x.])",
 ]
+
 
 [tool.mypy]
 python_version = "3.12"
+show_error_codes = true
+ignore_missing_imports = true
+
+[tool.pylint]
+fail-under = 10
+
+[tool.pylint.basic]
+good-names = ["ga"]
+
+[tool.pylint."messages control"]
+disable = [
+    "too-few-public-methods",
+    "wrong-import-order",
+    "fixme",
+    "line-too-long",
+]
+
+[tool.pylint.similarities]
+ignore-imports = true
+
+[tool.pylint.design]
+max-args = 8
+max-locals = 20
+
+[tool.pylint.format]
+max-module-lines = 2000
 
 [tool.ruff]
 target-version = "py312"
@@ -48,6 +78,9 @@ ignore = [
     "D212",   # Multi line summary first line
     "FIX002", # Line contains TODO, consider resolving the issue
     "ISC001", # Conflicting with other rules
+    "N813",   # Camelcase `Factory` imported as lowercase `topo_factory`
+    "N817",   # CamelCase `ElementTree` imported as acronym `ET`
+    "S314",   # Using `xml` to parse untrusted data is known to be vulnerable to XML attacks; use `defusedxml` equivalents
     "TD002",  # Missing author in TODO
     "TD003",  # Missing issue link on the line following this TODO
 
@@ -58,22 +91,20 @@ ignore = [
     "ANN001", # Missing type annotation for function argument
     "ANN201", # Missing return type annotation for public function
     "F811",   # Redefinition of unused
-    "N813",   # Camelcase `Factory` imported as lowercase `topo_factory`
     "N816",   # Variable `param_productRefId` in global scope should not be mixedCase
-    "N817",   # CamelCase `ElementTree` imported as acronym `ET`
     "S101",   # Use of `assert` detected
     "S311",   # Standard pseudo-random generators are not suitable for cryptographic purposes
     "S314",   # Using `xml` to parse untrusted data is known to be vulnerable to XML attacks; use `defusedxml` equivalents
 ]
+"projects/devices/*" = [
+    "T201",    # `print` found
+    "PERF401", # Use a list comprehension to create a transformed list
+]
 
-[tool.ruff.format]
-
-[tool.coverage]
-source = ["projects"]
-exclude_lines = [
-    "pragma: no cover",
-    "def __repr__",
-    "def __str__",
-    "if __name__ == .__main__.:",
-    "pytest.main([.-x.])",
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+asyncio_mode = "auto"
+testpaths = [
+    "test"
 ]

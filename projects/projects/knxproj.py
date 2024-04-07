@@ -1,4 +1,4 @@
-#
+#!/usr/bin/env python3
 """Module to read a knx project."""
 
 import logging
@@ -225,10 +225,10 @@ class Knxproj:
 
             for line_xml in self.findall(area_xml, "Line"):
                 line = topo_factory.line(line_xml, area)
-                topo_items["line"].append(line)  # type: ignore
+                topo_items["line"].append(line)  # type: ignore[arg-type]
 
                 for device_xml in self.findall(line_xml, "DeviceInstance"):
-                    topo_items["device"].append(topo_factory.device(device_xml, line))  # type: ignore
+                    topo_items["device"].append(topo_factory.device(device_xml, line))  # type: ignore[arg-type]
 
         # attrib links
         topo_items["device"] = sorted(topo_items["device"], key=lambda x: x.address)

@@ -88,6 +88,7 @@ class BE4(Switch):
 """
         print(switch)
 
+
 class GT2(Switch):
     """MDT Glastaster 2."""
 

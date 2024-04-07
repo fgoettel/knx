@@ -50,11 +50,11 @@ def test_groupaddress_almost_eq(get_groupaddress) -> None:
     assert isinstance(get_groupaddress, GroupAddress)
 
     lhs = copy(get_groupaddress)
-    lhs.address = "1/2/3"
+    lhs.address = 1
 
     # Different address
     rhs = copy(lhs)
-    rhs.address = "4/5/6"
+    rhs.address = 2
     assert not lhs.almost_equal(rhs)
 
     # Different dtype

@@ -41,20 +41,27 @@ def coverage(session: session) -> None:
 def lint(session: session) -> None:
     """Lint it, and format it."""
     session.install(
+        "defusedxml",
         "pylint",
         "pytest",
-        "defusedxml",
+        "ruff",
     )
-    session.run("pylint", "test", "projects")
+    session.run("pylint", "projects")
+    session.run("pylint", "test", "--disable=unused-import")
     session.run("pylint", "examples", "--disable=duplicate-code")
     session.run("ruff", "format")
     session.run("ruff", "check", "--fix")
 
 
-@session(python=python_default)
+@session(python=python_versions)
 def mypy(session: session) -> None:
     """Types, types, types."""
-    session.install("mypy", "pytest", "defusedxml")
+    session.install(
+        "defusedxml",
+        "mypy",
+        "nox",
+        "pytest",
+    )
     session.run("mypy", *locations)
 
 

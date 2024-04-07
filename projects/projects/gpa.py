@@ -5,23 +5,30 @@ import re
 import tempfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import namedtuple
+from typing import NamedTuple
 from zipfile import ZipFile
 
 from .groupaddresses import GroupAddress
 from .util import FinderXml
 
-ProjectFiles = namedtuple(
-    "ProjectFiles",
-    (
-        "project",
-        "knxdatapoints",
-        "internaldatapoints",
-        "devicedatapoints",
-        "logicnodes",
-    ),
-)
-InternalDataPoint = namedtuple("InternalDataPoint", ("name", "knx", "id", "type"))
+
+class InternalDataPoint(NamedTuple):
+    """Internal datapoint structure."""
+
+    name: str | None
+    knx: str | None
+    id: str | None
+    type: str
+
+
+class ProjectFiles(NamedTuple):
+    """Project file structure."""
+
+    project: Path
+    knxdatapoints: list[Path]
+    internaldatapoints: list[Path]
+    devicedatapoints: list[Path]
+    logicnodes: list[Path]
 
 
 class Gpa:
