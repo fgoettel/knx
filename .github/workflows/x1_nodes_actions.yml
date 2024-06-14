@@ -1,0 +1,23 @@
+name: x1_nodes_build
+
+on:
+  push:
+    paths:
+      - 'x1_nodes/**'
+      - '.github/workflows/x1_nodes_actions.yml'
+
+jobs:
+  build:
+    name: BuildWgt
+    runs-on: windows-2019
+    defaults:
+      run:
+        working-directory: ./x1_nodes/wgt
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - uses: actions/setup-dotnet@v3
+      - uses: nuget/setup-nuget@v1
+      - run: dotnet restore
+      - run: nuget restore
+      - run: dotnet build
+      - run: dotnet test ./WgtNodesTest/

@@ -34,10 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LogicModule.Nodes.Helpers">
-      <HintPath>..\LogicNodesSDK\LogicModule.Nodes.Helpers.dll</HintPath>
+      <HintPath>..\..\LogicNodesSDK\LogicModule.Nodes.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="LogicModule.ObjectModel">
-      <HintPath>..\LogicNodesSDK\LogicModule.ObjectModel.dll</HintPath>
+      <HintPath>..\..\LogicNodesSDK\LogicModule.ObjectModel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -76,7 +76,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)\LogicNodesSDK\LogicNodeTool.exe" create "$(TargetDir) " "$(SolutionDir)\Zip"
+    <PostBuildEvent>"$(SolutionDir)\..\LogicNodesSDK\LogicNodeTool.exe" create "$(TargetDir) " "$(SolutionDir)\Zip"
 
 echo INFO: Logic Nodes are not signed yet and can only be used in the simulation in GPA.
 REM "$(SolutionDir)\LogicNodesSDK\SignLogicNodes.exe" [path_to_certificate] [certificate_password] $(SolutionDir)\Zip</PostBuildEvent>

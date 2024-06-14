@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
-  <Import Project="..\packages\NUnit3TestAdapter.3.17.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.17.0\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="..\packages\NUnit3TestAdapter.4.2.1\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.4.2.1\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="..\packages\NUnit.3.13.3\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.13.3\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -39,15 +39,15 @@
   <ItemGroup>
     <Reference Include="LogicModule.Nodes.Helpers, Version=1.2.0.0, Culture=neutral, PublicKeyToken=61439873ec5e1159, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LogicNodesSDK\LogicModule.Nodes.Helpers.dll</HintPath>
+      <HintPath>..\..\LogicNodesSDK\LogicModule.Nodes.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="LogicModule.Nodes.TestHelper, Version=1.2.0.0, Culture=neutral, PublicKeyToken=61439873ec5e1159, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LogicNodesSDK\LogicModule.Nodes.TestHelper.dll</HintPath>
+      <HintPath>..\..\LogicNodesSDK\LogicModule.Nodes.TestHelper.dll</HintPath>
     </Reference>
     <Reference Include="LogicModule.ObjectModel, Version=1.2.0.0, Culture=neutral, PublicKeyToken=61439873ec5e1159, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\LogicNodesSDK\LogicModule.ObjectModel.dll</HintPath>
+      <HintPath>..\..\LogicNodesSDK\LogicModule.ObjectModel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,7 +57,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.3.13.3\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
