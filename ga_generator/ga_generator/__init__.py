@@ -1,0 +1,1 @@
+"""Group address generator."""

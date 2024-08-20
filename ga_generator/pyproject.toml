@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "ga_generator"
+version = "0.1.0"
+description = "Simple KNX group address generator."
+authors = ["fgoettel <fabian.goettel@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "*"
+pytest = "*"
+ruff = "*"
+mypy = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 200
+
+[tool.ruff.lint]
+select = [ "ALL" ]
+
+ignore = [
+    "ANN002", # Missing type annotation for *args
+    "ANN003", # Missing type annotation for **kwargs
+    "ANN101", # Missing type annotation for self
+    "COM812", # Incompatibility with formatting
+    "D107",   # Missing docstring in `__init__`
+    "D211",   # Incompatibility with formatting
+    "D212",   # Incompatibility with formatting
+    "FIX002", # Line contains TODO, consider resolving the issue
+    "ISC001", # Incompatibility with formatting
+    "TD002",  #  Missing author in TODO
+    "TD003",  # Missing issue link on the line following this TODO
+]

@@ -6,8 +6,6 @@ __pycache__/
 .coverage
 htmlcov
 
-# IDE settings
-.vscode/
 
 # MacOS
 .DS_Store
