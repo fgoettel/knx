@@ -72,7 +72,7 @@ def payload(dtype: str) -> GroupValueWrite:
         return GroupValueWrite(value=value)
 
     # Generate a random array of values with corresponding length
-    value_raw = [random.randrange(0, 2**8) for _ in range(xknx_class.payload_length)] # type: ignore
+    value_raw = [random.randrange(0, 2**8) for _ in range(xknx_class.payload_length)]  # type: ignore
 
     # Bunch of special cases that do not allow the full range available
     dtype_group = dtype.split("-")[1]
