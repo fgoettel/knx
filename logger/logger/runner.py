@@ -7,12 +7,16 @@ import json
 import logging
 import typing
 from collections.abc import Callable
+from enum import Enum
 from pathlib import Path
 from threading import Thread
 
 from sqlalchemy.orm import Session
 from xknx import XKNX, dpt
 from xknx.dpt import DPTArray
+from xknx.dpt.dpt_18 import SceneControl
+from xknx.dpt.dpt_20 import HVACStatus
+from xknx.dpt.dpt_235 import TariffActiveEnergy
 from xknx.io import ConnectionConfig, ConnectionType
 from xknx.telegram import Telegram
 from xknx.telegram.apci import GroupValueWrite
@@ -20,7 +24,7 @@ from xknx.telegram.apci import GroupValueWrite
 from logger import orm
 from logger.dtype_matcher import DTYPE2XKNX
 from logger.statusserver import Data
-from logger.util import session_scope, xknx2name
+from logger.util import is_binary, session_scope, xknx2name
 
 
 async def get_mapping(mapping_path: Path) -> dict:
@@ -114,13 +118,12 @@ async def get_rx_cb(
             # Also translate hvac enum
             if xknx_class in (
                 dpt.DPTHVACContrMode,
-                dpt.DPTControlStepwise,
-                dpt.DPTControlStepwiseBlinds,
-                dpt.DPTControlStepwiseDimming,
+                dpt.DPTHVACMode,
+                dpt.DPTHVACStatus,
             ):
                 # This is an enum, just take the raw value
                 value = value_raw[0]
-            elif xknx_class == dpt.DPTBinary:
+            if is_binary(xknx_class):
                 # Keep the binary as integer for easier storage
                 value = int(value_raw)
             else:
@@ -146,6 +149,31 @@ async def get_rx_cb(
                     minute=value_raw[4],
                     second=value_raw[5],
                 )
+            # Translate RGB(W), XYY colors values to int
+            elif dtype == "DPST-242-600":
+                value = value_raw[1] << 8 | value_raw[0]
+            elif dtype == "DPST-232-600":
+                value = value_raw[2] << 16 | value_raw[1] << 8 | value_raw[0]
+            elif dtype == "DPST-251-600":
+                value = value_raw[3] << 24 | value_raw[2] << 16 | value_raw[1] << 8 | value_raw[0]
+
+            # TODO: Restructure
+            # Catch remaining enums. Damn you HVAC control...
+            elif isinstance(value, Enum):
+                value = value._value_
+
+            elif isinstance(value, HVACStatus):
+                # TODO: Proper implementation
+                value = value.as_dict()
+                value = 0
+
+            elif isinstance(value, SceneControl):
+                # Note: Dropping the "learn" info.
+                value = value.scene_number
+
+            elif isinstance(value, TariffActiveEnergy):
+                # Note: Dropping the tariff
+                value = value.energy
 
             # Get unit (if existent)
             try:

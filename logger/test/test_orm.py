@@ -4,8 +4,8 @@
 import random
 import re
 import string
+from datetime import UTC, timedelta
 from datetime import datetime as dt
-from datetime import timedelta
 from typing import Any
 
 import pytest
@@ -19,7 +19,7 @@ from logger.codegen.gen_orm import DTYPE_DOC_SEPERATION
 from logger.dtype_matcher import DTYPE2XKNX
 from logger.orm import KNXMixin
 from logger.runner import get_rx_cb
-from logger.util import session_scope
+from logger.util import is_binary, session_scope
 
 RE_DTYPE = re.compile(
     r"^\s*DType:\s(?P<dtype>.*)$",
@@ -55,23 +55,24 @@ def all_orms() -> list[tuple[KNXMixin, str]]:
     return orm_list
 
 
-@pytest.fixture()
+@pytest.fixture
 def name(length: int = 10) -> str:
     """Get a random signal name."""
     return "".join(random.choice(LEGAL_CHARS) for _ in range(length))
 
 
-@pytest.fixture()
+@pytest.fixture
 def payload(dtype: str) -> GroupValueWrite:
     """Get a payload, matching the knx type."""
     xknx_class = DTYPE2XKNX[dtype]
 
     # Special case for bool
-    if issubclass(xknx_class, DPTBinary):
-        return GroupValueWrite(value=DPTBinary(random.randint(0, 1)))
+    if is_binary(xknx_class):
+        value = DPTBinary(random.randint(0, 1))
+        return GroupValueWrite(value=value)
 
     # Generate a random array of values with corresponding length
-    value_raw = [random.randrange(0, 2**8) for _ in range(xknx_class.payload_length)]
+    value_raw = [random.randrange(0, 2**8) for _ in range(xknx_class.payload_length)] # type: ignore
 
     # Bunch of special cases that do not allow the full range available
     dtype_group = dtype.split("-")[1]
@@ -124,23 +125,25 @@ def payload(dtype: str) -> GroupValueWrite:
         value_raw[5] = random.randint(0, 59)  # seconds
         value_raw[6] = 0  # no fault
         value_raw[7] = 0  # no quality indication
+    elif dtype in ("DPST-20-102", "DPST-20-105"):
+        value_raw[0] = 0
 
     return GroupValueWrite(value=DPTArray(value_raw))
 
 
-@pytest.fixture()
+@pytest.fixture
 def src() -> str:
     """Get a random KNX PA."""
     return f"{random.randrange(0, 16)}.{random.randrange(0, 16)}.{random.randrange(0, 256)}"
 
 
-@pytest.fixture()
+@pytest.fixture
 def dst() -> str:
     """Get a random KNX GA."""
     return f"{random.randrange(0, 256)}/{random.randrange(0, 256)}/{random.randrange(0, 256)}"
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 @pytest.mark.parametrize(("orm_under_test", "dtype"), all_orms())
 async def test_orm_x(
     orm_under_test: Any,
@@ -179,8 +182,10 @@ async def test_orm_x(
 
         # Ensure that the thing is correctly added
         # Value is not checked, we trust xknx to do the right thing here.
-        age = dt.utcnow() - item_from_db.time
-        assert timedelta() <= age < timedelta(seconds=0.1)
+        tzinfo = UTC
+        db_item_time_utc = dt.combine(item_from_db.time.date(), item_from_db.time.time(), tzinfo=tzinfo)
+        age = dt.now(tzinfo) - db_item_time_utc
+        assert timedelta() <= age < timedelta(seconds=10)  # Relatively large margin of 10sec, due to async testing
         assert item_from_db.name == name
         assert item_from_db.src == src
         assert item_from_db.dst == dst

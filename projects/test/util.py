@@ -97,7 +97,7 @@ def _get_name_str() -> str:
     return "".join(random.choice(ascii_lowercase) for _ in range(name_len)).capitalize()
 
 
-@pytest.fixture()
+@pytest.fixture
 def get_groupaddress():
     """Get a randomized group address."""
     return GroupAddress(
@@ -108,19 +108,19 @@ def get_groupaddress():
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def get_groupaddress_factory():
     """Get one factory to crate gas from xml."""
     return ga_factory(PREFIX)
 
 
-@pytest.fixture()
+@pytest.fixture
 def get_topo_factory():
     """Get a factory to convert xml to topology items."""
     return topo_factory(prefix=PREFIX, finder=FinderXml().findall)
 
 
-@pytest.fixture()
+@pytest.fixture
 def xml_knx(dtype="DPST-1-1"):
     """Create a xml for a knx element."""
     xml_ = ET.Element(PREFIX)
@@ -134,13 +134,13 @@ def xml_knx(dtype="DPST-1-1"):
     return xml_
 
 
-@pytest.fixture()
+@pytest.fixture
 def area():
     """Get a valid knx topology 'Area'."""
     return _get_area()
 
 
-@pytest.fixture()
+@pytest.fixture
 def line():
     """Get a valid knx topology 'Line'."""
     return Line(

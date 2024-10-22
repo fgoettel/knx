@@ -4,10 +4,17 @@ import logging
 from collections.abc import Generator
 from contextlib import contextmanager
 from functools import cache
+from typing import Any
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
-from xknx.dpt import DPTArray, DPTBinary, DPTNumeric
+from xknx import dpt
+from xknx.dpt import DPTArray, DPTBool, DPTNumeric
+
+
+def is_binary(xknx_class: Any) -> bool:
+    """Check if a dpt type is from a binary form."""
+    return xknx_class in (dpt.DPTControlBlinds, dpt.DPTBinary, dpt.DPTControlDimming) or xknx_class.dpt_main_number == 1
 
 
 @contextmanager
@@ -34,7 +41,7 @@ def session_scope(addr: str) -> Generator[Session, None, None]:
 
 
 @cache
-def xknx2name(xknx_type: DPTNumeric | DPTBinary | DPTArray) -> str:
+def xknx2name(xknx_type: DPTNumeric | DPTBool | DPTArray) -> str:
     """Make a proper name out of an xknx dpt."""
     name = xknx_type.__name__  # type: ignore [union-attr]
     name = name.removeprefix("DPT")
