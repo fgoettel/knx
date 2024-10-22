@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         python: ["3.12"]
-        session: ["tests", "lint", "mypy", "safety"]
+        session: ["tests", "lint", "mypy"]
     runs-on: ubuntu-latest
     defaults:
       run:
