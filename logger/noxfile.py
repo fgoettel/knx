@@ -1,6 +1,5 @@
 """Entrypoint for tests and linting."""
 
-import tempfile
 from pathlib import Path
 
 import nox
