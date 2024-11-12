@@ -1,13 +1,12 @@
-# Cached python items
-.mypy_cache/
-__pycache__/
+# Cached python & python tooling items
 *.py[cod]
-.pytest_cache/
 .coverage
+.mypy_cache/
+.pytest_cache/
+.ruff_cache
+__pycache__/
 htmlcov
 
 
 # MacOS
 .DS_Store
-projects/classes_project.png
-projects/packages_project.png
