@@ -83,7 +83,7 @@ namespace WgtTest
         {
             // Instrument Modbus server
             // Use it to set values without a corresponding input
-            this.mc = new Modbus("127.0.0.1", 502);
+            this.mc = new Modbus("127.0.0.1", 5020);
 
             // Set all register to the value of the address
             Type type = typeof(Addr);
