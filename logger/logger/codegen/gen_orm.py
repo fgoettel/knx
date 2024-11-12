@@ -24,9 +24,9 @@ def dpst2db(dpst: str) -> str:
     xknx_class = DTYPE2XKNX[dpst]
 
     try:
-        xknx_return_type = xknx_class.from_knx.__annotations__["return"]
+        xknx_return_type = xknx_class.from_knx.__annotations__["return"]  # type: ignore
     except AttributeError:
-        if issubclass(xknx_class, dpt.DPTBinary):
+        if issubclass(xknx_class, dpt.DPTBinary) or dpst.startswith("DPST-1"):
             # Binary not stored as boolean, rationale:
             # - easier to display in grafana
             # - memory: boolean uses 1 byte, an integer 4 bytes
@@ -42,24 +42,30 @@ def dpst2db(dpst: str) -> str:
         LOGGER.fatal("Multiple return values for %s", str(xknx_class))
         raise
 
-    if xknx_return_type == "int":
-        return "types.Integer"
-    if xknx_return_type == "float":
-        return "types.Float"
-    if xknx_return_type == "time.struct_time":
-        if dpst == "DPST-10-1":
-            return "types.Time"
-        if dpst == "DPST-11-1":
-            return "types.Date"
-        if dpst == "DPST-19-1":
-            return "types.DateTime"
-    if xknx_return_type == "str":
-        return "types.String(14)"
-    if xknx_return_type == "HVACModeT":
-        # This will be only saved as integer
+    if xknx_return_type == "EnumDataT":
         return "types.Integer"
 
-    error_msg = f"{xknx_return_type} / {dpst} is not mapped to a db type."
+    if xknx_return_type == "int":
+        return "types.Integer"
+    if xknx_return_type in ("int | float", "float"):
+        return "types.Float"
+    if xknx_return_type == "KNXTime":
+        return "types.Time"
+    if xknx_return_type == "KNXDate":
+        return "types.Date"
+    if xknx_return_type == "KNXDateTime":
+        return "types.DateTime"
+    if xknx_return_type == "str":
+        return "types.String(14)"
+    if xknx_return_type in ("HVACModeT", "DPTHVACContrMode", "HVACStatus"):
+        # This will be only saved as integer
+        return "types.Integer"
+    if xknx_return_type in ("ControlDimming", "ControlBlinds", "RGBColor", "TariffActiveEnergy", "XYYColor", "RGBWColor"):
+        return "types.Integer"
+    if xknx_return_type == "SceneControl":
+        return "types.Integer"
+
+    error_msg = f"'{xknx_return_type}' / '{dpst}' is not mapped to a db type."
     raise ValueError(error_msg)
 
 

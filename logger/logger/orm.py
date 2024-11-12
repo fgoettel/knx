@@ -68,6 +68,16 @@ class AccelerationAngular(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class Ack(KNXMixin, Base):
+    """ORM for xknx 'DPTAck'.
+
+    DType: DPST-1-16
+    """
+
+    __tablename__ = "ack"
+    value = Column(types.Integer)
+
+
 class ActivationEnergy(KNXMixin, Base):
     """ORM for xknx 'DPTActivationEnergy'.
 
@@ -126,6 +136,16 @@ class AirFlow(KNXMixin, Base):
 
     __tablename__ = "airflow"
     value = Column(types.Float)
+
+
+class Alarm(KNXMixin, Base):
+    """ORM for xknx 'DPTAlarm'.
+
+    DType: DPST-1-5
+    """
+
+    __tablename__ = "alarm"
+    value = Column(types.Integer)
 
 
 class Amplitude(KNXMixin, Base):
@@ -241,10 +261,30 @@ class Area(KNXMixin, Base):
 class Binary(KNXMixin, Base):
     """ORM for xknx 'DPTBinary'.
 
-    DType: DPT-1, DPST-1-1, DPST-1-2, DPST-1-3, DPST-1-5, DPST-1-6, DPST-1-7, DPST-1-8, DPST-1-9, DPST-1-10, DPST-1-11, DPST-1-15, DPST-1-16, DPST-1-17, DPST-1-19, DPST-1-23
+    DType: DPT-1
     """
 
     __tablename__ = "binary"
+    value = Column(types.Integer)
+
+
+class BinaryValue(KNXMixin, Base):
+    """ORM for xknx 'DPTBinaryValue'.
+
+    DType: DPST-1-6
+    """
+
+    __tablename__ = "binaryvalue"
+    value = Column(types.Integer)
+
+
+class Bool(KNXMixin, Base):
+    """ORM for xknx 'DPTBool'.
+
+    DType: DPST-1-2
+    """
+
+    __tablename__ = "bool"
     value = Column(types.Integer)
 
 
@@ -288,6 +328,26 @@ class ChargeDensityVolume(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class ColorRGB(KNXMixin, Base):
+    """ORM for xknx 'DPTColorRGB'.
+
+    DType: DPST-232-600
+    """
+
+    __tablename__ = "colorrgb"
+    value = Column(types.Integer)
+
+
+class ColorRGBW(KNXMixin, Base):
+    """ORM for xknx 'DPTColorRGBW'.
+
+    DType: DPST-251-600
+    """
+
+    __tablename__ = "colorrgbw"
+    value = Column(types.Integer)
+
+
 class ColorTemperature(KNXMixin, Base):
     """ORM for xknx 'DPTColorTemperature'.
 
@@ -295,6 +355,16 @@ class ColorTemperature(KNXMixin, Base):
     """
 
     __tablename__ = "colortemperature"
+    value = Column(types.Integer)
+
+
+class ColorXYY(KNXMixin, Base):
+    """ORM for xknx 'DPTColorXYY'.
+
+    DType: DPST-242-600
+    """
+
+    __tablename__ = "colorxyy"
     value = Column(types.Integer)
 
 
@@ -338,33 +408,33 @@ class Conductance(KNXMixin, Base):
     value = Column(types.Float)
 
 
-class ControlStepwise(KNXMixin, Base):
-    """ORM for xknx 'DPTControlStepwise'.
+class ConsumerProducer(KNXMixin, Base):
+    """ORM for xknx 'DPTConsumerProducer'.
 
-    DType: DPT-3
+    DType: DPST-1-1200
     """
 
-    __tablename__ = "controlstepwise"
+    __tablename__ = "consumerproducer"
     value = Column(types.Integer)
 
 
-class ControlStepwiseBlinds(KNXMixin, Base):
-    """ORM for xknx 'DPTControlStepwiseBlinds'.
+class ControlBlinds(KNXMixin, Base):
+    """ORM for xknx 'DPTControlBlinds'.
 
     DType: DPST-3-8
     """
 
-    __tablename__ = "controlstepwiseblinds"
+    __tablename__ = "controlblinds"
     value = Column(types.Integer)
 
 
-class ControlStepwiseDimming(KNXMixin, Base):
-    """ORM for xknx 'DPTControlStepwiseDimming'.
+class ControlDimming(KNXMixin, Base):
+    """ORM for xknx 'DPTControlDimming'.
 
     DType: DPST-3-7
     """
 
-    __tablename__ = "controlstepwisedimming"
+    __tablename__ = "controldimming"
     value = Column(types.Integer)
 
 
@@ -398,6 +468,16 @@ class DateTime(KNXMixin, Base):
     value = Column(types.DateTime)
 
 
+class DayNight(KNXMixin, Base):
+    """ORM for xknx 'DPTDayNight'.
+
+    DType: DPST-1-24
+    """
+
+    __tablename__ = "daynight"
+    value = Column(types.Integer)
+
+
 class DecimalFactor(KNXMixin, Base):
     """ORM for xknx 'DPTDecimalFactor'.
 
@@ -415,7 +495,7 @@ class DeltaTime100Msec(KNXMixin, Base):
     """
 
     __tablename__ = "deltatime100msec"
-    value = Column(types.Integer)
+    value = Column(types.Float)
 
 
 class DeltaTime10Msec(KNXMixin, Base):
@@ -425,7 +505,7 @@ class DeltaTime10Msec(KNXMixin, Base):
     """
 
     __tablename__ = "deltatime10msec"
-    value = Column(types.Integer)
+    value = Column(types.Float)
 
 
 class DeltaTimeHrs(KNXMixin, Base):
@@ -435,7 +515,7 @@ class DeltaTimeHrs(KNXMixin, Base):
     """
 
     __tablename__ = "deltatimehrs"
-    value = Column(types.Integer)
+    value = Column(types.Float)
 
 
 class DeltaTimeMin(KNXMixin, Base):
@@ -445,7 +525,7 @@ class DeltaTimeMin(KNXMixin, Base):
     """
 
     __tablename__ = "deltatimemin"
-    value = Column(types.Integer)
+    value = Column(types.Float)
 
 
 class DeltaTimeMsec(KNXMixin, Base):
@@ -455,7 +535,7 @@ class DeltaTimeMsec(KNXMixin, Base):
     """
 
     __tablename__ = "deltatimemsec"
-    value = Column(types.Integer)
+    value = Column(types.Float)
 
 
 class DeltaTimeSec(KNXMixin, Base):
@@ -465,7 +545,7 @@ class DeltaTimeSec(KNXMixin, Base):
     """
 
     __tablename__ = "deltatimesec"
-    value = Column(types.Integer)
+    value = Column(types.Float)
 
 
 class Density(KNXMixin, Base):
@@ -476,6 +556,16 @@ class Density(KNXMixin, Base):
 
     __tablename__ = "density"
     value = Column(types.Float)
+
+
+class DimSendStyle(KNXMixin, Base):
+    """ORM for xknx 'DPTDimSendStyle'.
+
+    DType: DPST-1-13
+    """
+
+    __tablename__ = "dimsendstyle"
+    value = Column(types.Integer)
 
 
 class ElectricCharge(KNXMixin, Base):
@@ -618,6 +708,16 @@ class ElectromotiveForce(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class Enable(KNXMixin, Base):
+    """ORM for xknx 'DPTEnable'.
+
+    DType: DPST-1-3
+    """
+
+    __tablename__ = "enable"
+    value = Column(types.Integer)
+
+
 class Energy(KNXMixin, Base):
     """ORM for xknx 'DPTEnergy'.
 
@@ -628,10 +728,20 @@ class Energy(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class EnergyDirection(KNXMixin, Base):
+    """ORM for xknx 'DPTEnergyDirection'.
+
+    DType: DPST-1-1201
+    """
+
+    __tablename__ = "energydirection"
+    value = Column(types.Integer)
+
+
 class Enthalpy(KNXMixin, Base):
     """ORM for xknx 'DPTEnthalpy'.
 
-    DType: DPST-9-999
+    DType: DPST-9-60000
     """
 
     __tablename__ = "enthalpy"
@@ -708,6 +818,26 @@ class HVACContrMode(KNXMixin, Base):
     value = Column(types.Integer)
 
 
+class HVACMode(KNXMixin, Base):
+    """ORM for xknx 'DPTHVACMode'.
+
+    DType: DPST-20-102
+    """
+
+    __tablename__ = "hvacmode"
+    value = Column(types.Integer)
+
+
+class HVACStatus(KNXMixin, Base):
+    """ORM for xknx 'DPTHVACStatus'.
+
+    DType: DPST-20-60102
+    """
+
+    __tablename__ = "hvacstatus"
+    value = Column(types.Integer)
+
+
 class HeatCapacity(KNXMixin, Base):
     """ORM for xknx 'DPTHeatCapacity'.
 
@@ -716,6 +846,16 @@ class HeatCapacity(KNXMixin, Base):
 
     __tablename__ = "heatcapacity"
     value = Column(types.Float)
+
+
+class HeatCool(KNXMixin, Base):
+    """ORM for xknx 'DPTHeatCool'.
+
+    DType: DPST-1-100
+    """
+
+    __tablename__ = "heatcool"
+    value = Column(types.Integer)
 
 
 class HeatFlowRate(KNXMixin, Base):
@@ -758,6 +898,26 @@ class Impedance(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class InputSource(KNXMixin, Base):
+    """ORM for xknx 'DPTInputSource'.
+
+    DType: DPST-1-14
+    """
+
+    __tablename__ = "inputsource"
+    value = Column(types.Integer)
+
+
+class Invert(KNXMixin, Base):
+    """ORM for xknx 'DPTInvert'.
+
+    DType: DPST-1-12
+    """
+
+    __tablename__ = "invert"
+    value = Column(types.Integer)
+
+
 class KelvinPerPercent(KNXMixin, Base):
     """ORM for xknx 'DPTKelvinPerPercent'.
 
@@ -795,7 +955,7 @@ class LengthM(KNXMixin, Base):
     """
 
     __tablename__ = "lengthm"
-    value = Column(types.Integer)
+    value = Column(types.Float)
 
 
 class LengthMm(KNXMixin, Base):
@@ -816,6 +976,16 @@ class LightQuantity(KNXMixin, Base):
 
     __tablename__ = "lightquantity"
     value = Column(types.Float)
+
+
+class LogicalFunction(KNXMixin, Base):
+    """ORM for xknx 'DPTLogicalFunction'.
+
+    DType: DPST-1-21
+    """
+
+    __tablename__ = "logicalfunction"
+    value = Column(types.Integer)
 
 
 class LongDeltaTimeSec(KNXMixin, Base):
@@ -1008,6 +1178,26 @@ class Momentum(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class Occupancy(KNXMixin, Base):
+    """ORM for xknx 'DPTOccupancy'.
+
+    DType: DPST-1-18
+    """
+
+    __tablename__ = "occupancy"
+    value = Column(types.Integer)
+
+
+class OpenClose(KNXMixin, Base):
+    """ORM for xknx 'DPTOpenClose'.
+
+    DType: DPST-1-9
+    """
+
+    __tablename__ = "openclose"
+    value = Column(types.Integer)
+
+
 class PartsPerMillion(KNXMixin, Base):
     """ORM for xknx 'DPTPartsPerMillion'.
 
@@ -1035,7 +1225,7 @@ class PercentV16(KNXMixin, Base):
     """
 
     __tablename__ = "percentv16"
-    value = Column(types.Integer)
+    value = Column(types.Float)
 
 
 class PercentV8(KNXMixin, Base):
@@ -1128,6 +1318,16 @@ class RainAmount(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class Ramp(KNXMixin, Base):
+    """ORM for xknx 'DPTRamp'.
+
+    DType: DPST-1-4
+    """
+
+    __tablename__ = "ramp"
+    value = Column(types.Integer)
+
+
 class Reactance(KNXMixin, Base):
     """ORM for xknx 'DPTReactance'.
 
@@ -1158,6 +1358,16 @@ class ReactiveEnergykVARh(KNXMixin, Base):
     value = Column(types.Integer)
 
 
+class Reset(KNXMixin, Base):
+    """ORM for xknx 'DPTReset'.
+
+    DType: DPST-1-15
+    """
+
+    __tablename__ = "reset"
+    value = Column(types.Integer)
+
+
 class Resistance(KNXMixin, Base):
     """ORM for xknx 'DPTResistance'.
 
@@ -1185,7 +1395,7 @@ class RotationAngle(KNXMixin, Base):
     """
 
     __tablename__ = "rotationangle"
-    value = Column(types.Integer)
+    value = Column(types.Float)
 
 
 class Scaling(KNXMixin, Base):
@@ -1198,10 +1408,30 @@ class Scaling(KNXMixin, Base):
     value = Column(types.Integer)
 
 
+class SceneAB(KNXMixin, Base):
+    """ORM for xknx 'DPTSceneAB'.
+
+    DType: DPST-1-22
+    """
+
+    __tablename__ = "sceneab"
+    value = Column(types.Integer)
+
+
+class SceneControl(KNXMixin, Base):
+    """ORM for xknx 'DPTSceneControl'.
+
+    DType: DPST-18-1
+    """
+
+    __tablename__ = "scenecontrol"
+    value = Column(types.Integer)
+
+
 class SceneNumber(KNXMixin, Base):
     """ORM for xknx 'DPTSceneNumber'.
 
-    DType: DPST-17-1, DPST-18-1
+    DType: DPST-17-1
     """
 
     __tablename__ = "scenenumber"
@@ -1216,6 +1446,16 @@ class SelfInductance(KNXMixin, Base):
 
     __tablename__ = "selfinductance"
     value = Column(types.Float)
+
+
+class ShutterBlindsMode(KNXMixin, Base):
+    """ORM for xknx 'DPTShutterBlindsMode'.
+
+    DType: DPST-1-23
+    """
+
+    __tablename__ = "shutterblindsmode"
+    value = Column(types.Integer)
 
 
 class SignedRelativeValue(KNXMixin, Base):
@@ -1258,6 +1498,36 @@ class Speed(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class Start(KNXMixin, Base):
+    """ORM for xknx 'DPTStart'.
+
+    DType: DPST-1-10
+    """
+
+    __tablename__ = "start"
+    value = Column(types.Integer)
+
+
+class State(KNXMixin, Base):
+    """ORM for xknx 'DPTState'.
+
+    DType: DPST-1-11
+    """
+
+    __tablename__ = "state"
+    value = Column(types.Integer)
+
+
+class Step(KNXMixin, Base):
+    """ORM for xknx 'DPTStep'.
+
+    DType: DPST-1-7
+    """
+
+    __tablename__ = "step"
+    value = Column(types.Integer)
+
+
 class Stress(KNXMixin, Base):
     """ORM for xknx 'DPTStress'.
 
@@ -1288,6 +1558,16 @@ class SurfaceTension(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class Switch(KNXMixin, Base):
+    """ORM for xknx 'DPTSwitch'.
+
+    DType: DPST-1-1
+    """
+
+    __tablename__ = "switch"
+    value = Column(types.Integer)
+
+
 class Tariff(KNXMixin, Base):
     """ORM for xknx 'DPTTariff'.
 
@@ -1295,6 +1575,16 @@ class Tariff(KNXMixin, Base):
     """
 
     __tablename__ = "tariff"
+    value = Column(types.Integer)
+
+
+class TariffActiveEnergy(KNXMixin, Base):
+    """ORM for xknx 'DPTTariffActiveEnergy'.
+
+    DType: DPST-235-1
+    """
+
+    __tablename__ = "tariffactiveenergy"
     value = Column(types.Integer)
 
 
@@ -1478,6 +1768,16 @@ class Torque(KNXMixin, Base):
     value = Column(types.Float)
 
 
+class Trigger(KNXMixin, Base):
+    """ORM for xknx 'DPTTrigger'.
+
+    DType: DPST-1-17
+    """
+
+    __tablename__ = "trigger"
+    value = Column(types.Integer)
+
+
 class TwoByteFloat(KNXMixin, Base):
     """ORM for xknx 'DPT2ByteFloat'.
 
@@ -1495,7 +1795,7 @@ class TwoByteSigned(KNXMixin, Base):
     """
 
     __tablename__ = "twobytesigned"
-    value = Column(types.Integer)
+    value = Column(types.Float)
 
 
 class TwoByteUnsigned(KNXMixin, Base):
@@ -1525,6 +1825,16 @@ class UElCurrentmA(KNXMixin, Base):
     """
 
     __tablename__ = "uelcurrentma"
+    value = Column(types.Integer)
+
+
+class UpDown(KNXMixin, Base):
+    """ORM for xknx 'DPTUpDown'.
+
+    DType: DPST-1-8
+    """
+
+    __tablename__ = "updown"
     value = Column(types.Integer)
 
 
@@ -1565,7 +1875,7 @@ class Value2Count(KNXMixin, Base):
     """
 
     __tablename__ = "value2count"
-    value = Column(types.Integer)
+    value = Column(types.Float)
 
 
 class Value4Count(KNXMixin, Base):
@@ -1656,6 +1966,16 @@ class Weight(KNXMixin, Base):
 
     __tablename__ = "weight"
     value = Column(types.Float)
+
+
+class WindowDoor(KNXMixin, Base):
+    """ORM for xknx 'DPTWindowDoor'.
+
+    DType: DPST-1-19
+    """
+
+    __tablename__ = "windowdoor"
+    value = Column(types.Integer)
 
 
 class Work(KNXMixin, Base):

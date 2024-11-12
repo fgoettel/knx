@@ -18,7 +18,6 @@ pytest-cov = "*"
 pytest-mock = "*"
 pytest-profiling = "*"
 ruff = "*"
-safety = "*"
 sqlalchemy-stubs = "*"
 xknx = "*"
 
@@ -56,7 +55,7 @@ ignore = [
     "ANN003", # Missing type annotation for **kwargs
     "ANN101", # Missing type annotation for self
     "ANN401", # Dynamically types allowed
-    "ASYNC101", # Async functions should not call `open`, `time.sleep`, or `subprocess` methods
+    "ASYNC230", # Async functions should not call `open`, `time.sleep`, or `subprocess` methods
     "BLE001", # Do not catch blind exception
     "COM812", # Incompatibility with formatting
     "D203",   # one blank line before class
@@ -72,6 +71,7 @@ ignore = [
     "PLR0913", # Too many arguments to function call
     "PLR0915", # Too many statements
     "S311",   # Standard pseudo-random generators are not suitable for cryptographic purpose
+    "SIM108", # Use ternary operator
     "TCH002", # Move import into a type checking block
     "TCH003", # Move import into a type checking block
     "TD002",  # Missing author in TODO
