@@ -29,6 +29,7 @@ ignore = [
     "ANN101", # Missing type annotation for self
     "COM812", # Incompatibility with formatting
     "D107",   # Missing docstring in `__init__`
+    "D203",   # Incompatibility with formatting
     "D211",   # Incompatibility with formatting
     "D212",   # Incompatibility with formatting
     "FIX002", # Line contains TODO, consider resolving the issue

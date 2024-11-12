@@ -7,7 +7,6 @@ from pydantic import BaseModel
 
 
 class Dtype(StrEnum):
-
     """Generic datatype."""
 
     # TODO: use xknx
@@ -16,7 +15,6 @@ class Dtype(StrEnum):
 
 
 class GroupAddress(BaseModel):
-
     """Generic gorup address."""
 
     # TODO: check if it makes sense to use xknx
@@ -25,7 +23,6 @@ class GroupAddress(BaseModel):
 
 
 class Device(BaseModel, ABC):
-
     """Generic, abstract device."""
 
     name: str
@@ -34,7 +31,6 @@ class Device(BaseModel, ABC):
 
 
 class Dimmer(Device):
-
     """Generic dimming device."""
 
     def __init__(self, name: str, channels: int) -> None:
