@@ -1,6 +1,7 @@
 .PHONY: install lint test
 
 install:
+	poetry lock
 	poetry install
 
 lint:  ## Basic quality assurance

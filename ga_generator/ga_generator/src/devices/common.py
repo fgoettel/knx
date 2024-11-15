@@ -1,41 +1,55 @@
 """Base Model and common utilities for devices."""
 
 from abc import ABC
-from enum import StrEnum
+from typing import ClassVar
 
 from pydantic import BaseModel
+from xknx.dpt import DPTBase, DPTPercentU8, DPTSwitch
+from pydantic import BaseModel, ValidationError, field_validator, computed_field
 
 
-class Dtype(StrEnum):
-    """Generic datatype."""
-
-    # TODO: use xknx
-    foo = "FOO"
-    bar = "DPT-8"
 
 
 class GroupAddress(BaseModel):
     """Generic gorup address."""
 
-    # TODO: check if it makes sense to use xknx
+    # TODO: check if it makes sense to use xknx for the groupaddress validation
     name: str
-    dtype: Dtype
+    dtype: type[DPTBase]
 
 
-class Device(BaseModel, ABC):
-    """Generic, abstract device."""
+class HALight(BaseModel):
+    """Light entity."""
 
     name: str
-    ga: list[GroupAddress] = []
-    pa: str = ""
+    idx: int
 
+    ga_cmd: str = "1/1/"
+    ga_state: str = "2/2/"
 
-class Dimmer(Device):
-    """Generic dimming device."""
+    idx_offset: int = 2
 
-    def __init__(self, name: str, channels: int) -> None:
-        super().__init__(name=name)
-        for idx in range(channels):
-            for ga_name, dtype in (("dimm status", Dtype.foo), ("switch status", Dtype.bar)):
-                ga = GroupAddress(name=f"Ch{idx} - {ga_name}", dtype=dtype)
-                self.ga.append(ga)
+    @computed_field
+    @property
+    def address(self) -> GroupAddress:
+        name = f"{self.ga_cmd}{self.idx*self.idx_offset+0}"
+        return GroupAddress(name=name, dtype=DPTSwitch)
+
+    @computed_field
+    @property
+    def state_address(self) -> GroupAddress:
+        name =f"{self.ga_state}{self.idx*self.idx_offset+0}"
+        return GroupAddress(name=name, dtype=DPTSwitch)
+
+    @computed_field
+    @property
+    def brightness_address(self) -> GroupAddress:
+        name = f"{self.ga_cmd}{self.idx*self.idx_offset+0}"
+        return GroupAddress(name=name, dtype=DPTPercentU8)
+
+    @computed_field
+    @property
+    def brightness_state_address(self) -> GroupAddress:
+        name = f"{self.ga_state}{self.idx*self.idx_offset+1}"
+        return GroupAddress(name=name, dtype=DPTPercentU8)
+

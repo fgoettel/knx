@@ -10,10 +10,10 @@ LOG = logging.getLogger(__name__)
 
 
 def main() -> None:
-    """Entry point to create all teh group addresses."""
+    """Entry point to create all the group addresses."""
     foo = AKD040102(name="magic")
 
-    LOG.info(foo)
+    LOG.info(foo.model_dump_json())
 
 
 if __name__ == "__main__":

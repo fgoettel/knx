@@ -11,6 +11,7 @@ pydantic = "*"
 pytest = "*"
 ruff = "*"
 mypy = "*"
+xknx = "*"
 
 [build-system]
 requires = ["poetry-core"]
@@ -40,7 +41,7 @@ ignore = [
 
 
 [tool.ruff.lint.per-file-ignores]
-"test/*" = [
+"*/test/*" = [
     "ANN001", # Missing type annotation for function argument
     "ANN201", # Missing return type annotation for public function
     "S101",   # Use of `assert` detected

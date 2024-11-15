@@ -1,13 +1,29 @@
 """MDT devices."""
 
-from ga_generator.src.devices.common import Dimmer, Dtype, GroupAddress
+from xknx.dpt import DPTBool
+from pydantic import BaseModel
+
+from ga_generator.src.devices.common import HALight, GroupAddress
 
 
-class AKD040102(Dimmer):
+class AKD040102(BaseModel):
     """AKD dimmer."""
 
-    def __init__(self, name: str) -> None:
-        super().__init__(name=name, channels=4)
+    ha: list[HALight]
 
-        status_ga = GroupAddress(name="status", dtype=Dtype.bar)
-        self.ga.append(status_ga)
+    channels: int = 4
+
+    def __init__(self, name: str) -> None:
+
+        # HA entities
+        self.ha = []
+        # TODO: ensure that gas for all channels are created
+        for idx, name in enumerate(("flur", "bad", "wc"), start=1):
+            self.ha.append(HALight(
+                name=name,
+                idx=idx,
+
+            ))
+
+        # Special Addresses
+        #status_ga = GroupAddress(name="day_night", dtype=DPTBool)
